@@ -17,12 +17,12 @@ List any dependencies here. E.g. security-core, region-setup
 
 Insert a high-level list of resources created as a part of this module. E.g.
 
-- Storage Account
-- Containers
-- Storage share
-- Lifecycle policy
-- CMK key and Iam Role Assignment
-- Monitor diagnostic setting
+- IAM roles
+- S3 buckets for account specific functions
+- AWS config recorder, aggregator and delivery channel 
+- AWS backup
+- KMS keys
+- 
 
 ## Code Updates
 

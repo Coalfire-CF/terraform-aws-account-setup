@@ -57,7 +57,7 @@ resource "aws_iam_instance_profile" "packer_profile" {
 
 resource "aws_kms_grant" "packer_s3" {
   name              = "packer-${var.aws_region}-s3-access"
-  key_id            = module.s3_kms_key.kms_key_id
+  key_id            = module.security-core.s3_key_arn
   grantee_principal = aws_iam_role.packer_role.arn
   operations = [
     "Encrypt",

@@ -1,4 +1,3 @@
-
 resource "aws_iam_role" "packer_role" {
   name = "packer_role"
 
@@ -31,13 +30,13 @@ resource "aws_iam_policy" "packer_attach_policy" {
             "Sid": "ListObjectsInBucket",
             "Effect": "Allow",
             "Action": ["s3:ListBucket"],
-            "Resource": ["${aws_s3_bucket.install_bucket.arn}"]
+            "Resource": ["${module.s3-installs.arn}"]
         },
         {
             "Sid": "ReadObjectActions",
             "Effect": "Allow",
             "Action": ["s3:ListBucket","s3:GetObject"],
-            "Resource": ["${aws_s3_bucket.install_bucket.arn}/*"]
+            "Resource": ["${module.s3-installs.arn}/*"]
         }
     ]
 }
@@ -59,8 +58,5 @@ resource "aws_kms_grant" "packer_s3" {
   name              = "packer-${var.aws_region}-s3-access"
   key_id            = module.security-core.s3_key_arn
   grantee_principal = aws_iam_role.packer_role.arn
-  operations = [
-    "Encrypt",
-    "Decrypt",
-  "DescribeKey"]
+  operations        = ["Encrypt", "Decrypt", "GenerateDataKey"]
 }

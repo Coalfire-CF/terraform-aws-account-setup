@@ -81,27 +81,27 @@ variable "config_delivery_frequency" {
 
 variable "aws_backup_plan_name" {
   description = "AWS Backup plan name"
-  type = string
-  default = "fedramp-aws-backup-plan"
+  type        = string
+  default     = "fedramp-aws-backup-plan"
 }
 
 variable "backup_selection_tag_value" {
   description = "AWS Backup tag values"
-  type = string
-  default = "fedramp-daily-aws-backups"
+  type        = string
+  default     = "fedramp-daily-aws-backups"
 }
 
 variable "backup_rule_name" {
   description = "AWS Backup rule name"
-  type = string
-  default = "fedramp-aws-backup-default-rule"
+  type        = string
+  default     = "fedramp-aws-backup-default-rule"
 
 }
 
 variable "backup_vault_name" {
   description = "AWS Backup vault name"
-  type = string
-  default = "fedramp-aws-backup-vault"
+  type        = string
+  default     = "fedramp-aws-backup-vault"
 }
 
 variable "delete_after" {
@@ -111,47 +111,47 @@ variable "delete_after" {
 variable "kms_keys" {
   description = "a list of maps of KMS keys needed to be created"
   type        = list(map(string))
-  default = null
+  default     = null
 }
 
-variable "create_s3_kms_key"{
+variable "create_s3_kms_key" {
   description = "create KMS key for S3"
-  type = bool
-  default = true
+  type        = bool
+  default     = true
 }
 
-variable "create_ebs_kms_key"{
+variable "create_ebs_kms_key" {
   description = "create KMS key for ebs"
-  type = bool
-  default = true
+  type        = bool
+  default     = true
 }
 
-variable "create_sm_kms_key"{
+variable "create_sm_kms_key" {
   description = "create KMS key for secrets manager"
-  type = bool
-  default = true
+  type        = bool
+  default     = true
 }
 
-variable "create_dynamo_kms_key"{
+variable "create_dynamo_kms_key" {
   description = "create KMS key for dynamodb"
-  type = bool
-  default = true
+  type        = bool
+  default     = true
 }
 
-variable "create_lambda_kms_key"{
+variable "create_lambda_kms_key" {
   description = "create KMS key for lamb da"
-  type = bool
-  default = true
+  type        = bool
+  default     = true
 }
 
-variable "create_rds_kms_key"{
+variable "create_rds_kms_key" {
   description = "create KMS key for rds"
-  type = bool
-  default = true
+  type        = bool
+  default     = true
 }
 
-variable "create_backup_kms_key"{
+variable "create_backup_kms_key" {
   description = "create KMS key for AWS Backups"
-  type = bool
-  default = true
+  type        = bool
+  default     = true
 }

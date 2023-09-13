@@ -82,21 +82,26 @@ variable "config_delivery_frequency" {
 variable "aws_backup_plan_name" {
   description = "AWS Backup plan name"
   type = string
+  default = "fedramp-aws-backup-plan"
 }
 
 variable "backup_selection_tag_value" {
   description = "AWS Backup tag values"
   type = string
+  default = "fedramp-daily-aws-backups"
 }
 
 variable "backup_rule_name" {
   description = "AWS Backup rule name"
   type = string
+  default = "fedramp-aws-backup-default-rule"
+
 }
 
 variable "backup_vault_name" {
   description = "AWS Backup vault name"
   type = string
+  default = "fedramp-aws-backup-vault"
 }
 
 variable "delete_after" {

@@ -1,7 +1,5 @@
 module "backups" {
-    source = "github.com/Coalfire-CF/ACE-AWS-Backup?ref=v0.0.1"
-
-
+    source = "github.com/Coalfire-CF/ACE-AWS-Backup?ref=draft"
 
     account_number             = var.account_number
     aws_region                 = var.aws_region
@@ -11,7 +9,6 @@ module "backups" {
     backup_selection_tag_value = var.backup_selection_tag_value
     backup_vault_name          = var.backup_vault_name
     delete_after               = var.delete_after
-    is_gov                     = var.is_gov
-    partition                  = var.partition
+    partition                  = data.aws_partition.current
     resource_prefix            = var.resource_prefix
 }

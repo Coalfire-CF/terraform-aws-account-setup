@@ -6,6 +6,6 @@ module "config" {
   default_aws_region = var.default_aws_region
   delivery_frequency = var.config_delivery_frequency
   is_enabled         = var.enable_aws_config
-  kms_s3_arn         = module.s3_kms_key.kms_key_arn
+  kms_s3_arn         = module.security-core.s3_key_arn
   resource_prefix    = var.resource_prefix
 }

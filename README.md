@@ -142,8 +142,6 @@ No requirements.
 |------|--------|---------|
 | <a name="module_additional_kms_keys"></a> [additional\_kms\_keys](#module\_additional\_kms\_keys) | github.com/Coalfire-CF/ACE-AWS-KMS | draftv0.0.2 |
 | <a name="module_backup_kms_key"></a> [backup\_kms\_key](#module\_backup\_kms\_key) | github.com/Coalfire-CF/ACE-AWS-KMS | draftv0.0.2 |
-| <a name="module_backups"></a> [backups](#module\_backups) | github.com/Coalfire-CF/ACE-AWS-Backup | draft |
-| <a name="module_config"></a> [config](#module\_config) | github.com/Coalfire-CF/ACE-AWS-Config | v0.0.4 |
 | <a name="module_ebs_kms_key"></a> [ebs\_kms\_key](#module\_ebs\_kms\_key) | github.com/Coalfire-CF/ACE-AWS-KMS | draftv0.0.2 |
 | <a name="module_lambda_kms_key"></a> [lambda\_kms\_key](#module\_lambda\_kms\_key) | github.com/Coalfire-CF/ACE-AWS-KMS | draftv0.0.2 |
 | <a name="module_rds_kms_key"></a> [rds\_kms\_key](#module\_rds\_kms\_key) | github.com/Coalfire-CF/ACE-AWS-KMS | draftv0.0.2 |
@@ -175,7 +173,7 @@ No requirements.
 | <a name="input_application_account_numbers"></a> [application\_account\_numbers](#input\_application\_account\_numbers) | AWS account numbers for all application accounts | `list(string)` | n/a | yes |
 | <a name="input_aws_backup_plan_name"></a> [aws\_backup\_plan\_name](#input\_aws\_backup\_plan\_name) | AWS Backup plan name | `string` | `"fedramp-aws-backup-plan"` | no |
 | <a name="input_aws_lb_account_ids"></a> [aws\_lb\_account\_ids](#input\_aws\_lb\_account\_ids) | https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-access-logs.html | `map` | `{}` | no |
-| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | The AWS region to create things in | `string` | n/a | yes |
+| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | The AWS region to create resources in | `string` | n/a | yes |
 | <a name="input_backup_rule_name"></a> [backup\_rule\_name](#input\_backup\_rule\_name) | AWS Backup rule name | `string` | `"fedramp-aws-backup-default-rule"` | no |
 | <a name="input_backup_selection_tag_value"></a> [backup\_selection\_tag\_value](#input\_backup\_selection\_tag\_value) | AWS Backup tag values | `string` | `"fedramp-daily-aws-backups"` | no |
 | <a name="input_backup_vault_name"></a> [backup\_vault\_name](#input\_backup\_vault\_name) | AWS Backup vault name | `string` | `"fedramp-aws-backup-vault"` | no |
@@ -191,7 +189,6 @@ No requirements.
 | <a name="input_default_aws_region"></a> [default\_aws\_region](#input\_default\_aws\_region) | The default AWS region to create resources in | `string` | n/a | yes |
 | <a name="input_delete_after"></a> [delete\_after](#input\_delete\_after) | n/a | `number` | n/a | yes |
 | <a name="input_enable_aws_config"></a> [enable\_aws\_config](#input\_enable\_aws\_config) | Enable AWS config for this account | `bool` | n/a | yes |
-| <a name="input_is_gov"></a> [is\_gov](#input\_is\_gov) | Whether or not resources will be deployed in a govcloud region | `bool` | n/a | yes |
 | <a name="input_kms_keys"></a> [kms\_keys](#input\_kms\_keys) | a list of maps of KMS keys needed to be created | `list(map(string))` | `null` | no |
 | <a name="input_lambda_time_zone"></a> [lambda\_time\_zone](#input\_lambda\_time\_zone) | The time zone for the stopinator lambda funciton | `string` | `"US/Eastern"` | no |
 | <a name="input_partition"></a> [partition](#input\_partition) | For East/west use aws or for gov cloud use aws-us-gov | `string` | n/a | yes |

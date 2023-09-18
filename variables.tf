@@ -1,5 +1,5 @@
 variable "aws_region" {
-  description = "The AWS region to create things in"
+  description = "The AWS region to create resources in"
   type        = string
 }
 
@@ -11,19 +11,6 @@ variable "default_aws_region" {
 variable "application_account_numbers" {
   description = "AWS account numbers for all application accounts"
   type        = list(string)
-}
-
-variable "is_gov" {
-  description = "Whether or not resources will be deployed in a govcloud region"
-  type        = bool
-}
-
-locals {
-  gov = var.is_gov ? "aws-us-gov" : "aws"
-}
-
-locals {
-  partition = var.is_gov ? "aws-us-gov" : "aws"
 }
 
 variable "account_number" {

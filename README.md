@@ -3,9 +3,7 @@
 
 </div>
 
-# Coalfire pak README Template
-
-## Repository Title
+## ACE-AWS-Account
 
 Include the name of the Repository as the header above e.g. `ACE-Cloud-Service`
 

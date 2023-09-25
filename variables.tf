@@ -34,7 +34,7 @@ variable "partition" {
 }
 
 variable "lambda_time_zone" {
-  description = "The time zone for the stopinator lambda funciton"
+  description = "The time zone for lambda functions"
   default     = "US/Eastern"
   type        = string
 }
@@ -92,6 +92,7 @@ variable "backup_vault_name" {
 }
 
 variable "delete_after" {
+  description = "Number of days after which a recovery point should be deleted"
   type = number
 }
 
@@ -126,7 +127,7 @@ variable "create_dynamo_kms_key" {
 }
 
 variable "create_lambda_kms_key" {
-  description = "create KMS key for lamb da"
+  description = "create KMS key for lambda"
   type        = bool
   default     = true
 }

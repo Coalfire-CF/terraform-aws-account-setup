@@ -44,6 +44,7 @@ variable "ssm_parameter_store_ad_users" {
   description = "The path to be used for AD users in parameter store"
   type        = string
 }
+
 variable "aws_lb_account_ids" {
   description = "https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-access-logs.html"
   default     = map(string)

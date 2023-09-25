@@ -110,7 +110,6 @@ data "aws_iam_policy_document" "secrets_manager_key" {
   }
 }
 
-
 module "backup_kms_key" {
   count  = var.create_backup_kms_key ? 1 : 0
   source = "github.com/Coalfire-CF/ACE-AWS-KMS"

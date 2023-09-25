@@ -1,5 +1,5 @@
 module "s3-installs" {
-  source = "github.com/Coalfire-CF/ACE-AWS-S3?ref=draftv0.0.2"
+  source = "github.com/Coalfire-CF/ACE-AWS-S3"
 
   name                    = "${var.resource_prefix}-${var.aws_region}-installs"
   kms_master_key_id       = module.security-core.s3_key_id

@@ -1,8 +1,9 @@
 module "ebs_kms_key" {
   count = var.create_ebs_kms_key ? 1 : 0
 
-  source = "github.com/Coalfire-CF/ACE-AWS-KMS?ref=draftv0.0.2"
+  source = "github.com/Coalfire-CF/ACE-AWS-KMS"
 
+  key_policy = data.aws_iam_policy_document.ebs_key.json
   kms_key_resource_type = "ebs"
   resource_prefix       = var.resource_prefix
 }
@@ -73,7 +74,7 @@ data "aws_iam_policy_document" "ebs_key" {
 
 module "sm_kms_key" {
   count  = var.create_sm_kms_key ? 1 : 0
-  source = "github.com/Coalfire-CF/ACE-AWS-KMS?ref=draftv0.0.2"
+  source = "github.com/Coalfire-CF/ACE-AWS-KMS"
 
   key_policy            = data.aws_iam_policy_document.secrets_manager_key.json
   kms_key_resource_type = "sm"
@@ -112,7 +113,7 @@ data "aws_iam_policy_document" "secrets_manager_key" {
 
 module "backup_kms_key" {
   count  = var.create_backup_kms_key ? 1 : 0
-  source = "github.com/Coalfire-CF/ACE-AWS-KMS?ref=draftv0.0.2"
+  source = "github.com/Coalfire-CF/ACE-AWS-KMS"
 
   key_policy            = module.security-core.s3_key_iam
   kms_key_resource_type = "backup"
@@ -121,7 +122,7 @@ module "backup_kms_key" {
 
 module "lambda_kms_key" {
   count  = var.create_lambda_kms_key ? 1 : 0
-  source = "github.com/Coalfire-CF/ACE-AWS-KMS?ref=draftv0.0.2"
+  source = "github.com/Coalfire-CF/ACE-AWS-KMS"
 
   kms_key_resource_type = "lambda"
   resource_prefix       = var.resource_prefix
@@ -129,14 +130,14 @@ module "lambda_kms_key" {
 
 module "rds_kms_key" {
   count  = var.create_rds_kms_key ? 1 : 0
-  source = "github.com/Coalfire-CF/ACE-AWS-KMS?ref=draftv0.0.2"
+  source = "github.com/Coalfire-CF/ACE-AWS-KMS"
 
   kms_key_resource_type = "rds"
   resource_prefix       = var.resource_prefix
 }
 
 module "additional_kms_keys" {
-  source   = "github.com/Coalfire-CF/ACE-AWS-KMS?ref=draftv0.0.2"
+  source   = "github.com/Coalfire-CF/ACE-AWS-KMS"
   for_each = var.kms_keys
 
   key_policy            = var.kms_keys.value["policy"]

@@ -46,7 +46,7 @@ variable "ssm_parameter_store_ad_users" {
 }
 variable "aws_lb_account_ids" {
   description = "https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-access-logs.html"
-  default     = {}
+  default     = map(string)
 }
 
 variable "ad_secrets_manager_path" {

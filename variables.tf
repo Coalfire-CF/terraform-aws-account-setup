@@ -88,6 +88,7 @@ variable "backup_vault_name" {
 variable "delete_after" {
   description = "Number of days after which a recovery point should be deleted"
   type = number
+  default = 35
 }
 
 variable "kms_keys" {

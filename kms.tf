@@ -17,7 +17,7 @@ data "aws_iam_policy_document" "ebs_key" {
     principals {
       type = "AWS"
       identifiers = [
-        "arn:${data.aws_partition.current}:iam::${var.account_number}:root"
+        "arn:${data.aws_partition.current.partition}:iam::${var.account_number}:root"
       ]
     }
   }
@@ -39,7 +39,7 @@ data "aws_iam_policy_document" "ebs_key" {
       principals {
         type = "AWS"
         identifiers = [
-        "arn:${data.aws_partition.current}:iam::${statement.value}:root"]
+        "arn:${data.aws_partition.current.partition}:iam::${statement.value}:root"]
       }
     }
   }

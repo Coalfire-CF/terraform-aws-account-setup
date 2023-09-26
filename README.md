@@ -105,7 +105,7 @@ No requirements.
 | <a name="input_create_s3_kms_key"></a> [create\_s3\_kms\_key](#input\_create\_s3\_kms\_key) | create KMS key for S3 | `bool` | `true` | no |
 | <a name="input_create_sm_kms_key"></a> [create\_sm\_kms\_key](#input\_create\_sm\_kms\_key) | create KMS key for secrets manager | `bool` | `true` | no |
 | <a name="input_default_aws_region"></a> [default\_aws\_region](#input\_default\_aws\_region) | The default AWS region to create resources in | `string` | n/a | yes |
-| <a name="input_delete_after"></a> [delete\_after](#input\_delete\_after) | Number of days after which a recovery point should be deleted | `number` | n/a | yes |
+| <a name="input_delete_after"></a> [delete\_after](#input\_delete\_after) | Number of days after which a recovery point should be deleted | `number` | `35` | no |
 | <a name="input_enable_aws_config"></a> [enable\_aws\_config](#input\_enable\_aws\_config) | Enable AWS config for this account | `bool` | `false` | no |
 | <a name="input_kms_keys"></a> [kms\_keys](#input\_kms\_keys) | a list of maps of KMS keys needed to be created | `list(map(string))` | `null` | no |
 | <a name="input_lambda_time_zone"></a> [lambda\_time\_zone](#input\_lambda\_time\_zone) | The time zone for lambda functions | `string` | `"US/Eastern"` | no |

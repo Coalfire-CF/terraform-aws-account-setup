@@ -39,49 +39,49 @@ output "dynamo_kms_key_id" {
 }
 
 output "ebs_kms_key_arn" {
-  value = module.ebs_kms_key.*.arn
+  value = module.ebs_kms_key.*.kms_key_arn
 }
 
 output "ebs_kms_key_id" {
-  value = module.ebs_kms_key.*.id
+  value = module.ebs_kms_key.*.kms_key_id
 }
 
 output "sm_kms_key_arn" {
-  value = module.sm_kms_key.*.arn
+  value = module.sm_kms_key.*.kms_key_arn
 }
 
 output "sm_kms_key_id" {
-  value = module.sm_kms_key.*.id
+  value = module.sm_kms_key.*.kms_key_id
 }
 
 output "backup_kms_key_arn" {
-  value = module.backup_kms_key.*.arn
+  value = module.backup_kms_key.*.kms_key_arn
 }
 
 output "backup_kms_key_id" {
-  value = module.backup_kms_key.*.id
+  value = module.backup_kms_key.*.kms_key_id
 }
 
 output "lambda_kms_key_arn" {
-  value = module.lambda_kms_key.*.arn
+  value = module.lambda_kms_key.*.kms_key_arn
 }
 
 output "lambda_kms_key_id" {
-  value = module.lambda_kms_key.*.id
+  value = module.lambda_kms_key.*.kms_key_id
 }
 
 output "rds_kms_key_arn" {
-  value = module.rds_kms_key.*.arn
+  value = module.rds_kms_key.*.kms_key_arn
 }
 
 output "rds_kms_key_id" {
-  value = module.rds_kms_key.*.id
+  value = module.rds_kms_key.*.kms_key_id
 }
 
 output "additional_kms_key_arns" {
-  value = module.additional_kms_keys[*].arn
+  value = module.additional_kms_keys[*].kms_key_arn
 }
 
 output "additional_kms_key_ids" {
-  value = module.additional_kms_keys[*].id
+  value = module.additional_kms_keys[*].kms_key_id
 }

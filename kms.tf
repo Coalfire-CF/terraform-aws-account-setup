@@ -139,7 +139,7 @@ module "additional_kms_keys" {
   source   = "github.com/Coalfire-CF/terraform-aws-kms"
   for_each = var.kms_keys
 
-  key_policy            = var.kms_keys.value["policy"]
-  kms_key_resource_type = var.kms_keys.value["name"]
+  key_policy            = each.value["policy"]
+  kms_key_resource_type = each.value["name"]
   resource_prefix       = var.resource_prefix
 }

@@ -66,7 +66,7 @@ data "aws_iam_policy_document" "ebs_key" {
       condition {
         test     = "ArnEquals"
         values   = ["aws:SourceArn"]
-        variable = "arn:${data.aws_partition.current}:iam::${statement.value}:role/aws-service-role/autoscaling.amazonaws.com/AWSServiceRoleForAutoScaling"
+        variable = "arn:${data.aws_partition.current.partition}:iam::${statement.value}:role/aws-service-role/autoscaling.amazonaws.com/AWSServiceRoleForAutoScaling"
       }
     }
   }
@@ -92,7 +92,7 @@ data "aws_iam_policy_document" "secrets_manager_key" {
       "*"]
       principals {
         identifiers = [
-        "arn:${data.aws_partition.current}:iam::${statement.value}:root"]
+        "arn:${data.aws_partition.current.partition}:iam::${statement.value}:root"]
         type = "AWS"
       }
     }
@@ -103,7 +103,7 @@ data "aws_iam_policy_document" "secrets_manager_key" {
     effect  = "Allow"
     actions = ["kms:*"]
     principals {
-      identifiers = ["arn:${data.aws_partition.current}:iam::${var.account_number}:root"]
+      identifiers = ["arn:${data.aws_partition.current.partition}:iam::${var.account_number}:root"]
       type        = "AWS"
     }
     resources = ["*"]

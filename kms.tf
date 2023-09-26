@@ -137,7 +137,7 @@ module "rds_kms_key" {
 
 module "additional_kms_keys" {
   source   = "github.com/Coalfire-CF/terraform-aws-kms"
-  for_each = var.kms_keys == null ? [] : tolist([var.kms_keys])
+  for_each = var.kms_keys == null ? {} : tolist([var.kms_keys])
 
   key_policy            = each.value["policy"]
   kms_key_resource_type = each.value["name"]

@@ -3,7 +3,7 @@ module "ebs_kms_key" {
 
   source = "github.com/Coalfire-CF/terraform-aws-kms"
 
-  key_policy = data.aws_iam_policy_document.ebs_key.json
+  key_policy            = data.aws_iam_policy_document.ebs_key.json
   kms_key_resource_type = "ebs"
   resource_prefix       = var.resource_prefix
 }

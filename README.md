@@ -106,7 +106,6 @@ No requirements.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_account_number"></a> [account\_number](#input\_account\_number) | The AWS account number resources are being deployed into | `string` | n/a | yes |
-| <a name="input_ad_secrets_manager_path"></a> [ad\_secrets\_manager\_path](#input\_ad\_secrets\_manager\_path) | The path to be used for AD users in parameter store | `string` | n/a | yes |
 | <a name="input_application_account_numbers"></a> [application\_account\_numbers](#input\_application\_account\_numbers) | AWS account numbers for all application accounts | `list(string)` | n/a | yes |
 | <a name="input_aws_backup_plan_name"></a> [aws\_backup\_plan\_name](#input\_aws\_backup\_plan\_name) | AWS Backup plan name | `string` | `"fedramp-aws-backup-plan"` | no |
 | <a name="input_aws_lb_account_ids"></a> [aws\_lb\_account\_ids](#input\_aws\_lb\_account\_ids) | https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-access-logs.html | `map(string)` | <pre>{<br>  "us-east-1": "127311923021",<br>  "us-east-2": "033677994240",<br>  "us-gov-east-1": "190560391635",<br>  "us-gov-west-1": "048591011584",<br>  "us-west-2": "797873946194"<br>}</pre> | no |
@@ -128,9 +127,7 @@ No requirements.
 | <a name="input_enable_aws_config"></a> [enable\_aws\_config](#input\_enable\_aws\_config) | Enable AWS config for this account | `bool` | n/a | yes |
 | <a name="input_kms_keys"></a> [kms\_keys](#input\_kms\_keys) | a list of maps of KMS keys needed to be created | `list(map(string))` | `null` | no |
 | <a name="input_lambda_time_zone"></a> [lambda\_time\_zone](#input\_lambda\_time\_zone) | The time zone for lambda functions | `string` | `"US/Eastern"` | no |
-| <a name="input_partition"></a> [partition](#input\_partition) | For East/west use aws or for gov cloud use aws-us-gov | `string` | n/a | yes |
 | <a name="input_resource_prefix"></a> [resource\_prefix](#input\_resource\_prefix) | The prefix for the s3 bucket names | `string` | n/a | yes |
-| <a name="input_ssm_parameter_store_ad_users"></a> [ssm\_parameter\_store\_ad\_users](#input\_ssm\_parameter\_store\_ad\_users) | The path to be used for AD users in parameter store | `string` | `"/production/mgmt/ad/users/"` | no |
 
 ## Outputs
 

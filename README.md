@@ -3,63 +3,45 @@
 
 </div>
 
-## terraform-aws-account
+# AWS Account Setup Terraform Module
 
-Include the name of the Repository as the header above e.g. `ACE-Cloud-Service`
 
-## Dependencies
+## Description
 
-List any dependencies here. E.g. security-core, region-setup
+The AWS account set up module creates the initial account configuration for your project, including IAM roles, KMS keys, S3 installs bucket, and more.
+
+FedRAMP Compliance: High
 
 ## Resource List
 
-Insert a high-level list of resources created as a part of this module. E.g.
+Resources that are created as a part of this module include:
 
 - IAM roles
-- S3 buckets for account specific functions
-- AWS config recorder, aggregator and delivery channel 
-- AWS backup
+- IAM policies
+- IAM instance profiles
 - KMS keys
-- 
-
-## Code Updates
-
-If applicable, add here. For example, updating variables, updating `tstate.tf`, or remote data sources.
-
-`tstate.tf` Update to the appropriate version and storage accounts, see sample
-
-``` hcl
-
-```
-
-Change directory to the `active-directory` folder
-
-Run `terraform init` to download modules and create initial local state file.
-
-Run `terraform plan` to ensure no errors and validate plan is deploying expected resources.
-
-Run `terraform apply` to deploy infrastructure.
-
-Update the `remote-data.tf` file to add the security state key
-
-``` hcl
-
-```
-
-## Deployment Steps
-
-This module can be called as outlined below.
-
-- Change directories to the `reponame` directory.
-- From the `terraform/azure/reponame` directory run `terraform init`.
-- Run `terraform plan` to review the resources being created.
-- If everything looks correct in the plan output, run `terraform apply`.
+- S3 buckets
+- Security core module resources
 
 ## Usage
+```
+module "account-setup" {
+  source = "github.com/Coalfire-CF/terraform-aws-account-setup"
 
-Include example for how to call the module below with generic variables
+  aws_region = "us-east-1"
+  default_aws_region = "us-east-1"
 
-```hcl
+  application_account_numbers = ["account-number1", "account-number2", "account-number3"]
+  account_number = "your-account-number"
+
+  resource_prefix = "pre"
+  create_cloudtrail = true
+  partition = "aws"
+  ad_secrets_manager_path = "your/ad/path"
+  enable_aws_config = true
+  delete_after = 90
+}
+
 ```
 
 <!-- BEGIN_TF_DOCS -->
@@ -77,16 +59,16 @@ No requirements.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_additional_kms_keys"></a> [additional\_kms\_keys](#module\_additional\_kms\_keys) | github.com/Coalfire-CF/ACE-AWS-KMS | n/a |
-| <a name="module_backup_kms_key"></a> [backup\_kms\_key](#module\_backup\_kms\_key) | github.com/Coalfire-CF/ACE-AWS-KMS | n/a |
-| <a name="module_ebs_kms_key"></a> [ebs\_kms\_key](#module\_ebs\_kms\_key) | github.com/Coalfire-CF/ACE-AWS-KMS | n/a |
-| <a name="module_lambda_kms_key"></a> [lambda\_kms\_key](#module\_lambda\_kms\_key) | github.com/Coalfire-CF/ACE-AWS-KMS | n/a |
-| <a name="module_rds_kms_key"></a> [rds\_kms\_key](#module\_rds\_kms\_key) | github.com/Coalfire-CF/ACE-AWS-KMS | n/a |
-| <a name="module_s3-accesslogs"></a> [s3-accesslogs](#module\_s3-accesslogs) | github.com/Coalfire-CF/ACE-AWS-S3 | n/a |
-| <a name="module_s3-backups"></a> [s3-backups](#module\_s3-backups) | github.com/Coalfire-CF/ACE-AWS-S3 | n/a |
-| <a name="module_s3-installs"></a> [s3-installs](#module\_s3-installs) | github.com/Coalfire-CF/ACE-AWS-S3 | n/a |
-| <a name="module_security-core"></a> [security-core](#module\_security-core) | github.com/Coalfire-CF/ACE-AWS-SecurityCore | n/a |
-| <a name="module_sm_kms_key"></a> [sm\_kms\_key](#module\_sm\_kms\_key) | github.com/Coalfire-CF/ACE-AWS-KMS | n/a |
+| <a name="module_additional_kms_keys"></a> [additional\_kms\_keys](#module\_additional\_kms\_keys) | github.com/Coalfire-CF/terraform-aws-kms | n/a |
+| <a name="module_backup_kms_key"></a> [backup\_kms\_key](#module\_backup\_kms\_key) | github.com/Coalfire-CF/terraform-aws-kms | n/a |
+| <a name="module_ebs_kms_key"></a> [ebs\_kms\_key](#module\_ebs\_kms\_key) | github.com/Coalfire-CF/terraform-aws-kms | n/a |
+| <a name="module_lambda_kms_key"></a> [lambda\_kms\_key](#module\_lambda\_kms\_key) | github.com/Coalfire-CF/terraform-aws-kms | n/a |
+| <a name="module_rds_kms_key"></a> [rds\_kms\_key](#module\_rds\_kms\_key) | github.com/Coalfire-CF/terraform-aws-kms | n/a |
+| <a name="module_s3-accesslogs"></a> [s3-accesslogs](#module\_s3-accesslogs) | github.com/Coalfire-CF/terraform-aws-s3 | n/a |
+| <a name="module_s3-backups"></a> [s3-backups](#module\_s3-backups) | github.com/Coalfire-CF/terraform-aws-s3 | n/a |
+| <a name="module_s3-installs"></a> [s3-installs](#module\_s3-installs) | github.com/Coalfire-CF/terraform-aws-s3 | n/a |
+| <a name="module_security-core"></a> [security-core](#module\_security-core) | github.com/Coalfire-CF/terraform-aws-securitycore | n/a |
+| <a name="module_sm_kms_key"></a> [sm\_kms\_key](#module\_sm\_kms\_key) | github.com/Coalfire-CF/terraform-aws-kms | n/a |
 
 ## Resources
 
@@ -106,7 +88,6 @@ No requirements.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_account_number"></a> [account\_number](#input\_account\_number) | The AWS account number resources are being deployed into | `string` | n/a | yes |
-| <a name="input_ad_secrets_manager_path"></a> [ad\_secrets\_manager\_path](#input\_ad\_secrets\_manager\_path) | The path to be used for AD users in parameter store | `string` | n/a | yes |
 | <a name="input_application_account_numbers"></a> [application\_account\_numbers](#input\_application\_account\_numbers) | AWS account numbers for all application accounts | `list(string)` | n/a | yes |
 | <a name="input_aws_backup_plan_name"></a> [aws\_backup\_plan\_name](#input\_aws\_backup\_plan\_name) | AWS Backup plan name | `string` | `"fedramp-aws-backup-plan"` | no |
 | <a name="input_aws_lb_account_ids"></a> [aws\_lb\_account\_ids](#input\_aws\_lb\_account\_ids) | https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-access-logs.html | `map(string)` | <pre>{<br>  "us-east-1": "127311923021",<br>  "us-east-2": "033677994240",<br>  "us-gov-east-1": "190560391635",<br>  "us-gov-west-1": "048591011584",<br>  "us-west-2": "797873946194"<br>}</pre> | no |
@@ -128,9 +109,7 @@ No requirements.
 | <a name="input_enable_aws_config"></a> [enable\_aws\_config](#input\_enable\_aws\_config) | Enable AWS config for this account | `bool` | n/a | yes |
 | <a name="input_kms_keys"></a> [kms\_keys](#input\_kms\_keys) | a list of maps of KMS keys needed to be created | `list(map(string))` | `null` | no |
 | <a name="input_lambda_time_zone"></a> [lambda\_time\_zone](#input\_lambda\_time\_zone) | The time zone for lambda functions | `string` | `"US/Eastern"` | no |
-| <a name="input_partition"></a> [partition](#input\_partition) | For East/west use aws or for gov cloud use aws-us-gov | `string` | n/a | yes |
 | <a name="input_resource_prefix"></a> [resource\_prefix](#input\_resource\_prefix) | The prefix for the s3 bucket names | `string` | n/a | yes |
-| <a name="input_ssm_parameter_store_ad_users"></a> [ssm\_parameter\_store\_ad\_users](#input\_ssm\_parameter\_store\_ad\_users) | The path to be used for AD users in parameter store | `string` | `"/production/mgmt/ad/users/"` | no |
 
 ## Outputs
 

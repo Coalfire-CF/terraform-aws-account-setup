@@ -79,9 +79,13 @@ output "rds_kms_key_id" {
 }
 
 output "additional_kms_key_arns" {
-  value = module.additional_kms_keys[*].kms_key_arn
+  value = module.additional_kms_keys
 }
 
 output "additional_kms_key_ids" {
-  value = module.additional_kms_keys[*].kms_key_id
+  value = module.additional_kms_keys
+}
+
+output "s3_tstate_bucket_name" {
+  value = module.security-core.tstate_bucket_name
 }

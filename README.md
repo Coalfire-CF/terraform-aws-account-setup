@@ -107,7 +107,7 @@ No requirements.
 | <a name="input_default_aws_region"></a> [default\_aws\_region](#input\_default\_aws\_region) | The default AWS region to create resources in | `string` | n/a | yes |
 | <a name="input_delete_after"></a> [delete\_after](#input\_delete\_after) | Number of days after which a recovery point should be deleted | `number` | `35` | no |
 | <a name="input_enable_aws_config"></a> [enable\_aws\_config](#input\_enable\_aws\_config) | Enable AWS config for this account | `bool` | `false` | no |
-| <a name="input_kms_keys"></a> [kms\_keys](#input\_kms\_keys) | a list of maps of KMS keys needed to be created | `list(map(string))` | `null` | no |
+| <a name="input_kms_keys"></a> [kms\_keys](#input\_kms\_keys) | a list of maps of KMS keys needed to be created | `list(map(string))` | `[]` | no |
 | <a name="input_lambda_time_zone"></a> [lambda\_time\_zone](#input\_lambda\_time\_zone) | The time zone for lambda functions | `string` | `"US/Eastern"` | no |
 | <a name="input_resource_prefix"></a> [resource\_prefix](#input\_resource\_prefix) | The prefix for the s3 bucket names | `string` | n/a | yes |
 
@@ -135,6 +135,7 @@ No requirements.
 | <a name="output_s3_installs_id"></a> [s3\_installs\_id](#output\_s3\_installs\_id) | n/a |
 | <a name="output_s3_kms_key_arn"></a> [s3\_kms\_key\_arn](#output\_s3\_kms\_key\_arn) | n/a |
 | <a name="output_s3_kms_key_id"></a> [s3\_kms\_key\_id](#output\_s3\_kms\_key\_id) | n/a |
+| <a name="output_s3_tstate_bucket_name"></a> [s3\_tstate\_bucket\_name](#output\_s3\_tstate\_bucket\_name) | n/a |
 | <a name="output_sm_kms_key_arn"></a> [sm\_kms\_key\_arn](#output\_sm\_kms\_key\_arn) | n/a |
 | <a name="output_sm_kms_key_id"></a> [sm\_kms\_key\_id](#output\_sm\_kms\_key\_id) | n/a |
 <!-- END_TF_DOCS -->

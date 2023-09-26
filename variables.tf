@@ -28,22 +28,12 @@ variable "create_cloudtrail" {
   type        = bool
 }
 
-variable "partition" {
-  type        = string
-  description = "For East/west use aws or for gov cloud use aws-us-gov"
-}
-
 variable "lambda_time_zone" {
   description = "The time zone for lambda functions"
   default     = "US/Eastern"
   type        = string
 }
 
-variable "ssm_parameter_store_ad_users" {
-  default     = "/production/mgmt/ad/users/"
-  description = "The path to be used for AD users in parameter store"
-  type        = string
-}
 variable "aws_lb_account_ids" {
   description = "https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-access-logs.html"
   default = {
@@ -55,12 +45,6 @@ variable "aws_lb_account_ids" {
   }
   type = map(string)
 }
-
-variable "ad_secrets_manager_path" {
-  description = "The path to be used for AD users in parameter store"
-  type        = string
-}
-
 
 variable "enable_aws_config" {
   description = "Enable AWS config for this account"

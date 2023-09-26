@@ -3,63 +3,45 @@
 
 </div>
 
-## terraform-aws-account
+# AWS Account Setup Terraform Module
 
-Include the name of the Repository as the header above e.g. `ACE-Cloud-Service`
 
-## Dependencies
+## Description
 
-List any dependencies here. E.g. security-core, region-setup
+The AWS account set up module creates the initial account configuration for your project, including IAM roles, KMS keys, S3 installs bucket, and more.
+
+FedRAMP Compliance: High
 
 ## Resource List
 
-Insert a high-level list of resources created as a part of this module. E.g.
+Resources that are created as a part of this module include:
 
 - IAM roles
-- S3 buckets for account specific functions
-- AWS config recorder, aggregator and delivery channel 
-- AWS backup
+- IAM policies
+- IAM instance profiles
 - KMS keys
-- 
-
-## Code Updates
-
-If applicable, add here. For example, updating variables, updating `tstate.tf`, or remote data sources.
-
-`tstate.tf` Update to the appropriate version and storage accounts, see sample
-
-``` hcl
-
-```
-
-Change directory to the `active-directory` folder
-
-Run `terraform init` to download modules and create initial local state file.
-
-Run `terraform plan` to ensure no errors and validate plan is deploying expected resources.
-
-Run `terraform apply` to deploy infrastructure.
-
-Update the `remote-data.tf` file to add the security state key
-
-``` hcl
-
-```
-
-## Deployment Steps
-
-This module can be called as outlined below.
-
-- Change directories to the `reponame` directory.
-- From the `terraform/azure/reponame` directory run `terraform init`.
-- Run `terraform plan` to review the resources being created.
-- If everything looks correct in the plan output, run `terraform apply`.
+- S3 buckets
+- Security core module resources
 
 ## Usage
+```
+module "account-setup" {
+  source = "github.com/Coalfire-CF/terraform-aws-account-setup"
 
-Include example for how to call the module below with generic variables
+  aws_region = "us-east-1"
+  default_aws_region = "us-east-1"
 
-```hcl
+  application_account_numbers = ["account-number1", "account-number2", "account-number3"]
+  account_number = "your-account-number"
+
+  resource_prefix = "pre"
+  create_cloudtrail = true
+  partition = "aws"
+  ad_secrets_manager_path = "your/ad/path"
+  enable_aws_config = true
+  delete_after = 90
+}
+
 ```
 
 <!-- BEGIN_TF_DOCS -->

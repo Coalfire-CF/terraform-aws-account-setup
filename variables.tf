@@ -94,8 +94,16 @@ variable "delete_after" {
 variable "kms_keys" {
   description = "a list of maps of KMS keys needed to be created"
   type        = list(map(string))
-  default     = null
+  default     = []
 }
+#
+#kms_keys = [
+#  {
+#    name = "s3",
+#    policy = ""
+#  },
+#
+#]
 
 variable "create_s3_kms_key" {
   description = "create KMS key for S3"

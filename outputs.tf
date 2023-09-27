@@ -89,3 +89,7 @@ output "additional_kms_key_ids" {
 output "s3_tstate_bucket_name" {
   value = module.security-core.tstate_bucket_name
 }
+
+output "dynamodb_table_name" {
+  value = module.security-core.dynamodb_table_name
+}

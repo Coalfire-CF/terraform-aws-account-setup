@@ -91,8 +91,8 @@ variable "delete_after" {
   default = 35
 }
 
-variable "kms_keys" {
-  description = "a list of maps of KMS keys needed to be created"
+variable "additional_kms_keys" {
+  description = "a list of maps of any additional KMS keys that need to be created"
   type        = list(map(string))
   default     = []
 }

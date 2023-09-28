@@ -135,6 +135,15 @@ module "rds_kms_key" {
   resource_prefix       = var.resource_prefix
 }
 
+module "cloudwatch_kms_key" {
+  count  = var.create_cloudwatch_kms_key ? 1 : 0
+  source = "github.com/Coalfire-CF/terraform-aws-kms"
+
+  kms_key_resource_type = "cloudwatch"
+  resource_prefix       = var.resource_prefix
+  key_policy = data.aws_iam_policy_document.cloudwatch_key.json
+}
+
 module "additional_kms_keys" {
   source   = "github.com/Coalfire-CF/terraform-aws-kms"
   for_each = { for key in var.additional_kms_keys : key.name => key}
@@ -142,4 +151,116 @@ module "additional_kms_keys" {
   key_policy            = each.value.policy
   kms_key_resource_type = each.value.name
   resource_prefix       = var.resource_prefix
+}
+
+data "aws_iam_policy_document" "cloudwatch_key" {
+
+  dynamic "statement" {
+    for_each = var.application_account_numbers
+    content {
+      effect = "Allow"
+      actions = [
+      "kms:*"]
+      resources = [
+      "*"]
+      principals {
+        identifiers = [
+        "arn:${data.aws_partition.current.partition}:iam::${statement.value}:root"]
+        type = "AWS"
+      }
+    }
+  }
+
+  statement {
+    effect = "Allow"
+    actions = [
+    "kms:*"]
+    resources = [
+    "*"]
+    principals {
+      type = "AWS"
+      identifiers = [
+      "arn:${data.aws_partition.current.partition}:iam::${var.account_number}:root"]
+    }
+  }
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "kms:Encrypt",
+      "kms:Decrypt",
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+      "kms:DescribeKey",
+    ]
+    resources = [
+    "*"]
+
+    principals {
+      type = "Service"
+      identifiers = [
+      "delivery.logs.amazonaws.com"]
+    }
+  }
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "kms:Encrypt",
+      "kms:Decrypt",
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+      "kms:DescribeKey",
+    ]
+    resources = [
+    "*"]
+
+    principals {
+      type = "Service"
+      identifiers = [
+      "logs.${var.default_aws_region}.amazonaws.com"]
+    }
+  }
+
+  statement {
+    sid    = "Enable CloudTrail Encrypt Permissions"
+    effect = "Allow"
+    actions = [
+    "kms:GenerateDataKey*"]
+    resources = [
+    "*"]
+    condition {
+      test     = "StringLike"
+      variable = "kms:EncryptionContext:aws:cloudtrail:arn"
+      values = [
+      "arn:${data.aws_partition.current.partition}:cloudtrail:*:${var.account_number}:trail/*"]
+    }
+    principals {
+      type = "Service"
+      identifiers = [
+      "cloudtrail.amazonaws.com"]
+    }
+  }
+
+  dynamic "statement" {
+    for_each = var.application_account_numbers
+    content {
+      effect = "Allow"
+      actions = [
+      "kms:GenerateDataKey*"]
+      resources = [
+      "*"]
+      condition {
+        test     = "StringLike"
+        variable = "kms:EncryptionContext:aws:cloudtrail:arn"
+        values = [
+        "arn:${data.aws_partition.current.partition}:cloudtrail:*:${statement.value}:trail/*"]
+      }
+      principals {
+        type = "Service"
+        identifiers = [
+        "cloudtrail.amazonaws.com"]
+      }
+    }
+  }
 }

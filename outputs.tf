@@ -78,6 +78,15 @@ output "rds_kms_key_id" {
   value = module.rds_kms_key.*.kms_key_id
 }
 
+
+output "cloudwatch_kms_key_arn" {
+  value = module.cloudwatch_kms_key.*.kms_key_arn
+}
+
+output "cloudwatch_kms_key_id" {
+  value = module.cloudwatch_kms_key.*.kms_key_id
+}
+
 output "additional_kms_key_arns" {
   value = module.additional_kms_keys
 }

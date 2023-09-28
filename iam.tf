@@ -146,7 +146,7 @@ data "aws_iam_policy_document" "packer_policy_document" {
 
 resource "aws_iam_policy" "packer_policy" {
   name        = "packer_policy"
-  description = "General Policy which will attach to ec2 for packer to give access to desc ec2,s3"
+  description = "General Policy which will attach to ec2 for packer to give access to ec2,s3"
   policy      = data.aws_iam_policy_document.packer_policy_document.json
 }
 

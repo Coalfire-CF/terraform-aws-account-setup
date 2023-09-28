@@ -146,3 +146,9 @@ variable "create_backup_kms_key" {
   type        = bool
   default     = true
 }
+
+variable "create_cloudwatch_kms_key" {
+  description = "create KMS key for AWS Cloudwatch"
+  type        = bool
+  default     = true
+}

@@ -152,18 +152,13 @@ module "account-setup" {
 
 ## Contributing
 
-[Relative or absolute link to contributing.md](CONTRIBUTING.md)
-
+If you're interested in contributing to our projects, please review the [Contributing Guidelines](CONTRIBUTING.md). And send an email to [our team](contributing@coalfire.com) to receive a copy of our CLA and start the onboarding process.
 
 ## License
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/license/mit/)
 
-
-## Coalfire Pages
-
-[Absolute link to any relevant Coalfire Pages](https://coalfire.com/)
-
 ### Copyright
 
 Copyright © 2023 Coalfire Systems Inc.
+

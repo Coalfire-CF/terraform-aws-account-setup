@@ -1,7 +1,5 @@
-<div align="center">
-<img src="coalfire_logo.png" width="200">
+![Coalfire](coalfire_logo.png)
 
-</div>
 
 # AWS Account Setup Terraform Module
 

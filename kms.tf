@@ -1,7 +1,7 @@
 module "ebs_kms_key" {
   count = var.create_ebs_kms_key ? 1 : 0
 
-  source = "github.com/Coalfire-CF/terraform-aws-kms"
+  source = "github.com/Coalfire-CF/terraform-aws-kms?ref=v0.0.6"
 
   key_policy            = data.aws_iam_policy_document.ebs_key.json
   kms_key_resource_type = "ebs"
@@ -74,7 +74,7 @@ data "aws_iam_policy_document" "ebs_key" {
 
 module "sm_kms_key" {
   count  = var.create_sm_kms_key ? 1 : 0
-  source = "github.com/Coalfire-CF/terraform-aws-kms"
+  source = "github.com/Coalfire-CF/terraform-aws-kms?ref=v0.0.6"
 
   key_policy            = data.aws_iam_policy_document.secrets_manager_key.json
   kms_key_resource_type = "sm"
@@ -112,7 +112,7 @@ data "aws_iam_policy_document" "secrets_manager_key" {
 
 module "backup_kms_key" {
   count  = var.create_backup_kms_key ? 1 : 0
-  source = "github.com/Coalfire-CF/terraform-aws-kms"
+  source = "github.com/Coalfire-CF/terraform-aws-kms?ref=v0.0.6"
 
   key_policy            = module.security-core.s3_key_iam
   kms_key_resource_type = "backup"
@@ -121,7 +121,7 @@ module "backup_kms_key" {
 
 module "lambda_kms_key" {
   count  = var.create_lambda_kms_key ? 1 : 0
-  source = "github.com/Coalfire-CF/terraform-aws-kms"
+  source = "github.com/Coalfire-CF/terraform-aws-kms?ref=v0.0.6"
 
   kms_key_resource_type = "lambda"
   resource_prefix       = var.resource_prefix
@@ -129,7 +129,7 @@ module "lambda_kms_key" {
 
 module "rds_kms_key" {
   count  = var.create_rds_kms_key ? 1 : 0
-  source = "github.com/Coalfire-CF/terraform-aws-kms"
+  source = "github.com/Coalfire-CF/terraform-aws-kms?ref=v0.0.6"
 
   kms_key_resource_type = "rds"
   resource_prefix       = var.resource_prefix
@@ -137,16 +137,16 @@ module "rds_kms_key" {
 
 module "cloudwatch_kms_key" {
   count  = var.create_cloudwatch_kms_key ? 1 : 0
-  source = "github.com/Coalfire-CF/terraform-aws-kms"
+  source = "github.com/Coalfire-CF/terraform-aws-kms?ref=v0.0.6"
 
   kms_key_resource_type = "cloudwatch"
   resource_prefix       = var.resource_prefix
-  key_policy = data.aws_iam_policy_document.cloudwatch_key.json
+  key_policy            = data.aws_iam_policy_document.cloudwatch_key.json
 }
 
 module "additional_kms_keys" {
-  source   = "github.com/Coalfire-CF/terraform-aws-kms"
-  for_each = { for key in var.additional_kms_keys : key.name => key}
+  source   = "github.com/Coalfire-CF/terraform-aws-kms?ref=v0.0.6"
+  for_each = { for key in var.additional_kms_keys : key.name => key }
 
   key_policy            = each.value.policy
   kms_key_resource_type = each.value.name

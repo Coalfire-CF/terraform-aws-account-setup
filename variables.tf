@@ -26,7 +26,7 @@ variable "resource_prefix" {
 variable "create_cloudtrail" {
   description = "Whether or not to create cloudtrail resources"
   type        = bool
-  default = false
+  default     = false
 }
 
 variable "lambda_time_zone" {
@@ -50,7 +50,7 @@ variable "aws_lb_account_ids" {
 variable "enable_aws_config" {
   description = "Enable AWS config for this account"
   type        = bool
-    default = false
+  default     = false
 
 }
 
@@ -87,8 +87,8 @@ variable "backup_vault_name" {
 
 variable "delete_after" {
   description = "Number of days after which a recovery point should be deleted"
-  type = number
-  default = 35
+  type        = number
+  default     = 35
 }
 
 variable "additional_kms_keys" {

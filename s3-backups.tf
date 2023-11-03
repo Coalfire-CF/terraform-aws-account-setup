@@ -9,6 +9,7 @@ module "s3-backups" {
   restrict_public_buckets = true
 
   # S3 Access Logs
+  logging       = true
   target_bucket = module.s3-accesslogs.id
   target_prefix = "backups/"
 }

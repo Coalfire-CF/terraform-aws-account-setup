@@ -16,6 +16,10 @@ module "s3-elb-accesslogs" {
   logging       = true
   target_bucket = module.s3-accesslogs.id
   target_prefix = "elb-accesslogs/"
+
+  # Bucket Policy
+  bucket_policy           = true
+  aws_iam_policy_document = data.aws_iam_policy_document.elb_accesslogs_bucket_policy.json
 }
 
 locals {

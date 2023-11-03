@@ -11,6 +11,10 @@ module "s3-accesslogs" {
   # Note: S3 Access Logs bucket MUST use AES256, will not work with customer KMS
   # https://docs.aws.amazon.com/AmazonS3/latest/userguide/enable-server-access-logging.html
   enable_kms = false
+
+  # Bucket Policy
+  bucket_policy           = true
+  aws_iam_policy_document = data.aws_iam_policy_document.s3_accesslogs_bucket_policy.json
 }
 
 data "aws_iam_policy_document" "s3_accesslogs_bucket_policy" {

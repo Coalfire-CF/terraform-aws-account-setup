@@ -18,10 +18,12 @@ module "s3-elb-accesslogs" {
 }
 
 locals {
-  # https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-access-logs.html
+  # Note: This is specifically for Classic Load Balancer to give write access to ELB Access Logs S3 Bucket
+  # https://docs.aws.amazon.com/elasticloadbalancing/latest/application/enable-access-logging.html
   aws_lb_account_ids = {
     us-east-2     = "033677994240"
     us-east-1     = "127311923021"
+    us-west-1     = "027434742980"
     us-west-2     = "797873946194"
     us-gov-west-1 = "048591011584"
     us-gov-east-1 = "190560391635"

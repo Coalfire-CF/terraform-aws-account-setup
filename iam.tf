@@ -1,24 +1,17 @@
-
 data "aws_iam_policy_document" "packer_assume_role_policy_document" {
   statement {
-    sid    = "PackerAssumeRole"
-    effect = "Allow"
-    actions = [
-      "sts:AssumeRole"
-    ]
+    sid     = "PackerAssumeRole"
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
     principals {
       type        = "AWS"
-      identifiers = [
-        "arn:${data.aws_partition.current.partition}:iam::${var.account_number}:root"
-        ]
+      identifiers = ["arn:${data.aws_partition.current.partition}:iam::${var.account_number}:root"]
     }
   }
   statement {
-    sid    = "PackerEC2AssumeRole"
-    effect = "Allow"
-    actions = [
-      "sts:AssumeRole"
-    ]
+    sid     = "PackerEC2AssumeRole"
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
     principals {
       type        = "Service"
       identifiers = ["ec2.amazonaws.com"]
@@ -81,9 +74,7 @@ data "aws_iam_policy_document" "packer_policy_document" {
       "ec2:ReplaceIamInstanceProfileAssociation",
       "iam:GetInstanceProfile"
     ]
-    resources = [
-      "*"
-    ]
+    resources = ["*"]
   }
 
   statement {
@@ -112,18 +103,13 @@ data "aws_iam_policy_document" "packer_policy_document" {
     resources = [
       "arn:${data.aws_partition.current.partition}:ssm:${var.aws_region}:${var.account_number}:parameter/production/packer/*",
       "arn:${data.aws_partition.current.partition}:ssm:${var.aws_region}:${var.account_number}:parameter/production/ca_secrets_path",
-      "arn:${data.aws_partition.current.partition}:ssm:${var.aws_region}:${var.account_number}:parameter/production/siem",
       "arn:${data.aws_partition.current.partition}:ssm:${var.aws_region}:${var.account_number}:parameter/production/mgmt/ca/rootca/root_ca_pub.pem"
     ]
   }
   statement {
-    effect = "Allow"
-    actions = [
-      "ssm:DescribeParameters"
-    ]
-    resources = [
-      "*"
-    ]
+    effect    = "Allow"
+    actions   = ["ssm:DescribeParameters"]
+    resources = ["*"]
   }
   statement {
     sid    = "PackerEBSEncrypt"
@@ -137,9 +123,7 @@ data "aws_iam_policy_document" "packer_policy_document" {
       "kms:CreateGrant",
       "kms:ListGrants"
     ]
-    resources = [
-      "*"
-    ]
+    resources = ["*"]
   }
 }
 
@@ -168,7 +152,8 @@ resource "aws_kms_grant" "packer_s3" {
   operations = [
     "Encrypt",
     "Decrypt",
-  "DescribeKey"]
+    "DescribeKey"
+  ]
 }
 resource "aws_kms_grant" "packer_ebs" {
   name              = "packer-${var.aws_region}-ebs-access"
@@ -177,5 +162,6 @@ resource "aws_kms_grant" "packer_ebs" {
   operations = [
     "Encrypt",
     "Decrypt",
-  "DescribeKey"]
+    "DescribeKey"
+  ]
 }

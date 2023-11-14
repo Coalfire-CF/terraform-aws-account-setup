@@ -2,6 +2,10 @@ output "s3_access_logs_arn" {
   value = module.s3-accesslogs.arn
 }
 
+output "s3_elb_access_logs_arn" {
+  value = module.s3-elb-accesslogs.arn
+}
+
 output "s3_backups_arn" {
   value = module.s3-backups.arn
 }
@@ -12,6 +16,10 @@ output "s3_installs_arn" {
 
 output "s3_access_logs_id" {
   value = module.s3-accesslogs.id
+}
+
+output "s3_elb_access_logs_id" {
+  value = module.s3-elb-accesslogs.id
 }
 
 output "s3_backups_id" {

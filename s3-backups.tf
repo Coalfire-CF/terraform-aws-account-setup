@@ -1,5 +1,5 @@
 module "s3-backups" {
-  source = "github.com/Coalfire-CF/terraform-aws-s3"
+  source = "github.com/Coalfire-CF/terraform-aws-s3?ref=v1.0.0"
 
   name                    = "${var.resource_prefix}-${var.aws_region}-backups"
   kms_master_key_id       = module.security-core.s3_key_id
@@ -7,4 +7,9 @@ module "s3-backups" {
   block_public_acls       = true
   ignore_public_acls      = true
   restrict_public_buckets = true
+
+  # S3 Access Logs
+  logging       = true
+  target_bucket = module.s3-accesslogs.id
+  target_prefix = "backups/"
 }

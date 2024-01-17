@@ -54,7 +54,7 @@ data "aws_iam_policy_document" "elb_accesslogs_bucket_policy" {
     actions = ["s3:PutObject"]
     effect  = "Allow"
     principals {
-      identifiers = ["arn:${data.aws_partition.current.partition}:iam::${data.aws_elb_service_account.main.arn}:root"]
+      identifiers = ["arn:${data.aws_partition.current.partition}:iam::${data.aws_elb_service_account.main.id}:root"]
       type        = "AWS"
     }
     resources = [
@@ -69,7 +69,7 @@ data "aws_iam_policy_document" "elb_accesslogs_bucket_policy" {
       actions = ["s3:PutObject"]
       effect  = "Allow"
       principals {
-        identifiers = ["arn:${data.aws_partition.current.partition}:iam::${data.aws_elb_service_account.main.arn}:root"]
+        identifiers = ["arn:${data.aws_partition.current.partition}:iam::${data.aws_elb_service_account.main.id}:root"]
         type        = "AWS"
       }
       resources = ["arn:${data.aws_partition.current.partition}:s3:::${var.resource_prefix}-${var.aws_region}-elb-accesslogs/lb/AWSLogs/${statement.value}/*"]

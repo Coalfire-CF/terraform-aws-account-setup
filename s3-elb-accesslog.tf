@@ -1,6 +1,6 @@
 module "s3-elb-accesslogs" {
   #checkov:skip=CKV_AWS_145: "Ensure that S3 buckets are encrypted with KMS by default"
-  source = "github.com/Coalfire-CF/terraform-aws-s3?ref=v1.0.0"
+  source = "github.com/Coalfire-CF/terraform-aws-s3?ref=v1.0.1"
 
   name                    = "${var.resource_prefix}-${var.aws_region}-elb-accesslogs"
   attach_public_policy    = false

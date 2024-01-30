@@ -1,5 +1,5 @@
 module "s3-installs" {
-  source = "github.com/Coalfire-CF/terraform-aws-s3?ref=v1.0.0"
+  source = "github.com/Coalfire-CF/terraform-aws-s3?ref=v1.0.1"
 
   name                    = "${var.resource_prefix}-${var.aws_region}-installs"
   kms_master_key_id       = module.security-core.s3_key_id

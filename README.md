@@ -21,6 +21,9 @@ Resources that are created as a part of this module include:
 - S3 buckets
 - Security core module resources
 
+## Assumptions
+* `application_account_numbers` isn't required - you can feed it `application_account_numbers=[""]`
+
 ## Usage
 ```
 module "account-setup" {

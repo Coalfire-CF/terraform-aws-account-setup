@@ -312,18 +312,9 @@ data "aws_iam_policy_document" "sns_key" {
     ]
     resources = ["*"]
     principals {
-      identifiers = ["arn:${data.aws_partition.current.partition}:iam::${var.account_number}:root"]
-      type        = "AWS"
-    }
-    condition {
-      test     = "StringEquals"
-      variable = "kms:CallerAccount"
-      values   = [var.account_number]
-    }
-    condition {
-      test     = "StringLike"
-      variable = "kms:EncryptionContext:aws:cloudtrail:arn"
-      values   = ["arn:${data.aws_partition.current.partition}:cloudtrail:*:${var.account_number}*"]
+      type = "Service"
+      identifiers = [
+      "cloudtrail.amazonaws.com"]
     }
   }
 }

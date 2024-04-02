@@ -44,10 +44,12 @@ resource "aws_s3_bucket_policy" "cloudtrail_bucket_policy" {
   count  = var.create_cloudtrail && var.default_aws_region == var.aws_region ? 1 : 0
   bucket = module.s3-cloudtrail[0].id
 
-  policy = data.aws_iam_policy_document.log_bucket_policy.json
+  policy = data.aws_iam_policy_document.log_bucket_policy[0].json
 }
 
 data "aws_iam_policy_document" "log_bucket_policy" {
+  count = var.create_cloudtrail && var.default_aws_region == var.aws_region ? 1 : 0
+
   statement {
     sid = "AWSCloudTrailWrite"
     actions = [

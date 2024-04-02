@@ -302,28 +302,4 @@ data "aws_iam_policy_document" "sns_key" {
     }
     resources = ["*"]
   }
-
-  statement {
-    sid    = "Allow CloudTrail to use the key"
-    effect = "Allow"
-    actions = [
-      "kms:GenerateDataKey*",
-      "kms:Decrypt"
-    ]
-    resources = ["*"]
-    principals {
-      identifiers = ["arn:${data.aws_partition.current.partition}:iam::${var.account_number}:root"]
-      type        = "AWS"
-    }
-    # condition {
-    #   test     = "StringEquals"
-    #   variable = "kms:CallerAccount"
-    #   values   = [var.account_number]
-    # }
-    # condition {
-    #   test     = "StringLike"
-    #   variable = "kms:EncryptionContext:aws:cloudtrail:arn"
-    #   values   = ["arn:aws:cloudtrail:*:${var.account_number}*"]
-    # }
-  }
 }

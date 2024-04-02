@@ -29,20 +29,19 @@ Resources that are created as a part of this module include:
 module "account-setup" {
   source = "github.com/Coalfire-CF/terraform-aws-account-setup"
 
-  aws_region = "us-east-1"
+  aws_region         = "us-east-1"
   default_aws_region = "us-east-1"
 
   application_account_numbers = ["account-number1", "account-number2", "account-number3"]
-  account_number = "your-account-number"
+  account_number              = "your-account-number"
 
-  resource_prefix = "pre"
-  create_cloudtrail = true
-  partition = "aws"
+  resource_prefix         = "pre"
+  create_cloudtrail       = true
+  partition               = "aws"
   ad_secrets_manager_path = "your/ad/path"
-  enable_aws_config = true
-  delete_after = 90
+  enable_aws_config       = true
+  delete_after            = 90
 }
-
 ```
 
 <!-- BEGIN_TF_DOCS -->
@@ -57,7 +56,7 @@ module "account-setup" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 5.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.43.0 |
 
 ## Modules
 
@@ -71,29 +70,45 @@ module "account-setup" {
 | <a name="module_rds_kms_key"></a> [rds\_kms\_key](#module\_rds\_kms\_key) | github.com/Coalfire-CF/terraform-aws-kms | v0.0.6 |
 | <a name="module_s3-accesslogs"></a> [s3-accesslogs](#module\_s3-accesslogs) | github.com/Coalfire-CF/terraform-aws-s3 | v1.0.1 |
 | <a name="module_s3-backups"></a> [s3-backups](#module\_s3-backups) | github.com/Coalfire-CF/terraform-aws-s3 | v1.0.1 |
+| <a name="module_s3-cloudtrail"></a> [s3-cloudtrail](#module\_s3-cloudtrail) | github.com/Coalfire-CF/terraform-aws-s3 | v1.0.1 |
 | <a name="module_s3-elb-accesslogs"></a> [s3-elb-accesslogs](#module\_s3-elb-accesslogs) | github.com/Coalfire-CF/terraform-aws-s3 | v1.0.1 |
+| <a name="module_s3-fedrampdoc"></a> [s3-fedrampdoc](#module\_s3-fedrampdoc) | github.com/Coalfire-CF/terraform-aws-s3 | v1.0.1 |
 | <a name="module_s3-installs"></a> [s3-installs](#module\_s3-installs) | github.com/Coalfire-CF/terraform-aws-s3 | v1.0.1 |
 | <a name="module_security-core"></a> [security-core](#module\_security-core) | github.com/Coalfire-CF/terraform-aws-securitycore | v0.0.17 |
 | <a name="module_sm_kms_key"></a> [sm\_kms\_key](#module\_sm\_kms\_key) | github.com/Coalfire-CF/terraform-aws-kms | v0.0.6 |
+| <a name="module_sns_kms_key"></a> [sns\_kms\_key](#module\_sns\_kms\_key) | github.com/Coalfire-CF/terraform-aws-kms | v0.0.6 |
 
 ## Resources
 
 | Name | Type |
 |------|------|
+| [aws_cloudtrail.all_cloudtrail](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudtrail) | resource |
+| [aws_cloudwatch_log_group.cloudtrail_log_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
 | [aws_iam_instance_profile.packer_profile](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_instance_profile) | resource |
+| [aws_iam_policy.cloudtrail-to-cloudwatch](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.packer_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
+| [aws_iam_policy_attachment.cloudtrail-to-cloudwatch](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy_attachment) | resource |
 | [aws_iam_policy_attachment.packer_access_attach_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy_attachment) | resource |
+| [aws_iam_role.cloudtrail-role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role.packer_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_kms_grant.packer_ebs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_grant) | resource |
 | [aws_kms_grant.packer_s3](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_grant) | resource |
+| [aws_s3_bucket_policy.cloudtrail_bucket_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy) | resource |
+| [aws_sns_topic.cloudtrail_sns](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic) | resource |
+| [aws_sns_topic_policy.sns_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic_policy) | resource |
+| [aws_sns_topic_subscription.sns_to_sqs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic_subscription) | resource |
+| [aws_sqs_queue.cloudtrail_sqs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sqs_queue) | resource |
+| [aws_sqs_queue.cloudtrail_sqs_deadletter](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sqs_queue) | resource |
 | [aws_elb_service_account.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/elb_service_account) | data source |
 | [aws_iam_policy_document.cloudwatch_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.ebs_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.elb_accesslogs_bucket_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_iam_policy_document.log_bucket_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.packer_assume_role_policy_document](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.packer_policy_document](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.s3_accesslogs_bucket_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.secrets_manager_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_iam_policy_document.sns_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_partition.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/partition) | data source |
 
 ## Inputs

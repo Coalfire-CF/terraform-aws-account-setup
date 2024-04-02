@@ -318,7 +318,7 @@ data "aws_iam_policy_document" "sns_key" {
     condition {
       test     = "StringEquals"
       variable = "kms:CallerAccount"
-      values   = [data.aws_caller_identity.current.account_id]
+      values   = [var.account_number]
     }
     condition {
       test     = "StringLike"

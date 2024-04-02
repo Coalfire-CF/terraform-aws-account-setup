@@ -16,30 +16,6 @@ module "s3-cloudtrail" {
   target_prefix = "cloudtrail/"
 }
 
-
-# resource "aws_s3_bucket" "logs" {
-#   count  = var.create_cloudtrail && var.default_aws_region == var.aws_region ? 1 : 0
-#   bucket = "${var.resource_prefix}-${var.default_aws_region}-cloudtrail"
-# }
-
-# Terraform AWS provider v4.0+ changed S3 bucket config to rely on separate resources instead of in-line config
-# resource "aws_s3_bucket_acl" "cloudtrail-acl" {
-#   count  = var.create_cloudtrail && var.default_aws_region == var.aws_region ? 1 : 0
-#   bucket = aws_s3_bucket.logs[0].bucket
-#   acl    = "log-delivery-write"
-# }
-
-# resource "aws_s3_bucket_server_side_encryption_configuration" "cloudtrail-encryption" {
-#   count  = var.create_cloudtrail && var.default_aws_region == var.aws_region ? 1 : 0
-#   bucket = aws_s3_bucket.logs[0].bucket
-#   rule {
-#     apply_server_side_encryption_by_default {
-#       sse_algorithm     = "aws:kms"
-#       kms_master_key_id = aws_kms_key.s3_key.id
-#     }
-#   }
-# }
-
 resource "aws_s3_bucket_policy" "cloudtrail_bucket_policy" {
   count  = var.create_cloudtrail && var.default_aws_region == var.aws_region ? 1 : 0
   bucket = module.s3-cloudtrail[0].id
@@ -127,13 +103,3 @@ data "aws_iam_policy_document" "log_bucket_policy" {
     }
   }
 }
-
-
-# resource "aws_s3_bucket_public_access_block" "logs" {
-#   bucket = aws_s3_bucket.logs[0].id
-
-#   block_public_acls       = true
-#   block_public_policy     = true
-#   restrict_public_buckets = true
-#   ignore_public_acls      = true
-# }

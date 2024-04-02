@@ -84,7 +84,7 @@ resource "aws_cloudtrail" "all_cloudtrail" {
   include_global_service_events = true
   enable_log_file_validation    = true
   sns_topic_name                = aws_sns_topic.cloudtrail_sns[0].name
-  kms_key_id                    = module.security-core.s3_key_id
+  kms_key_id                    = module.security-core.s3_key_arn
   depends_on                    = [aws_s3_bucket_policy.cloudtrail_bucket_policy]
 }
 

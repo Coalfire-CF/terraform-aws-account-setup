@@ -14,6 +14,14 @@ output "s3_installs_arn" {
   value = module.s3-installs.arn
 }
 
+output "s3_cloudtrail_arn" {
+  value = module.s3-cloudtrail.arn
+}
+
+output "s3_fedrampdoc_arn" {
+  value = module.s3-fedrampdoc.arn
+}
+
 output "s3_access_logs_id" {
   value = module.s3-accesslogs.id
 }
@@ -28,6 +36,14 @@ output "s3_backups_id" {
 
 output "s3_installs_id" {
   value = module.s3-installs.id
+}
+
+output "s3_cloudtrail_id" {
+  value = module.s3-cloudtrail.id
+}
+
+output "s3_fedrampdoc_id" {
+  value = module.s3-fedrampdoc.id
 }
 
 output "s3_kms_key_arn" {

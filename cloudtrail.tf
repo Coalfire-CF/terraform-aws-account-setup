@@ -90,13 +90,13 @@ resource "aws_cloudtrail" "all_cloudtrail" {
 
 resource "aws_sns_topic" "cloudtrail_sns" {
   count             = var.create_cloudtrail && var.default_aws_region == var.aws_region ? 1 : 0
-  name              = "cloudtrail-sns"
+  name              = "${var.resource_prefix}-${var.aws_region}-cloudtrail-sns"
   kms_master_key_id = module.sns_kms_key[0].kms_key_arn
 }
 
 resource "aws_sqs_queue" "cloudtrail_sqs" {
   count             = var.create_cloudtrail && var.default_aws_region == var.aws_region ? 1 : 0
-  name              = "cloudtrail-sqs"
+  name              = "${var.resource_prefix}-${var.aws_region}-cloudtrail-sqs"
   kms_master_key_id = module.sns_kms_key[0].kms_key_arn
   redrive_policy = jsonencode({
     deadLetterTargetArn = aws_sqs_queue.cloudtrail_sqs_deadletter[0].arn
@@ -108,7 +108,7 @@ resource "aws_sqs_queue" "cloudtrail_sqs" {
 
 resource "aws_sqs_queue" "cloudtrail_sqs_deadletter" {
   count             = var.create_cloudtrail && var.default_aws_region == var.aws_region ? 1 : 0
-  name              = "cloudtrail-deadletter"
+  name              = "${var.resource_prefix}-${var.aws_region}-cloudtrail-deadletter"
   kms_master_key_id = module.sns_kms_key[0].kms_key_arn
 }
 

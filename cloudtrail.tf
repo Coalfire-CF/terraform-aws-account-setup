@@ -1,6 +1,6 @@
 
 resource "aws_cloudwatch_log_group" "cloudtrail_log_group" {
-  count             = var.create_cloudtrail && var.default_aws_region == var.aws_region ? 1 : 0
+  count             = var.create_cloudtrail ? 1 : 0
   name              = "${var.resource_prefix}-log-group"
   kms_key_id        = module.cloudwatch_kms_key[0].kms_key_arn
   retention_in_days = 30
@@ -11,7 +11,7 @@ resource "aws_cloudwatch_log_group" "cloudtrail_log_group" {
 }
 
 resource "aws_iam_role" "cloudtrail-role" {
-  count = var.create_cloudtrail && var.default_aws_region == var.aws_region ? 1 : 0
+  count = var.create_cloudtrail ? 1 : 0
   name  = "cloudtrail-to-cloudwatch"
 
   assume_role_policy = <<EOF
@@ -32,7 +32,7 @@ EOF
 }
 
 resource "aws_iam_policy" "cloudtrail-to-cloudwatch" {
-  count       = var.create_cloudtrail && var.default_aws_region == var.aws_region ? 1 : 0
+  count       = var.create_cloudtrail ? 1 : 0
   name        = "cloudtrail-to-cloudwatch"
   description = "Policy to allow cloudtrail to send logs to cloudwatch"
 
@@ -66,7 +66,7 @@ EOF
 }
 
 resource "aws_iam_policy_attachment" "cloudtrail-to-cloudwatch" {
-  count      = var.create_cloudtrail && var.default_aws_region == var.aws_region ? 1 : 0
+  count      = var.create_cloudtrail ? 1 : 0
   name       = "cloudtrail to cloudwatch access attach policy"
   roles      = [aws_iam_role.cloudtrail-role[0].name]
   policy_arn = aws_iam_policy.cloudtrail-to-cloudwatch[0].arn
@@ -74,7 +74,7 @@ resource "aws_iam_policy_attachment" "cloudtrail-to-cloudwatch" {
 
 
 resource "aws_cloudtrail" "all_cloudtrail" {
-  count                         = var.create_cloudtrail && var.default_aws_region == var.aws_region ? 1 : 0
+  count                         = var.create_cloudtrail ? 1 : 0
   name                          = "${var.resource_prefix}-cloudtrail"
   s3_bucket_name                = module.s3-cloudtrail[0].id
   s3_key_prefix                 = "${var.resource_prefix}-cloudtrail"
@@ -83,9 +83,9 @@ resource "aws_cloudtrail" "all_cloudtrail" {
   is_multi_region_trail         = true
   include_global_service_events = true
   enable_log_file_validation    = true
-  sns_topic_name                = aws_sns_topic.cloudtrail_sns[0].name
-  kms_key_id                    = module.security-core.s3_key_arn
-  depends_on                    = [aws_s3_bucket_policy.cloudtrail_bucket_policy]
+  #sns_topic_name                = aws_sns_topic.cloudtrail_sns[0].name
+  kms_key_id = module.security-core.s3_key_arn
+  depends_on = [aws_s3_bucket_policy.cloudtrail_bucket_policy]
 }
 
 # resource "aws_sns_topic" "cloudtrail_sns" {

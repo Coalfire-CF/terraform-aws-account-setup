@@ -102,6 +102,13 @@ output "rds_kms_key_id" {
   value = module.rds_kms_key.*.kms_key_id
 }
 
+output "cloudtrail_kms_key_id" {
+  value = try(module.cloudtrail_kms_key.*.kms_key_id, null)
+}
+
+output "cloudtrail_kms_key_arn" {
+  value = try(module.cloudtrail_kms_key.*.kms_key_arn, null)
+}
 
 output "cloudwatch_kms_key_arn" {
   value = module.cloudwatch_kms_key.*.kms_key_arn

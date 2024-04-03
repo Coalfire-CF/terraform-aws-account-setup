@@ -88,54 +88,54 @@ resource "aws_cloudtrail" "all_cloudtrail" {
   depends_on                    = [aws_s3_bucket_policy.cloudtrail_bucket_policy]
 }
 
-resource "aws_sns_topic" "cloudtrail_sns" {
-  count             = var.create_cloudtrail && var.default_aws_region == var.aws_region ? 1 : 0
-  name              = "${var.resource_prefix}-${var.aws_region}-cloudtrail-sns"
-  kms_master_key_id = module.sns_kms_key[0].kms_key_arn
-}
+# resource "aws_sns_topic" "cloudtrail_sns" {
+#   count             = var.create_cloudtrail && var.default_aws_region == var.aws_region ? 1 : 0
+#   name              = "${var.resource_prefix}-${var.aws_region}-cloudtrail-sns"
+#   kms_master_key_id = module.sns_kms_key[0].kms_key_arn
+# }
 
-resource "aws_sqs_queue" "cloudtrail_sqs" {
-  count             = var.create_cloudtrail && var.default_aws_region == var.aws_region ? 1 : 0
-  name              = "${var.resource_prefix}-${var.aws_region}-cloudtrail-sqs"
-  kms_master_key_id = module.sns_kms_key[0].kms_key_arn
-  redrive_policy = jsonencode({
-    deadLetterTargetArn = aws_sqs_queue.cloudtrail_sqs_deadletter[0].arn
-    maxReceiveCount     = 4
-  })
+# resource "aws_sqs_queue" "cloudtrail_sqs" {
+#   count             = var.create_cloudtrail && var.default_aws_region == var.aws_region ? 1 : 0
+#   name              = "${var.resource_prefix}-${var.aws_region}-cloudtrail-sqs"
+#   kms_master_key_id = module.sns_kms_key[0].kms_key_arn
+#   redrive_policy = jsonencode({
+#     deadLetterTargetArn = aws_sqs_queue.cloudtrail_sqs_deadletter[0].arn
+#     maxReceiveCount     = 4
+#   })
 
-  visibility_timeout_seconds = 300
-}
+#   visibility_timeout_seconds = 300
+# }
 
-resource "aws_sqs_queue" "cloudtrail_sqs_deadletter" {
-  count             = var.create_cloudtrail && var.default_aws_region == var.aws_region ? 1 : 0
-  name              = "${var.resource_prefix}-${var.aws_region}-cloudtrail-deadletter"
-  kms_master_key_id = module.sns_kms_key[0].kms_key_arn
-}
+# resource "aws_sqs_queue" "cloudtrail_sqs_deadletter" {
+#   count             = var.create_cloudtrail && var.default_aws_region == var.aws_region ? 1 : 0
+#   name              = "${var.resource_prefix}-${var.aws_region}-cloudtrail-deadletter"
+#   kms_master_key_id = module.sns_kms_key[0].kms_key_arn
+# }
 
-resource "aws_sns_topic_policy" "sns_policy" {
-  count  = var.create_cloudtrail && var.default_aws_region == var.aws_region ? 1 : 0
-  arn    = aws_sns_topic.cloudtrail_sns[0].arn
-  policy = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Sid": "AWSCloudTrailSNSPolicy20131101",
-            "Effect": "Allow",
-            "Principal": {
-                "Service": "cloudtrail.amazonaws.com"
-            },
-            "Action": "SNS:Publish",
-            "Resource": "${aws_sns_topic.cloudtrail_sns[0].arn}"
-        }
-    ]
-}
-EOF
-}
+# resource "aws_sns_topic_policy" "sns_policy" {
+#   count  = var.create_cloudtrail && var.default_aws_region == var.aws_region ? 1 : 0
+#   arn    = aws_sns_topic.cloudtrail_sns[0].arn
+#   policy = <<EOF
+# {
+#     "Version": "2012-10-17",
+#     "Statement": [
+#         {
+#             "Sid": "AWSCloudTrailSNSPolicy20131101",
+#             "Effect": "Allow",
+#             "Principal": {
+#                 "Service": "cloudtrail.amazonaws.com"
+#             },
+#             "Action": "SNS:Publish",
+#             "Resource": "${aws_sns_topic.cloudtrail_sns[0].arn}"
+#         }
+#     ]
+# }
+# EOF
+# }
 
-resource "aws_sns_topic_subscription" "sns_to_sqs" {
-  count     = var.create_cloudtrail && var.default_aws_region == var.aws_region ? 1 : 0
-  endpoint  = aws_sqs_queue.cloudtrail_sqs[0].arn
-  protocol  = "sqs"
-  topic_arn = aws_sns_topic.cloudtrail_sns[0].arn
-}
+# resource "aws_sns_topic_subscription" "sns_to_sqs" {
+#   count     = var.create_cloudtrail && var.default_aws_region == var.aws_region ? 1 : 0
+#   endpoint  = aws_sqs_queue.cloudtrail_sqs[0].arn
+#   protocol  = "sqs"
+#   topic_arn = aws_sns_topic.cloudtrail_sns[0].arn
+# }

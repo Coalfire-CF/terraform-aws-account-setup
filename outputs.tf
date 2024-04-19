@@ -14,14 +14,6 @@ output "s3_installs_arn" {
   value = module.s3-installs.arn
 }
 
-output "s3_cloudtrail_arn" {
-  value = try(module.s3-cloudtrail[0].arn, null)
-}
-
-output "s3_fedrampdoc_arn" {
-  value = module.s3-fedrampdoc.arn
-}
-
 output "s3_access_logs_id" {
   value = module.s3-accesslogs.id
 }
@@ -36,14 +28,6 @@ output "s3_backups_id" {
 
 output "s3_installs_id" {
   value = module.s3-installs.id
-}
-
-output "s3_cloudtrail_id" {
-  value = try(module.s3-cloudtrail[0].id, null)
-}
-
-output "s3_fedrampdoc_id" {
-  value = module.s3-fedrampdoc.id
 }
 
 output "s3_kms_key_arn" {
@@ -102,13 +86,6 @@ output "rds_kms_key_id" {
   value = module.rds_kms_key.*.kms_key_id
 }
 
-output "cloudtrail_sns_kms_key_id" {
-  value = try(module.sns_kms_key.*.kms_key_id, null)
-}
-
-output "cloudtrail_sns_kms_key_arn" {
-  value = try(module.sns_kms_key.*.kms_key_arn, null)
-}
 
 output "cloudwatch_kms_key_arn" {
   value = module.cloudwatch_kms_key.*.kms_key_arn

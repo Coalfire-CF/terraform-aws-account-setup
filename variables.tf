@@ -47,49 +47,7 @@ variable "aws_lb_account_ids" {
   type = map(string)
 }
 
-variable "enable_aws_config" {
-  description = "Enable AWS config for this account"
-  type        = bool
-  default     = false
 
-}
-
-variable "config_delivery_frequency" {
-  description = "AWS Config delivery frequencies"
-  type        = string
-  default     = "One_Hour"
-}
-
-variable "aws_backup_plan_name" {
-  description = "AWS Backup plan name"
-  type        = string
-  default     = "fedramp-aws-backup-plan"
-}
-
-variable "backup_selection_tag_value" {
-  description = "AWS Backup tag values"
-  type        = string
-  default     = "fedramp-daily-aws-backups"
-}
-
-variable "backup_rule_name" {
-  description = "AWS Backup rule name"
-  type        = string
-  default     = "fedramp-aws-backup-default-rule"
-
-}
-
-variable "backup_vault_name" {
-  description = "AWS Backup vault name"
-  type        = string
-  default     = "fedramp-aws-backup-vault"
-}
-
-variable "delete_after" {
-  description = "Number of days after which a recovery point should be deleted"
-  type        = number
-  default     = 35
-}
 
 variable "additional_kms_keys" {
   description = "a list of maps of any additional KMS keys that need to be created"

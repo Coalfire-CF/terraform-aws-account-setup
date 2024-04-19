@@ -38,9 +38,6 @@ module "account-setup" {
   resource_prefix         = "pre"
   create_cloudtrail       = true #IF ORG - SET TO FALSE
   partition               = "aws"
-  ad_secrets_manager_path = "your/ad/path"
-  enable_aws_config       = true
-  delete_after            = 90
 }
 ```
 

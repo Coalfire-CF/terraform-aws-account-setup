@@ -276,30 +276,3 @@ data "aws_iam_policy_document" "cloudwatch_key" {
 }
 
 
-
-  statement {
-    sid     = "Enable MGMT IAM User Permissions"
-    effect  = "Allow"
-    actions = ["kms:*"]
-    principals {
-      identifiers = ["arn:${data.aws_partition.current.partition}:iam::${var.account_number}:root"]
-      type        = "AWS"
-    }
-    resources = ["*"]
-  }
-
-  statement {
-    sid    = "Allow CloudTrail to use the key"
-    effect = "Allow"
-    actions = [
-      "kms:GenerateDataKey*",
-      "kms:Decrypt"
-    ]
-    resources = ["*"]
-    principals {
-      type = "Service"
-      identifiers = [
-      "cloudtrail.amazonaws.com"]
-    }
-  }
-}

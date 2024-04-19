@@ -75,6 +75,12 @@ variable "create_ebs_kms_key" {
   default     = true
 }
 
+variable "create_sns_kms_key" {
+  description = "create KMS key for SNS"
+  type        = bool
+  default     = true
+}
+
 variable "create_sm_kms_key" {
   description = "create KMS key for secrets manager"
   type        = bool

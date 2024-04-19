@@ -72,6 +72,53 @@ data "aws_iam_policy_document" "ebs_key" {
   }
 }
 
+module "sns_kms_key" {
+  count = var.create_sns_kms_key ? 1 : 0
+
+  source = "github.com/Coalfire-CF/terraform-aws-kms?ref=v0.0.6"
+
+  key_policy            = data.aws_iam_policy_document.ebs_key.json
+  kms_key_resource_type = "sns"
+  resource_prefix       = var.resource_prefix
+}
+
+data "aws_iam_policy_document" "sns_key" {
+
+  statement {
+    effect    = "Allow"
+    actions   = ["kms:*"]
+    resources = ["*"]
+    principals {
+      type = "AWS"
+      identifiers = [
+        "arn:${data.aws_partition.current.partition}:iam::${var.account_number}:root"
+      ]
+    }
+  }
+  dynamic "statement" {
+    for_each = var.application_account_numbers
+    content {
+      effect = "Allow"
+      actions = [
+        "kms:Encrypt",
+        "kms:Decrypt",
+        "kms:ReEncrypt*",
+        "kms:GenerateDataKey*",
+        "kms:DescribeKey",
+        "kms:CreateGrant",
+        "kms:ListGrants",
+      "kms:RevokeGrant"]
+      resources = [
+      "*"]
+      principals {
+        type = "AWS"
+        identifiers = [
+        "arn:${data.aws_partition.current.partition}:iam::${statement.value}:root"]
+      }
+    }
+  }
+}
+
 module "sm_kms_key" {
   count  = var.create_sm_kms_key ? 1 : 0
   source = "github.com/Coalfire-CF/terraform-aws-kms?ref=v0.0.6"

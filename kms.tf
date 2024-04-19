@@ -144,7 +144,15 @@ module "cloudwatch_kms_key" {
   key_policy            = data.aws_iam_policy_document.cloudwatch_key.json
 }
 
+resource "aws_kms_key" "sqs_key" {
+  description         = "sqs key for ${var.resource_prefix}"
+  enable_key_rotation = true
+}
 
+resource "aws_kms_alias" "sqs_key_alias" {
+  name          = "alias/${var.resource_prefix}-sqs"
+  target_key_id = aws_kms_key.sqs_key.key_id
+}
 
 module "additional_kms_keys" {
   source   = "github.com/Coalfire-CF/terraform-aws-kms?ref=v0.0.6"

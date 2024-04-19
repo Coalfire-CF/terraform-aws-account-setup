@@ -15,6 +15,6 @@ module "cloudtrail_event" {
 
   source    = "./modules/aws-sqss3event"
   partition = data.aws_partition.current.partition
-  s3_arn    = module.s3-cloudtrail.arn
-  s3_name   = module.s3-cloudtrail.name
+  s3_arn    = module.s3-cloudtrail[0].arn
+  s3_name   = module.s3-cloudtrail[0].name
 }

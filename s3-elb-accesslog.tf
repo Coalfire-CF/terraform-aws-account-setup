@@ -3,7 +3,7 @@ module "accesslog_event" {
   source    = "./modules/aws-sqss3event"
   partition = data.aws_partition.current.partition
   s3_arn    = module.s3-elb-accesslogs.arn
-  s3_name   = module.s3-elb-accesslogs.name
+  s3_name   = module.s3-elb-accesslogs.id
 }
 
 module "s3-elb-accesslogs" {

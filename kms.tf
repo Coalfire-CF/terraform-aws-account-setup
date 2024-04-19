@@ -144,14 +144,6 @@ module "cloudwatch_kms_key" {
   key_policy            = data.aws_iam_policy_document.cloudwatch_key.json
 }
 
-module "sns_kms_key" {
-  count  = var.create_cloudtrail && var.default_aws_region == var.aws_region ? 1 : 0
-  source = "github.com/Coalfire-CF/terraform-aws-kms?ref=v0.0.6"
-
-  kms_key_resource_type = "sns"
-  resource_prefix       = var.resource_prefix
-  key_policy            = data.aws_iam_policy_document.sns_key.json
-}
 
 
 module "additional_kms_keys" {
@@ -275,22 +267,7 @@ data "aws_iam_policy_document" "cloudwatch_key" {
   }
 }
 
-data "aws_iam_policy_document" "sns_key" {
-  dynamic "statement" {
-    for_each = var.application_account_numbers
-    content {
-      effect = "Allow"
-      actions = [
-      "kms:*"]
-      resources = [
-      "*"]
-      principals {
-        identifiers = [
-        "arn:${data.aws_partition.current.partition}:iam::${statement.value}:root"]
-        type = "AWS"
-      }
-    }
-  }
+
 
   statement {
     sid     = "Enable MGMT IAM User Permissions"

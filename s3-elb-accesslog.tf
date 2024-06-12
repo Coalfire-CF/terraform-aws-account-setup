@@ -1,11 +1,3 @@
-module "accesslog_event" {
-
-  source    = "./modules/aws-sqss3event"
-  partition = data.aws_partition.current.partition
-  s3_arn    = module.s3-elb-accesslogs.arn
-  s3_name   = module.s3-elb-accesslogs.id
-}
-
 module "s3-elb-accesslogs" {
   #checkov:skip=CKV_AWS_145: "Ensure that S3 buckets are encrypted with KMS by default"
   source = "github.com/Coalfire-CF/terraform-aws-s3?ref=v1.0.1"

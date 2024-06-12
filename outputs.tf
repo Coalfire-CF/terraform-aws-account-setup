@@ -47,19 +47,19 @@ output "s3_fedrampdoc_id" {
 }
 
 output "s3_kms_key_arn" {
-  value = module.security-core.s3_key_arn
+  value = module.s3_kms_key.*.kms_key_arn
 }
 
 output "s3_kms_key_id" {
-  value = module.security-core.s3_key_id
+  value = module.s3_kms_key.*.kms_key_id
 }
 
 output "dynamo_kms_key_arn" {
-  value = module.security-core.dynamo_key_arn
+  value = module.dynamo_kms_key.*.kms_key_arn
 }
 
 output "dynamo_kms_key_id" {
-  value = module.security-core.dynamo_key_id
+  value = module.dynamo_kms_key.*.kms_key_id
 }
 
 output "ebs_kms_key_arn" {

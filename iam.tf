@@ -19,7 +19,7 @@ data "aws_iam_policy_document" "packer_assume_role_policy_document" {
   }
 }
 resource "aws_iam_role" "packer_role" {
-  name = "packer_role"
+  name = "${var.resource_prefix}_packer_role"
 
   assume_role_policy = data.aws_iam_policy_document.packer_assume_role_policy_document.json
 }
@@ -90,28 +90,6 @@ data "aws_iam_policy_document" "packer_policy_document" {
     ]
   }
   statement {
-    sid    = "PackerSSMParameterStore"
-    effect = "Allow"
-    actions = [
-      "ssm:GetParameterHistory",
-      "ssm:GetParametersByPath",
-      "ssm:GetParameters",
-      "ssm:GetParameter",
-      "ssm:DescribeParameters",
-      "ssm:ListTagsForResource"
-    ]
-    resources = [
-      "arn:${data.aws_partition.current.partition}:ssm:${var.aws_region}:${var.account_number}:parameter/production/packer/*",
-      "arn:${data.aws_partition.current.partition}:ssm:${var.aws_region}:${var.account_number}:parameter/production/ca_secrets_path",
-      "arn:${data.aws_partition.current.partition}:ssm:${var.aws_region}:${var.account_number}:parameter/production/mgmt/ca/rootca/root_ca_pub.pem"
-    ]
-  }
-  statement {
-    effect    = "Allow"
-    actions   = ["ssm:DescribeParameters"]
-    resources = ["*"]
-  }
-  statement {
     sid    = "PackerEBSEncrypt"
     effect = "Allow"
     actions = [
@@ -129,7 +107,7 @@ data "aws_iam_policy_document" "packer_policy_document" {
 
 
 resource "aws_iam_policy" "packer_policy" {
-  name        = "packer_policy"
+  name        = "${var.resource_prefix}_packer_policy"
   description = "General Policy which will attach to ec2 for packer to give access to ec2,s3"
   policy      = data.aws_iam_policy_document.packer_policy_document.json
 }
@@ -141,12 +119,12 @@ resource "aws_iam_policy_attachment" "packer_access_attach_policy" {
 }
 
 resource "aws_iam_instance_profile" "packer_profile" {
-  name = "packer_profile"
+  name = "${var.resource_prefix}_packer_profile"
   role = aws_iam_role.packer_role.name
 }
 
 resource "aws_kms_grant" "packer_s3" {
-  name              = "packer-${var.aws_region}-s3-access"
+  name              = "packer_${var.resource_prefix}_${var.aws_region}_s3_access"
   key_id            = module.security-core.s3_key_id
   grantee_principal = aws_iam_role.packer_role.arn
   operations = [
@@ -156,7 +134,7 @@ resource "aws_kms_grant" "packer_s3" {
   ]
 }
 resource "aws_kms_grant" "packer_ebs" {
-  name              = "packer-${var.aws_region}-ebs-access"
+  name              = "packer_${var.resource_prefix}_${var.aws_region}_ebs_access"
   key_id            = module.ebs_kms_key[0].kms_key_id
   grantee_principal = aws_iam_role.packer_role.arn
   operations = [

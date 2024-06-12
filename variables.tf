@@ -116,3 +116,21 @@ variable "create_cloudwatch_kms_key" {
   type        = bool
   default     = true
 }
+
+variable "cloudwatch_log_group_retention_in_days" {
+  description = "The number of days to retain Cloudwatch logs"
+  type        = number
+  default     = 30
+}
+
+variable "is_organization" {
+  description = "Whether or not to enable certain settings for AWS Organization"
+  type        = bool
+  default     = true
+}
+
+variable "organization_id" {
+  description = "AWS Organization ID"
+  type        = string
+  default     = null
+}

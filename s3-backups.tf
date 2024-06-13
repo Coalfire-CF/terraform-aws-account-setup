@@ -12,6 +12,6 @@ module "s3-backups" {
 
   # S3 Access Logs
   logging       = true
-  target_bucket = module.s3-accesslogs.id
+  target_bucket = var.create_s3_accesslogs_bucket ? module.s3-accesslogs.id : var.s3_access_logs_id
   target_prefix = "backups/"
 }

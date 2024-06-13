@@ -143,6 +143,12 @@ variable "create_s3_installs_bucket" {
   default     = true
 }
 
+variable "s3_accesslogs_bucket_id" {
+  description = "If not creating S3 access logs bucket in this module, user should provide a bucket ID for an existing S3 Access Logs bucket"
+  type        = string
+  default     = null
+}
+
 ### Misc ###
 # Note: To my knowledge, it's not a common configuration to have Terraform state across multiple accounts, so this will default to false
 variable "create_security_core" {

@@ -1,7 +1,7 @@
 module "security-core" {
   count = var.create_security_core ? 1 : 0
 
-  source = "github.com/Coalfire-CF/terraform-aws-securitycore?ref=51d3d3f4cfafb408ee62e5f289a2097edc1aaca1"
+  source = "github.com/Coalfire-CF/terraform-aws-securitycore?ref=fb87eca3e93fb973085b8146b53c9b89117c1378"
 
   application_account_numbers = var.application_account_numbers
   aws_region                  = var.aws_region

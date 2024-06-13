@@ -12,6 +12,6 @@ module "s3-fedrampdoc" {
 
   # S3 Access Logs
   logging       = true
-  target_bucket = var.create_s3_accesslogs_bucket ? module.s3-accesslogs[0].id : var.s3_accesslogs_bucket_id
+  target_bucket = module.s3-accesslogs[0].id
   target_prefix = "fedrampdoc/"
 }

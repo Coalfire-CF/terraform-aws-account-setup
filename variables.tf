@@ -111,12 +111,10 @@ variable "create_cloudwatch_kms_key" {
 }
 
 ### S3 ###
-# Note: In cases where there is a centralized logging account, it wouldn't make sense to have a bucket in every account
-# this is why some defaults are false while others are true where it might be sensible for each account to have its own bucket.
 variable "create_s3_accesslogs_bucket" {
   description = "Create S3 Access Logs Bucket"
   type        = bool
-  default     = false
+  default     = true # S3 access logs MUST be in the same region and AWS Account, cross-account logging is NOT supported
 }
 
 variable "create_s3_backups_bucket" {
@@ -128,7 +126,7 @@ variable "create_s3_backups_bucket" {
 variable "create_s3_elb_accesslogs_bucket" {
   description = "Create S3 ELB Access Logs Bucket"
   type        = bool
-  default     = false
+  default     = false # ELB Access Logs must be in the same region, but the bucket and load balancer can be in different accounts
 }
 
 variable "create_s3_fedrampdoc_bucket" {
@@ -141,12 +139,6 @@ variable "create_s3_installs_bucket" {
   description = "Create S3 Installs Bucket"
   type        = bool
   default     = true
-}
-
-variable "s3_accesslogs_bucket_id" {
-  description = "If not creating S3 access logs bucket in this module, user should provide a bucket ID for an existing S3 Access Logs bucket"
-  type        = string
-  default     = null
 }
 
 ### Misc ###

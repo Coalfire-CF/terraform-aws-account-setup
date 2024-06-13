@@ -125,23 +125,23 @@ resource "aws_iam_policy_attachment" "packer_access_attach_policy" {
   count = var.create_packer_iam ? 1 : 0
 
   name       = "packer access attach policy"
-  roles      = [aws_iam_role.packer_role.name]
-  policy_arn = aws_iam_policy.packer_policy.arn
+  roles      = [aws_iam_role.packer_role[0].name]
+  policy_arn = aws_iam_policy.packer_policy[0].arn
 }
 
 resource "aws_iam_instance_profile" "packer_profile" {
   count = var.create_packer_iam ? 1 : 0
 
   name = "${var.resource_prefix}_packer_profile"
-  role = aws_iam_role.packer_role.name
+  role = aws_iam_role.packer_role[0].name
 }
 
 resource "aws_kms_grant" "packer_s3" {
   count = var.create_packer_iam ? 1 : 0
 
   name              = "packer_${var.resource_prefix}_${var.aws_region}_s3_access"
-  key_id            = module.security-core.s3_key_id
-  grantee_principal = aws_iam_role.packer_role.arn
+  key_id            = module.s3_kms_key[0].kms_key_arn
+  grantee_principal = aws_iam_role.packer_role[0].arn
   operations = [
     "Encrypt",
     "Decrypt",
@@ -153,7 +153,7 @@ resource "aws_kms_grant" "packer_ebs" {
 
   name              = "packer_${var.resource_prefix}_${var.aws_region}_ebs_access"
   key_id            = module.ebs_kms_key[0].kms_key_id
-  grantee_principal = aws_iam_role.packer_role.arn
+  grantee_principal = aws_iam_role.packer_role[0].arn
   operations = [
     "Encrypt",
     "Decrypt",

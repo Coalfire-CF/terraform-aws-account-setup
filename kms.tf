@@ -319,7 +319,7 @@ module "backup_kms_key" {
   count  = var.create_backup_kms_key ? 1 : 0
   source = "github.com/Coalfire-CF/terraform-aws-kms?ref=v0.0.6"
 
-  key_policy            = module.security-core.s3_key_iam
+  key_policy            = data.aws_iam_policy_document.s3_key.json
   kms_key_resource_type = "backup"
   resource_prefix       = var.resource_prefix
 }

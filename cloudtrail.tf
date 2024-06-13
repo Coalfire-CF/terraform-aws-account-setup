@@ -10,7 +10,7 @@ resource "aws_cloudtrail" "all_cloudtrail" {
   is_organization_trail         = var.is_organization ? true : false
   include_global_service_events = true
   enable_log_file_validation    = true
-  kms_key_id                    = module.security-core.s3_key_arn
+  kms_key_id                    = module.s3_kms_key[0].kms_key_arn
   depends_on                    = [aws_s3_bucket_policy.cloudtrail_bucket_policy]
 }
 resource "aws_cloudwatch_log_group" "cloudtrail_log_group" {

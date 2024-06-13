@@ -9,6 +9,9 @@ module "dynamo_kms_key" {
 }
 
 data "aws_iam_policy_document" "dynamo_key" {
+  #checkov:skip=CKV_AWS_109: "Ensure IAM policies does not allow permissions management / resource exposure without constraints"
+  #checkov:skip=CKV_AWS_111: "Ensure IAM policies does not allow write access without constraints"
+  # https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-default.html
 
   statement {
     effect    = "Allow"
@@ -55,6 +58,9 @@ module "ebs_kms_key" {
 }
 
 data "aws_iam_policy_document" "ebs_key" {
+  #checkov:skip=CKV_AWS_109: "Ensure IAM policies does not allow permissions management / resource exposure without constraints"
+  #checkov:skip=CKV_AWS_111: "Ensure IAM policies does not allow write access without constraints"
+  # https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-default.html
 
   statement {
     effect    = "Allow"
@@ -127,6 +133,9 @@ module "s3_kms_key" {
 }
 
 data "aws_iam_policy_document" "s3_key" {
+  #checkov:skip=CKV_AWS_109: "Ensure IAM policies does not allow permissions management / resource exposure without constraints"
+  #checkov:skip=CKV_AWS_111: "Ensure IAM policies does not allow write access without constraints"
+  # https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-default.html
 
   dynamic "statement" {
     for_each = var.application_account_numbers
@@ -225,12 +234,15 @@ module "sns_kms_key" {
 
   source = "github.com/Coalfire-CF/terraform-aws-kms?ref=v0.0.6"
 
-  key_policy            = data.aws_iam_policy_document.ebs_key.json
+  key_policy            = data.aws_iam_policy_document.sns_key.json
   kms_key_resource_type = "sns"
   resource_prefix       = var.resource_prefix
 }
 
 data "aws_iam_policy_document" "sns_key" {
+  #checkov:skip=CKV_AWS_109: "Ensure IAM policies does not allow permissions management / resource exposure without constraints"
+  #checkov:skip=CKV_AWS_111: "Ensure IAM policies does not allow write access without constraints"
+  # https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-default.html
 
   statement {
     effect    = "Allow"
@@ -274,6 +286,10 @@ module "sm_kms_key" {
 }
 
 data "aws_iam_policy_document" "secrets_manager_key" {
+  #checkov:skip=CKV_AWS_109: "Ensure IAM policies does not allow permissions management / resource exposure without constraints"
+  #checkov:skip=CKV_AWS_111: "Ensure IAM policies does not allow write access without constraints"
+  # https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-default.html
+
   dynamic "statement" {
     for_each = var.application_account_numbers
     content {
@@ -333,16 +349,6 @@ module "cloudwatch_kms_key" {
   key_policy            = data.aws_iam_policy_document.cloudwatch_key.json
 }
 
-resource "aws_kms_key" "sqs_key" {
-  description         = "sqs key for ${var.resource_prefix}"
-  enable_key_rotation = true
-}
-
-resource "aws_kms_alias" "sqs_key_alias" {
-  name          = "alias/${var.resource_prefix}-sqs"
-  target_key_id = aws_kms_key.sqs_key.key_id
-}
-
 module "additional_kms_keys" {
   source   = "github.com/Coalfire-CF/terraform-aws-kms?ref=v0.0.6"
   for_each = { for key in var.additional_kms_keys : key.name => key }
@@ -353,6 +359,9 @@ module "additional_kms_keys" {
 }
 
 data "aws_iam_policy_document" "cloudwatch_key" {
+  #checkov:skip=CKV_AWS_109: "Ensure IAM policies does not allow permissions management / resource exposure without constraints"
+  #checkov:skip=CKV_AWS_111: "Ensure IAM policies does not allow write access without constraints"
+  # https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-default.html
 
   dynamic "statement" {
     for_each = var.application_account_numbers

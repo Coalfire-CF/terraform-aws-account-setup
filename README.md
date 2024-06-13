@@ -216,7 +216,7 @@ Copyright © 2023 Coalfire Systems Inc.
 | <a name="module_s3-fedrampdoc"></a> [s3-fedrampdoc](#module\_s3-fedrampdoc) | github.com/Coalfire-CF/terraform-aws-s3 | v1.0.1 |
 | <a name="module_s3-installs"></a> [s3-installs](#module\_s3-installs) | github.com/Coalfire-CF/terraform-aws-s3 | v1.0.1 |
 | <a name="module_s3_kms_key"></a> [s3\_kms\_key](#module\_s3\_kms\_key) | github.com/Coalfire-CF/terraform-aws-kms | v0.0.6 |
-| <a name="module_security-core"></a> [security-core](#module\_security-core) | github.com/Coalfire-CF/terraform-aws-securitycore | v0.0.17 |
+| <a name="module_security-core"></a> [security-core](#module\_security-core) | github.com/Coalfire-CF/terraform-aws-securitycore | 02087ae72394cd06431efc5dbbc4bf1f7f88ad14 |
 | <a name="module_sm_kms_key"></a> [sm\_kms\_key](#module\_sm\_kms\_key) | github.com/Coalfire-CF/terraform-aws-kms | v0.0.6 |
 | <a name="module_sns_kms_key"></a> [sns\_kms\_key](#module\_sns\_kms\_key) | github.com/Coalfire-CF/terraform-aws-kms | v0.0.6 |
 
@@ -233,10 +233,8 @@ Copyright © 2023 Coalfire Systems Inc.
 | [aws_iam_policy_attachment.packer_access_attach_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy_attachment) | resource |
 | [aws_iam_role.cloudtrail-role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role.packer_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
-| [aws_kms_alias.sqs_key_alias](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_alias) | resource |
 | [aws_kms_grant.packer_ebs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_grant) | resource |
 | [aws_kms_grant.packer_s3](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_grant) | resource |
-| [aws_kms_key.sqs_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key) | resource |
 | [aws_s3_bucket_policy.cloudtrail_bucket_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy) | resource |
 | [aws_elb_service_account.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/elb_service_account) | data source |
 | [aws_iam_policy_document.cloudtrail_assume_role_policy_document](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
@@ -260,8 +258,7 @@ Copyright © 2023 Coalfire Systems Inc.
 |------|-------------|------|---------|:--------:|
 | <a name="input_account_number"></a> [account\_number](#input\_account\_number) | The AWS account number resources are being deployed into | `string` | n/a | yes |
 | <a name="input_additional_kms_keys"></a> [additional\_kms\_keys](#input\_additional\_kms\_keys) | a list of maps of any additional KMS keys that need to be created | `list(map(string))` | `[]` | no |
-| <a name="input_application_account_numbers"></a> [application\_account\_numbers](#input\_application\_account\_numbers) | AWS account numbers for all application accounts | `list(string)` | n/a | yes |
-| <a name="input_aws_lb_account_ids"></a> [aws\_lb\_account\_ids](#input\_aws\_lb\_account\_ids) | https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-access-logs.html | `map(string)` | <pre>{<br>  "us-east-1": "127311923021",<br>  "us-east-2": "033677994240",<br>  "us-gov-east-1": "190560391635",<br>  "us-gov-west-1": "048591011584",<br>  "us-west-2": "797873946194"<br>}</pre> | no |
+| <a name="input_application_account_numbers"></a> [application\_account\_numbers](#input\_application\_account\_numbers) | AWS account numbers for all application accounts that might need shared access to resources like KMS keys | `list(string)` | n/a | yes |
 | <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | The AWS region to create resources in | `string` | n/a | yes |
 | <a name="input_cloudwatch_log_group_retention_in_days"></a> [cloudwatch\_log\_group\_retention\_in\_days](#input\_cloudwatch\_log\_group\_retention\_in\_days) | The number of days to retain Cloudwatch logs | `number` | `30` | no |
 | <a name="input_create_backup_kms_key"></a> [create\_backup\_kms\_key](#input\_create\_backup\_kms\_key) | create KMS key for AWS Backups | `bool` | `true` | no |
@@ -270,15 +267,21 @@ Copyright © 2023 Coalfire Systems Inc.
 | <a name="input_create_dynamo_kms_key"></a> [create\_dynamo\_kms\_key](#input\_create\_dynamo\_kms\_key) | create KMS key for dynamodb | `bool` | `true` | no |
 | <a name="input_create_ebs_kms_key"></a> [create\_ebs\_kms\_key](#input\_create\_ebs\_kms\_key) | create KMS key for ebs | `bool` | `true` | no |
 | <a name="input_create_lambda_kms_key"></a> [create\_lambda\_kms\_key](#input\_create\_lambda\_kms\_key) | create KMS key for lambda | `bool` | `true` | no |
+| <a name="input_create_packer_iam"></a> [create\_packer\_iam](#input\_create\_packer\_iam) | Whether or not to create Packer IAM resources | `bool` | `false` | no |
 | <a name="input_create_rds_kms_key"></a> [create\_rds\_kms\_key](#input\_create\_rds\_kms\_key) | create KMS key for rds | `bool` | `true` | no |
+| <a name="input_create_s3_accesslogs_bucket"></a> [create\_s3\_accesslogs\_bucket](#input\_create\_s3\_accesslogs\_bucket) | Create S3 Access Logs Bucket | `bool` | `false` | no |
+| <a name="input_create_s3_backups_bucket"></a> [create\_s3\_backups\_bucket](#input\_create\_s3\_backups\_bucket) | Create S3 Backups Bucket | `bool` | `true` | no |
+| <a name="input_create_s3_elb_accesslogs_bucket"></a> [create\_s3\_elb\_accesslogs\_bucket](#input\_create\_s3\_elb\_accesslogs\_bucket) | Create S3 ELB Access Logs Bucket | `bool` | `false` | no |
+| <a name="input_create_s3_fedrampdoc_bucket"></a> [create\_s3\_fedrampdoc\_bucket](#input\_create\_s3\_fedrampdoc\_bucket) | Create S3 FedRAMP Documents Bucket | `bool` | `true` | no |
+| <a name="input_create_s3_installs_bucket"></a> [create\_s3\_installs\_bucket](#input\_create\_s3\_installs\_bucket) | Create S3 Installs Bucket | `bool` | `true` | no |
 | <a name="input_create_s3_kms_key"></a> [create\_s3\_kms\_key](#input\_create\_s3\_kms\_key) | create KMS key for S3 | `bool` | `true` | no |
+| <a name="input_create_security_core"></a> [create\_security\_core](#input\_create\_security\_core) | Whether or not to create Security Core resources | `bool` | `false` | no |
 | <a name="input_create_sm_kms_key"></a> [create\_sm\_kms\_key](#input\_create\_sm\_kms\_key) | create KMS key for secrets manager | `bool` | `true` | no |
 | <a name="input_create_sns_kms_key"></a> [create\_sns\_kms\_key](#input\_create\_sns\_kms\_key) | create KMS key for SNS | `bool` | `true` | no |
 | <a name="input_default_aws_region"></a> [default\_aws\_region](#input\_default\_aws\_region) | The default AWS region to create resources in | `string` | n/a | yes |
 | <a name="input_is_organization"></a> [is\_organization](#input\_is\_organization) | Whether or not to enable certain settings for AWS Organization | `bool` | `true` | no |
-| <a name="input_lambda_time_zone"></a> [lambda\_time\_zone](#input\_lambda\_time\_zone) | The time zone for lambda functions | `string` | `"US/Eastern"` | no |
 | <a name="input_organization_id"></a> [organization\_id](#input\_organization\_id) | AWS Organization ID | `string` | `null` | no |
-| <a name="input_resource_prefix"></a> [resource\_prefix](#input\_resource\_prefix) | The prefix for the s3 bucket names | `string` | n/a | yes |
+| <a name="input_resource_prefix"></a> [resource\_prefix](#input\_resource\_prefix) | The prefix for resources | `string` | n/a | yes |
 
 ## Outputs
 

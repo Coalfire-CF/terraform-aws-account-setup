@@ -4,7 +4,7 @@ module "s3-cloudtrail" {
   count = var.create_cloudtrail && var.default_aws_region == var.aws_region ? 1 : 0
 
   name                    = "${var.resource_prefix}-${var.aws_region}-cloudtrail"
-  kms_master_key_id       = module.security-core.s3_key_id
+  kms_master_key_id       = module.s3_kms_key[0].kms_key_arn
   attach_public_policy    = false
   block_public_acls       = true
   ignore_public_acls      = true

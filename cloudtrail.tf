@@ -19,7 +19,7 @@ resource "aws_cloudwatch_log_group" "cloudtrail_log_group" {
   #checkov:skip=CKV_AWS_338: "Ensure CloudWatch log groups retains logs for at least 1 year" - Logs are retained on SIEM/Logging Server
   name              = "/aws/cloudtrail/${var.resource_prefix}-log-group"
   retention_in_days = var.cloudwatch_log_group_retention_in_days
-  kms_key_id        = module.account-setup.cloudwatch_kms_key_arn[0]
+  kms_key_id        = module.cloudwatch_kms_key[0].kms_key_arn
 
   tags = {
     Owner = var.resource_prefix

@@ -19,12 +19,19 @@ data "aws_iam_policy_document" "packer_assume_role_policy_document" {
   }
 }
 resource "aws_iam_role" "packer_role" {
+  count = var.create_packer_iam ? 1 : 0
+
   name = "${var.resource_prefix}_packer_role"
 
   assume_role_policy = data.aws_iam_policy_document.packer_assume_role_policy_document.json
 }
 
 data "aws_iam_policy_document" "packer_policy_document" {
+  #checkov:skip=CKV_AWS_111: "Ensure IAM policies does not allow write access without constraints"
+  #checkov:skip=CKV_AWS_109: "Ensure IAM policies does not allow permissions management / resource exposure without constraints"
+  #checkov:skip=CKV_AWS_110: "Ensure IAM policies does not allow privilege escalation"
+  # Permissions are specified as required by Hashicorp to run Packer
+  # https://developer.hashicorp.com/packer/integrations/hashicorp/amazon#iam-task-or-instance-role
   statement {
     sid    = "PackerEC2Perms"
     effect = "Allow"
@@ -85,8 +92,8 @@ data "aws_iam_policy_document" "packer_policy_document" {
       "s3:GetObject"
     ]
     resources = [
-      "${module.s3-installs.arn}",
-      "${module.s3-installs.arn}/*"
+      module.s3-installs[0].arn,
+      "${module.s3-installs[0].arn}/*"
     ]
   }
   statement {
@@ -107,23 +114,31 @@ data "aws_iam_policy_document" "packer_policy_document" {
 
 
 resource "aws_iam_policy" "packer_policy" {
+  count = var.create_packer_iam ? 1 : 0
+
   name        = "${var.resource_prefix}_packer_policy"
   description = "General Policy which will attach to ec2 for packer to give access to ec2,s3"
   policy      = data.aws_iam_policy_document.packer_policy_document.json
 }
 
 resource "aws_iam_policy_attachment" "packer_access_attach_policy" {
+  count = var.create_packer_iam ? 1 : 0
+
   name       = "packer access attach policy"
   roles      = [aws_iam_role.packer_role.name]
   policy_arn = aws_iam_policy.packer_policy.arn
 }
 
 resource "aws_iam_instance_profile" "packer_profile" {
+  count = var.create_packer_iam ? 1 : 0
+
   name = "${var.resource_prefix}_packer_profile"
   role = aws_iam_role.packer_role.name
 }
 
 resource "aws_kms_grant" "packer_s3" {
+  count = var.create_packer_iam ? 1 : 0
+
   name              = "packer_${var.resource_prefix}_${var.aws_region}_s3_access"
   key_id            = module.security-core.s3_key_id
   grantee_principal = aws_iam_role.packer_role.arn
@@ -134,6 +149,8 @@ resource "aws_kms_grant" "packer_s3" {
   ]
 }
 resource "aws_kms_grant" "packer_ebs" {
+  count = var.create_packer_iam ? 1 : 0
+
   name              = "packer_${var.resource_prefix}_${var.aws_region}_ebs_access"
   key_id            = module.ebs_kms_key[0].kms_key_id
   grantee_principal = aws_iam_role.packer_role.arn

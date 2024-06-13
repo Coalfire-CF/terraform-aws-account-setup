@@ -4,8 +4,8 @@ resource "aws_cloudtrail" "all_cloudtrail" {
   name                          = "${var.resource_prefix}-cloudtrail"
   s3_bucket_name                = module.s3-cloudtrail[0].id
   s3_key_prefix                 = "${var.resource_prefix}-cloudtrail"
-  cloud_watch_logs_group_arn    = "${aws_cloudwatch_log_group.cloudtrail_log_group.arn}:*"
-  cloud_watch_logs_role_arn     = aws_iam_role.cloudtrail-role.arn
+  cloud_watch_logs_group_arn    = "${aws_cloudwatch_log_group.cloudtrail_log_group[0].arn}:*"
+  cloud_watch_logs_role_arn     = aws_iam_role.cloudtrail-role[0].arn
   is_multi_region_trail         = true
   is_organization_trail         = var.is_organization ? true : false
   include_global_service_events = true
@@ -30,7 +30,7 @@ resource "aws_iam_role" "cloudtrail-role" {
 
   name = "${var.resource_prefix}-cloudtrail-to-cloudwatch"
 
-  assume_role_policy = data.aws_iam_policy_document.cloudtrail_assume_role_policy_document.json
+  assume_role_policy = data.aws_iam_policy_document.cloudtrail_assume_role_policy_document[0].json
 }
 
 data "aws_iam_policy_document" "cloudtrail_assume_role_policy_document" {
@@ -52,7 +52,7 @@ resource "aws_iam_policy" "cloudtrail-to-cloudwatch" {
   name        = "${var.resource_prefix}-cloudtrail-to-cloudwatch"
   description = "Policy to allow cloudtrail to send logs to cloudwatch"
 
-  policy = data.aws_iam_policy_document.cloudtrail_to_cloudwatch_policy_document.json
+  policy = data.aws_iam_policy_document.cloudtrail_to_cloudwatch_policy_document[0].json
 }
 
 data "aws_iam_policy_document" "cloudtrail_to_cloudwatch_policy_document" {
@@ -78,6 +78,6 @@ resource "aws_iam_policy_attachment" "cloudtrail-to-cloudwatch" {
   count = var.create_cloudtrail ? 1 : 0
 
   name       = "cloudtrail to cloudwatch access attach policy"
-  roles      = [aws_iam_role.cloudtrail-role.name]
-  policy_arn = aws_iam_policy.cloudtrail-to-cloudwatch.arn
+  roles      = [aws_iam_role.cloudtrail-role[0].name]
+  policy_arn = aws_iam_policy.cloudtrail-to-cloudwatch[0].arn
 }

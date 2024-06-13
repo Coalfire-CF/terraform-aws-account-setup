@@ -119,11 +119,11 @@ output "cloudwatch_kms_key_id" {
 }
 
 output "additional_kms_key_arns" {
-  value = module.additional_kms_keys
+  value = { for k, v in module.additional_kms_keys : k => v.kms_key_arn }
 }
 
 output "additional_kms_key_ids" {
-  value = module.additional_kms_keys
+  value = { for k, v in module.additional_kms_keys : k => v.kms_key_id }
 }
 
 output "s3_tstate_bucket_name" {

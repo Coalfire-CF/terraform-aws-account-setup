@@ -14,30 +14,71 @@ FedRAMP Compliance: High
 
 Resources that are created as a part of this module include:
 
-- IAM roles
-- IAM policies
-- IAM instance profiles
-- KMS keys
-- S3 buckets
-- Security core module resources
+- IAM role, policies, and instance profiles for Packer to assume during AMI creation (Optional, one account can build and store AMIs and share them with other accounts)
+- KMS keys and typically required IAM permissions for commonly used services (S3, DynamoDB, ELB, RDS, EBS, etc.)
+- S3 buckets (ELB Access Logs bucket is optional, with multiple accounts, you can designate one as a centralized logging account and have other accounts send ELB logs to one account's bucket, this is not possible with S3 access logs where the bucket must be in the same account)
+  - Set "create_s3_elb_accesslogs_bucket" to "true" if this is run in an account where you want the logs to be sent.
+- Security core module resources (Optional, Terraform state resources don't have to be in every account)
 
 ## Assumptions
 * `application_account_numbers` isn't required - you can feed it `application_account_numbers=[""]`
 
 ## Usage
+"Management Core" account.  Terraform state is stored here, Packer AMIs are built here, is also Management Account for AWS Organizations:
 ```
 module "account-setup" {
-  source = "github.com/Coalfire-CF/terraform-aws-account-setup"
+  source = "github.com/Coalfire-CF/terraform-aws-account-setup?ref=v0.0.20"
 
-  aws_region         = "us-east-1"
-  default_aws_region = "us-east-1"
+  aws_region         = "us-gov-west-1"
+  default_aws_region = "us-gov-west-1"
 
   application_account_numbers = ["account-number1", "account-number2", "account-number3"]
   account_number              = "your-account-number"
 
-  resource_prefix         = "pre"
-  create_cloudtrail       = true #IF ORG - SET TO FALSE
-  partition               = "aws"
+  resource_prefix         = "pak"
+  
+  ### Cloudtrail ###
+  create_cloudtrail                      = true
+  is_organization                        = true
+  organization_id                        = "your-organization-id"
+  cloudwatch_log_group_retention_in_days = 30
+
+  ### KMS ###
+  additional_kms_keys = [
+    {
+      name   = "nfw"
+      policy = "${data.aws_iam_policy_document.default_key_policy.json}"
+    }
+  ]
+
+  ### Packer ###
+  create_packer_iam = true # Packer AMIs will be built and kept on this account and shared with other accounts (share accounts is provided to Packer as a variable at build time)
+
+  ### Terraform ###
+  create_security_core = true # Terraform state will be kept on this account
+}
+```
+
+Member account.  Does not need Terraform resources (S3 bucket to store state, DynamoDB table for state lock), Packer AMIs will not be built in this account, is not a Management account for AWS Organizations.
+```
+module "account-setup" {
+  source = "github.com/Coalfire-CF/terraform-aws-account-setup?ref=v0.0.20"
+
+  aws_region         = "us-gov-west-1"
+  default_aws_region = "us-gov-west-1"
+
+  application_account_numbers = ["account-number1", "account-number2", "account-number3"]
+  account_number              = "your-account-number"
+
+  resource_prefix         = "pak"
+
+  ### KMS ###
+  additional_kms_keys = [
+    {
+      name   = "nfw"
+      policy = "${data.aws_iam_policy_document.default_key_policy.json}"
+    }
+  ]
 }
 ```
 

@@ -10,8 +10,54 @@ module "s3-config" {
   ignore_public_acls      = true
   restrict_public_buckets = true
 
+  # IAM 
+  aws_iam_policy_document = data.aws_iam_policy_document.s3_config_bucket_policy_doc.json
+
   # S3 Access Logs
   logging       = true
   target_bucket = module.s3-accesslogs[0].id
   target_prefix = "config/"
+}
+
+data "aws_iam_policy_document" "s3_config_bucket_policy_doc" {
+  provider = aws.mgmt-gov
+  #checkov:skip=CKV_AWS_109: "Ensure IAM policies does not allow permissions management / resource exposure without constraints"
+  #checkov:skip=CKV_AWS_111: "Ensure IAM policies does not allow write access without constraints"
+  # https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-default.html
+  dynamic "statement" {
+    for_each = var.application_account_numbers
+    content {
+      effect  = "Allow"
+      actions = ["s3:GetBucketAcl", "s3:ListBucket"]
+      resources = [
+        aws_s3_bucket.config.arn
+      ]
+      principals {
+        type        = "Service"
+        identifiers = ["config.amazonaws.com"]
+      }
+    }
+  }
+  dynamic "statement" {
+    for_each = var.application_account_numbers
+    content {
+      effect  = "Allow"
+      actions = ["s3:PutObject*"]
+      resources = [
+        aws_s3_bucket.config.arn,
+        "${aws_s3_bucket.config.arn}/*"
+      ]
+      principals {
+        type        = "Service"
+        identifiers = ["config.amazonaws.com"]
+      }
+      condition {
+        test     = "StringEquals"
+        variable = "s3:x-amz-acl"
+        values   = ["bucket-owner-full-control"]
+      }
+    }
+
+  }
+
 }

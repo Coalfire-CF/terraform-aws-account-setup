@@ -20,7 +20,6 @@ module "s3-config" {
 }
 
 data "aws_iam_policy_document" "s3_config_bucket_policy_doc" {
-  provider = aws.mgmt-gov
   #checkov:skip=CKV_AWS_109: "Ensure IAM policies does not allow permissions management / resource exposure without constraints"
   #checkov:skip=CKV_AWS_111: "Ensure IAM policies does not allow write access without constraints"
   # https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-default.html
@@ -30,7 +29,7 @@ data "aws_iam_policy_document" "s3_config_bucket_policy_doc" {
       effect  = "Allow"
       actions = ["s3:GetBucketAcl", "s3:ListBucket"]
       resources = [
-        aws_s3_bucket.config.arn
+        module.s3-config.s3_config_arn
       ]
       principals {
         type        = "Service"
@@ -44,8 +43,8 @@ data "aws_iam_policy_document" "s3_config_bucket_policy_doc" {
       effect  = "Allow"
       actions = ["s3:PutObject*"]
       resources = [
-        aws_s3_bucket.config.arn,
-        "${aws_s3_bucket.config.arn}/*"
+        module.s3-config.s3_config_arn,
+        "${module.s3-config.s3_config_arn}/*"
       ]
       principals {
         type        = "Service"

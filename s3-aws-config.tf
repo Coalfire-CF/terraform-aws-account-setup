@@ -29,7 +29,7 @@ data "aws_iam_policy_document" "s3_config_bucket_policy_doc" {
       effect  = "Allow"
       actions = ["s3:GetBucketAcl", "s3:ListBucket"]
       resources = [
-        module.s3-config.outputs.arn
+        module.s3-config[0].arn
       ]
       principals {
         type        = "Service"
@@ -43,8 +43,8 @@ data "aws_iam_policy_document" "s3_config_bucket_policy_doc" {
       effect  = "Allow"
       actions = ["s3:PutObject*"]
       resources = [
-        module.s3-config.outputs.arn,
-        "${module.s3-config.outputs.arn}/*"
+        module.s3-config[0].arn,
+        "${module.s3-config[0].arn}/*"
       ]
       principals {
         type        = "Service"

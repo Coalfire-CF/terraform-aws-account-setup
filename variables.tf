@@ -141,6 +141,12 @@ variable "create_s3_installs_bucket" {
   default     = true
 }
 
+variable "create_s3_config_bucket" {
+  description = "Create S3 AWS Config Bucket for conformance pack storage"
+  type        = bool
+  default     = true
+}
+
 ### Misc ###
 # Note: To my knowledge, it's not a common configuration to have Terraform state across multiple accounts, so this will default to false
 variable "create_security_core" {

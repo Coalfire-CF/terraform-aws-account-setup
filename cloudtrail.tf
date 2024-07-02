@@ -73,7 +73,7 @@ data "aws_iam_policy_document" "cloudtrail_to_cloudwatch_policy_document" {
       "logs:CreateLogStream"
     ]
     resources = concat([
-      "arn:${data.aws_partition.current.partition}:logs:${var.aws_region}:${var.root_org_account_number}:log-group:/aws/cloudtrail/${var.resource_prefix}-log-group:log-stream:${data.aws_caller_identity.current.id}_CloudTrail_${var.aws_region}*"
+      "arn:${data.aws_partition.current.partition}:logs:${var.aws_region}:${var.root_org_account_number}:log-group:/aws/cloudtrail/${var.resource_prefix}-log-group:log-stream:${var.account_number}_CloudTrail_${var.aws_region}*"
       ],
       var.is_organization ? [
         "arn:${data.aws_partition.current.partition}:logs:${var.aws_region}:${var.root_org_account_number}:log-group:/aws/cloudtrail/${var.resource_prefix}-log-group:log-stream:${var.organization_id}_*"

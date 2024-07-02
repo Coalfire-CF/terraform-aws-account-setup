@@ -455,4 +455,53 @@ data "aws_iam_policy_document" "cloudwatch_key" {
   }
 }
 
+module "config_kms_key" {
+  count  = var.create_config_kms_key ? 1 : 0
+  source = "github.com/Coalfire-CF/terraform-aws-kms?ref=v0.0.6"
 
+  kms_key_resource_type = "config"
+  resource_prefix       = var.resource_prefix
+  key_policy            = data.aws_iam_policy_document.config_key.json
+}
+
+data "aws_iam_policy_document" "config_key" {
+  #checkov:skip=CKV_AWS_109: "Ensure IAM policies does not allow permissions management / resource exposure without constraints"
+  #checkov:skip=CKV_AWS_111: "Ensure IAM policies does not allow write access without constraints"
+  # https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-default.html
+
+  dynamic "statement" {
+    for_each = var.application_account_numbers
+    content {
+      effect    = "Allow"
+      actions   = ["kms:*"]
+      resources = ["*"]
+      principals {
+        type        = "Service"
+        identifiers = ["config.amazonaws.com"]
+      }
+    }
+  }
+
+  dynamic "statement" {
+    for_each = var.application_account_numbers
+    content {
+      effect    = "Allow"
+      actions   = ["kms:*"]
+      resources = ["*"]
+      principals {
+        identifiers = ["arn:${data.aws_partition.current.partition}:iam::${statement.value}:root"]
+        type        = "AWS"
+      }
+    }
+  }
+
+  statement {
+    effect    = "Allow"
+    actions   = ["kms:*"]
+    resources = ["*"]
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:${data.aws_partition.current.partition}:iam::${var.account_number}:root"]
+    }
+  }
+}

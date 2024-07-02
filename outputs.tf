@@ -126,6 +126,14 @@ output "cloudwatch_kms_key_id" {
   value = try(module.cloudwatch_kms_key[0].kms_key_id, null)
 }
 
+output "config_kms_key_arn" {
+  value = try(module.config_kms_key[0].kms_key_arn, null)
+}
+
+output "config_kms_key_id" {
+  value = try(module.config_kms_key[0].kms_key_id, null)
+}
+
 output "additional_kms_key_arns" {
   value = { for k, v in module.additional_kms_keys : k => v.kms_key_arn }
 }

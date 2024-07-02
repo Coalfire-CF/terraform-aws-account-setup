@@ -110,6 +110,12 @@ variable "create_cloudwatch_kms_key" {
   default     = true
 }
 
+variable "create_config_kms_key" {
+  description = "create KMS key for AWS Cloudwatch"
+  type        = bool
+  default     = true
+}
+
 ### S3 ###
 variable "create_s3_accesslogs_bucket" {
   description = "Create S3 Access Logs Bucket"

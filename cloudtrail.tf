@@ -33,12 +33,12 @@ resource "aws_iam_role" "cloudtrail-role" {
   assume_role_policy = data.aws_iam_policy_document.cloudtrail_assume_role_policy_document[0].json
 }
 
-resource "aws_iam_role_policy_attachment" "cloudtrail_org_role_attachment1" {
-  count = var.is_organization ? 1 : 0
+# resource "aws_iam_role_policy_attachment" "cloudtrail_org_role_attachment1" {
+#   count = var.is_organization ? 1 : 0
 
-  role       = aws_iam_role.cloudtrail-role[0].name
-  policy_arn = "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.id}:role/aws-service-role/cloudtrail.amazonaws.com/AWSServiceRoleForCloudTrail"
-}
+#   role       = aws_iam_role.cloudtrail-role[0].name
+#   policy_arn = "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.id}:role/aws-service-role/cloudtrail.amazonaws.com/AWSServiceRoleForCloudTrail"
+# }
 
 
 data "aws_iam_policy_document" "cloudtrail_assume_role_policy_document" {
@@ -73,10 +73,10 @@ data "aws_iam_policy_document" "cloudtrail_to_cloudwatch_policy_document" {
       "logs:CreateLogStream"
     ]
     resources = concat([
-      "arn:${data.aws_partition.current.partition}:logs:${var.aws_region}:${data.aws_caller_identity.current.id}:log-group:/aws/cloudtrail/${var.resource_prefix}-log-group:log-stream:${data.aws_caller_identity.current.id}_CloudTrail_${var.aws_region}*"
+      "arn:${data.aws_partition.current.partition}:logs:${var.aws_region}:${var.root_org_account_number}:log-group:/aws/cloudtrail/${var.resource_prefix}-log-group:log-stream:${data.aws_caller_identity.current.id}_CloudTrail_${var.aws_region}*"
       ],
       var.is_organization ? [
-        "arn:${data.aws_partition.current.partition}:logs:${var.aws_region}:${data.aws_caller_identity.current.id}:log-group:/aws/cloudtrail/${var.resource_prefix}-log-group:log-stream:${var.organization_id}_*"
+        "arn:${data.aws_partition.current.partition}:logs:${var.aws_region}:${var.root_org_account_number}:log-group:/aws/cloudtrail/${var.resource_prefix}-log-group:log-stream:${var.organization_id}_*"
       ] : []
     )
   }

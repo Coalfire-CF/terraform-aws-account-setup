@@ -18,7 +18,7 @@ module "s3-config" {
 
 resource "aws_s3_bucket_policy" "config_bucket_policy" {
   count  = var.create_s3_config_bucket && var.default_aws_region == var.aws_region ? 1 : 0
-  bucket = module.s3-cloudtrail[0].id
+  bucket = module.s3-config[0].id
 
   policy = data.aws_iam_policy_document.s3_config_bucket_policy_doc[0].json
 }

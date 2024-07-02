@@ -24,9 +24,8 @@ resource "aws_s3_bucket_policy" "config_bucket_policy" {
 }
 
 data "aws_iam_policy_document" "s3_config_bucket_policy_doc" {
-  #checkov:skip=CKV_AWS_109: "Ensure IAM policies does not allow permissions management / resource exposure without constraints"
-  #checkov:skip=CKV_AWS_111: "Ensure IAM policies does not allow write access without constraints"
-  # https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-default.html
+  count = var.create_s3_config_bucket && var.default_aws_region == var.aws_region ? 1 : 0
+
   dynamic "statement" {
     for_each = var.application_account_numbers
     content {

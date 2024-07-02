@@ -36,7 +36,7 @@ resource "aws_iam_role" "cloudtrail-role" {
 resource "aws_iam_role_policy_attachment" "cloudtrail_org_role_attachment1" {
   count = var.is_organization ? 1 : 0
 
-  role       = aws_iam_role.cloudtrail-role.name
+  role       = aws_iam_role.cloudtrail-role[0].name
   policy_arn = "arn:${data.aws_partition.current.partition}:${data.aws_caller_identity.current.id}:role/aws-service-role/cloudtrail.amazonaws.com/AWSServiceRoleForCloudTrail"
 }
 

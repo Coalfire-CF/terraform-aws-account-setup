@@ -33,6 +33,14 @@ resource "aws_iam_role" "cloudtrail-role" {
   assume_role_policy = data.aws_iam_policy_document.cloudtrail_assume_role_policy_document[0].json
 }
 
+resource "aws_iam_role_policy_attachment" "cloudtrail_org_role_attachment1" {
+  count = var.is_organization ? 1 : 0
+
+  role       = aws_iam_role.cloudtrail-role.name
+  policy_arn = "arn:${data.aws_partition.current.partition}:${data.aws_caller_identity.current.id}:role/aws-service-role/cloudtrail.amazonaws.com/AWSServiceRoleForCloudTrail"
+}
+
+
 data "aws_iam_policy_document" "cloudtrail_assume_role_policy_document" {
   count = var.create_cloudtrail ? 1 : 0
 

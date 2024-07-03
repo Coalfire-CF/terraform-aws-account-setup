@@ -1,8 +1,6 @@
 resource "aws_cloudtrail" "all_cloudtrail" {
   count = var.create_cloudtrail ? 1 : 0
 
-  #provider = var.cloudtrail_provider
-
   name                          = "${var.resource_prefix}-cloudtrail"
   s3_bucket_name                = module.s3-cloudtrail[0].id
   s3_key_prefix                 = "${var.resource_prefix}-cloudtrail"
@@ -67,11 +65,11 @@ data "aws_iam_policy_document" "cloudtrail_to_cloudwatch_policy_document" {
       "logs:CreateLogStream"
     ]
     resources = concat([
-      "arn:${data.aws_partition.current.partition}:logs:${var.aws_region}:${var.account_number}:log-group:/aws/cloudtrail/${var.resource_prefix}-log-group:log-stream:${var.account_number}_CloudTrail_${var.aws_region}*",
-      "arn:aws-us-gov:logs:us-gov-west-1:166938737587:log-group:/aws/cloudtrail/odcg-log-group:*"
+      "arn:${data.aws_partition.current.partition}:logs:${var.aws_region}:${data.aws_caller_identity.current.id}:log-group:/aws/cloudtrail/${var.resource_prefix}-log-group:log-stream:${data.aws_caller_identity.current.id}_CloudTrail_${var.aws_region}*",
+      "arn:${data.aws_partition.current.partition}:logs:${var.aws_region}:${data.aws_caller_identity.current.id}:log-group:/aws/cloudtrail/odcg-log-group:*"
       ],
       var.is_organization ? [
-        "arn:${data.aws_partition.current.partition}:logs:${var.aws_region}:${var.account_number}:log-group:/aws/cloudtrail/${var.resource_prefix}-log-group:log-stream:${var.organization_id}_*"
+        "arn:${data.aws_partition.current.partition}:logs:${var.aws_region}:${data.aws_caller_identity.current.id}:log-group:/aws/cloudtrail/${var.resource_prefix}-log-group:log-stream:${var.organization_id}_*"
       ] : []
     )
   }

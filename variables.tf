@@ -54,6 +54,14 @@ variable "cloudwatch_log_group_retention_in_days" {
   default     = 30
 }
 
+variable "cloudtrail_provider" {
+  description = "Provider for Cloudtrail"
+  type = object({
+    region = string
+    # Add other AWS provider configuration attributes here as needed
+  })
+}
+
 ### KMS ###
 variable "additional_kms_keys" {
   description = "a list of maps of any additional KMS keys that need to be created"

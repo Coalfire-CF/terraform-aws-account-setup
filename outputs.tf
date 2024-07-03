@@ -110,11 +110,11 @@ output "rds_kms_key_id" {
   value = try(module.rds_kms_key[0].kms_key_id, null)
 }
 
-output "cloudtrail_sns_kms_key_id" {
+output "sns_kms_key_id" {
   value = try(module.sns_kms_key[0].kms_key_id, null)
 }
 
-output "cloudtrail_sns_kms_key_arn" {
+output "sns_kms_key_arn" {
   value = try(module.sns_kms_key[0].kms_key_arn, null)
 }
 

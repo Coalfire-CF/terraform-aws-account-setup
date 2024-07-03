@@ -1,7 +1,7 @@
 resource "aws_cloudtrail" "all_cloudtrail" {
   count = var.create_cloudtrail ? 1 : 0
 
-  provider = var.cloudtrail_provider
+  #provider = var.cloudtrail_provider
 
   name                          = "${var.resource_prefix}-cloudtrail"
   s3_bucket_name                = module.s3-cloudtrail[0].id

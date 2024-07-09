@@ -66,7 +66,7 @@ data "aws_iam_policy_document" "cloudtrail_to_cloudwatch_policy_document" {
     ]
     resources = concat([
       "arn:${data.aws_partition.current.partition}:logs:${var.aws_region}:${data.aws_caller_identity.current.id}:log-group:/aws/cloudtrail/${var.resource_prefix}-log-group:log-stream:${data.aws_caller_identity.current.id}_CloudTrail_${var.aws_region}*",
-      "arn:${data.aws_partition.current.partition}:logs:${var.aws_region}:${data.aws_caller_identity.current.id}:log-group:/aws/cloudtrail/odcg-log-group:*"
+      "arn:${data.aws_partition.current.partition}:logs:${var.aws_region}:${data.aws_caller_identity.current.id}:log-group:/aws/cloudtrail/${var.resource_prefix}-log-group:*"
       ],
       var.is_organization ? [
         "arn:${data.aws_partition.current.partition}:logs:${var.aws_region}:${data.aws_caller_identity.current.id}:log-group:/aws/cloudtrail/${var.resource_prefix}-log-group:log-stream:${var.organization_id}_*"

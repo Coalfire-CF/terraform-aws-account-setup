@@ -137,7 +137,7 @@ variable "create_s3_backups_bucket" {
 variable "create_s3_elb_accesslogs_bucket" {
   description = "Create S3 ELB Access Logs Bucket"
   type        = bool
-  default     = false # ELB Access Logs must be in the same region, but the bucket and load balancer can be in different accounts
+  default     = true # ELB Access Logs must be in the same region, but the bucket and load balancer can be in different accounts
 }
 
 variable "create_s3_fedrampdoc_bucket" {

@@ -104,6 +104,7 @@ data "aws_iam_policy_document" "ebs_key" {
         "kms:Decrypt",
         "kms:ReEncrypt*",
         "kms:GenerateDataKey*",
+        "kms:GenerateDataKeyWithoutPlaintext",
         "kms:DescribeKey",
         "kms:CreateGrant",
         "kms:ListGrants"

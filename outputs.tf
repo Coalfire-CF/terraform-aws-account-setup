@@ -22,6 +22,10 @@ output "s3_fedrampdoc_arn" {
   value = try(module.s3-fedrampdoc[0].arn, null)
 }
 
+output "s3_config_arn" {
+  value = try(module.s3-config[0].arn, null)
+}
+
 output "s3_access_logs_id" {
   value = try(module.s3-accesslogs[0].id, null)
 }
@@ -44,6 +48,10 @@ output "s3_cloudtrail_id" {
 
 output "s3_fedrampdoc_id" {
   value = try(module.s3-fedrampdoc[0].id, null)
+}
+
+output "s3_config_id" {
+  value = try(module.s3-config[0].id, null)
 }
 
 output "s3_kms_key_arn" {
@@ -102,11 +110,11 @@ output "rds_kms_key_id" {
   value = try(module.rds_kms_key[0].kms_key_id, null)
 }
 
-output "cloudtrail_sns_kms_key_id" {
+output "sns_kms_key_id" {
   value = try(module.sns_kms_key[0].kms_key_id, null)
 }
 
-output "cloudtrail_sns_kms_key_arn" {
+output "sns_kms_key_arn" {
   value = try(module.sns_kms_key[0].kms_key_arn, null)
 }
 
@@ -116,6 +124,14 @@ output "cloudwatch_kms_key_arn" {
 
 output "cloudwatch_kms_key_id" {
   value = try(module.cloudwatch_kms_key[0].kms_key_id, null)
+}
+
+output "config_kms_key_arn" {
+  value = try(module.config_kms_key[0].kms_key_arn, null)
+}
+
+output "config_kms_key_id" {
+  value = try(module.config_kms_key[0].kms_key_id, null)
 }
 
 output "additional_kms_key_arns" {

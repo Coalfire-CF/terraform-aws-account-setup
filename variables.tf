@@ -19,6 +19,11 @@ variable "account_number" {
   type        = string
 }
 
+variable "root_org_account_number" {
+  description = "The AWS account number for the Root Org Account"
+  type        = string
+}
+
 variable "resource_prefix" {
   description = "The prefix for resources"
   type        = string
@@ -110,6 +115,12 @@ variable "create_cloudwatch_kms_key" {
   default     = true
 }
 
+variable "create_config_kms_key" {
+  description = "create KMS key for AWS Cloudwatch"
+  type        = bool
+  default     = true
+}
+
 ### S3 ###
 variable "create_s3_accesslogs_bucket" {
   description = "Create S3 Access Logs Bucket"
@@ -126,7 +137,7 @@ variable "create_s3_backups_bucket" {
 variable "create_s3_elb_accesslogs_bucket" {
   description = "Create S3 ELB Access Logs Bucket"
   type        = bool
-  default     = false # ELB Access Logs must be in the same region, but the bucket and load balancer can be in different accounts
+  default     = true # ELB Access Logs must be in the same region, but the bucket and load balancer can be in different accounts
 }
 
 variable "create_s3_fedrampdoc_bucket" {
@@ -137,6 +148,12 @@ variable "create_s3_fedrampdoc_bucket" {
 
 variable "create_s3_installs_bucket" {
   description = "Create S3 Installs Bucket"
+  type        = bool
+  default     = true
+}
+
+variable "create_s3_config_bucket" {
+  description = "Create S3 AWS Config Bucket for conformance pack storage"
   type        = bool
   default     = true
 }

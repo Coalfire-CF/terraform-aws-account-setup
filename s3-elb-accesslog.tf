@@ -1,4 +1,6 @@
 module "s3-elb-accesslogs" {
+  count = var.create_s3_elb_accesslogs_bucket ? 1 : 0
+
   #checkov:skip=CKV_AWS_145: "Ensure that S3 buckets are encrypted with KMS by default"
   source = "github.com/Coalfire-CF/terraform-aws-s3?ref=v1.0.1"
 
@@ -14,7 +16,7 @@ module "s3-elb-accesslogs" {
 
   # S3 Access Logs
   logging       = true
-  target_bucket = module.s3-accesslogs.id
+  target_bucket = module.s3-accesslogs[0].id
   target_prefix = "elb-accesslogs/"
 
   # Bucket Policy

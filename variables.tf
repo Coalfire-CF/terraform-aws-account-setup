@@ -1,3 +1,4 @@
+### General ###
 variable "aws_region" {
   description = "The AWS region to create resources in"
   type        = string
@@ -9,7 +10,7 @@ variable "default_aws_region" {
 }
 
 variable "application_account_numbers" {
-  description = "AWS account numbers for all application accounts"
+  description = "AWS account numbers for all application accounts that might need shared access to resources like KMS keys"
   type        = list(string)
 }
 
@@ -19,91 +20,41 @@ variable "account_number" {
 }
 
 variable "resource_prefix" {
-  description = "The prefix for the s3 bucket names"
+  description = "The prefix for resources"
   type        = string
 }
 
+variable "is_organization" {
+  description = "Whether or not to enable certain settings for AWS Organization"
+  type        = bool
+  default     = true
+}
+
+variable "organization_id" {
+  description = "AWS Organization ID"
+  type        = string
+  default     = null
+}
+
+### CloudTrail ###
 variable "create_cloudtrail" {
   description = "Whether or not to create cloudtrail resources"
   type        = bool
   default     = false
 }
 
-variable "lambda_time_zone" {
-  description = "The time zone for lambda functions"
-  default     = "US/Eastern"
-  type        = string
-}
-
-variable "aws_lb_account_ids" {
-  description = "https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-access-logs.html"
-  default = {
-    us-east-2     = "033677994240"
-    us-east-1     = "127311923021"
-    us-west-2     = "797873946194"
-    us-gov-west-1 = "048591011584"
-    us-gov-east-1 = "190560391635"
-  }
-  type = map(string)
-}
-
-variable "enable_aws_config" {
-  description = "Enable AWS config for this account"
-  type        = bool
-  default     = false
-
-}
-
-variable "config_delivery_frequency" {
-  description = "AWS Config delivery frequencies"
-  type        = string
-  default     = "One_Hour"
-}
-
-variable "aws_backup_plan_name" {
-  description = "AWS Backup plan name"
-  type        = string
-  default     = "fedramp-aws-backup-plan"
-}
-
-variable "backup_selection_tag_value" {
-  description = "AWS Backup tag values"
-  type        = string
-  default     = "fedramp-daily-aws-backups"
-}
-
-variable "backup_rule_name" {
-  description = "AWS Backup rule name"
-  type        = string
-  default     = "fedramp-aws-backup-default-rule"
-
-}
-
-variable "backup_vault_name" {
-  description = "AWS Backup vault name"
-  type        = string
-  default     = "fedramp-aws-backup-vault"
-}
-
-variable "delete_after" {
-  description = "Number of days after which a recovery point should be deleted"
+variable "cloudwatch_log_group_retention_in_days" {
+  description = "The number of days to retain Cloudwatch logs"
   type        = number
-  default     = 35
+  default     = 30
 }
 
+### KMS ###
 variable "additional_kms_keys" {
   description = "a list of maps of any additional KMS keys that need to be created"
   type        = list(map(string))
   default     = []
 }
-#
-#kms_keys = [
-#  {
-#    name = "s3",
-#    policy = ""
-#  },
-#
-#]
 
 variable "create_s3_kms_key" {
   description = "create KMS key for S3"
@@ -113,6 +64,12 @@ variable "create_s3_kms_key" {
 
 variable "create_ebs_kms_key" {
   description = "create KMS key for ebs"
+  type        = bool
+  default     = true
+}
+
+variable "create_sns_kms_key" {
+  description = "create KMS key for SNS"
   type        = bool
   default     = true
 }
@@ -151,4 +108,51 @@ variable "create_cloudwatch_kms_key" {
   description = "create KMS key for AWS Cloudwatch"
   type        = bool
   default     = true
+}
+
+### S3 ###
+variable "create_s3_accesslogs_bucket" {
+  description = "Create S3 Access Logs Bucket"
+  type        = bool
+  default     = true # S3 access logs MUST be in the same region and AWS Account, cross-account logging is NOT supported
+}
+
+variable "create_s3_backups_bucket" {
+  description = "Create S3 Backups Bucket"
+  type        = bool
+  default     = true
+}
+
+variable "create_s3_elb_accesslogs_bucket" {
+  description = "Create S3 ELB Access Logs Bucket"
+  type        = bool
+  default     = false # ELB Access Logs must be in the same region, but the bucket and load balancer can be in different accounts
+}
+
+variable "create_s3_fedrampdoc_bucket" {
+  description = "Create S3 FedRAMP Documents Bucket"
+  type        = bool
+  default     = true
+}
+
+variable "create_s3_installs_bucket" {
+  description = "Create S3 Installs Bucket"
+  type        = bool
+  default     = true
+}
+
+### Misc ###
+# Note: To my knowledge, it's not a common configuration to have Terraform state across multiple accounts, so this will default to false
+variable "create_security_core" {
+  description = "Whether or not to create Security Core resources"
+  type        = bool
+  default     = false
+}
+
+# In normal usage only one account builds/holds the AMIs while it is shared to other account IDs (provided as variables to Packer)
+# This is to prevent excessive numbers of AMIs in each account.
+variable "create_packer_iam" {
+  description = "Whether or not to create Packer IAM resources"
+  type        = bool
+  default     = false
 }

@@ -58,9 +58,6 @@ module "ebs_kms_key" {
 }
 
 data "aws_iam_policy_document" "ebs_key" {
-  #checkov:skip=CKV_AWS_109: "Ensure IAM policies does not allow permissions management / resource exposure without constraints"
-  #checkov:skip=CKV_AWS_111: "Ensure IAM policies does not allow write access without constraints"
-  # https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-default.html
 
   statement {
     effect    = "Allow"
@@ -73,7 +70,6 @@ data "aws_iam_policy_document" "ebs_key" {
       ]
     }
   }
-
   dynamic "statement" {
     for_each = var.application_account_numbers
     content {
@@ -86,12 +82,13 @@ data "aws_iam_policy_document" "ebs_key" {
         "kms:DescribeKey",
         "kms:CreateGrant",
         "kms:ListGrants",
-        "kms:RevokeGrant"
-      ]
-      resources = ["*"]
+      "kms:RevokeGrant"]
+      resources = [
+      "*"]
       principals {
-        type        = "AWS"
-        identifiers = ["arn:${data.aws_partition.current.partition}:iam::${statement.value}:root"]
+        type = "AWS"
+        identifiers = [
+        "arn:${data.aws_partition.current.partition}:iam::${statement.value}:root"]
       }
     }
   }
@@ -108,10 +105,12 @@ data "aws_iam_policy_document" "ebs_key" {
         "kms:CreateGrant",
         "kms:ListGrants"
       ]
-      resources = ["*"]
+      resources = [
+      "*"]
       principals {
-        type        = "AWS"
-        identifiers = [statement.value]
+        type = "AWS"
+        identifiers = [
+        statement.value]
       }
       condition {
         test     = "ArnEquals"
@@ -286,19 +285,18 @@ module "sm_kms_key" {
 }
 
 data "aws_iam_policy_document" "secrets_manager_key" {
-  #checkov:skip=CKV_AWS_109: "Ensure IAM policies does not allow permissions management / resource exposure without constraints"
-  #checkov:skip=CKV_AWS_111: "Ensure IAM policies does not allow write access without constraints"
-  # https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-default.html
-
   dynamic "statement" {
     for_each = var.application_account_numbers
     content {
-      effect    = "Allow"
-      actions   = ["kms:*"]
-      resources = ["*"]
+      effect = "Allow"
+      actions = [
+      "kms:*"]
+      resources = [
+      "*"]
       principals {
-        identifiers = ["arn:${data.aws_partition.current.partition}:iam::${statement.value}:root"]
-        type        = "AWS"
+        identifiers = [
+        "arn:${data.aws_partition.current.partition}:iam::${statement.value}:root"]
+        type = "AWS"
       }
     }
   }
@@ -319,7 +317,7 @@ module "backup_kms_key" {
   count  = var.create_backup_kms_key ? 1 : 0
   source = "github.com/Coalfire-CF/terraform-aws-kms?ref=v0.0.6"
 
-  key_policy            = data.aws_iam_policy_document.s3_key.json
+  key_policy            = module.security-core.s3_key_iam
   kms_key_resource_type = "backup"
   resource_prefix       = var.resource_prefix
 }
@@ -349,6 +347,16 @@ module "cloudwatch_kms_key" {
   key_policy            = data.aws_iam_policy_document.cloudwatch_key.json
 }
 
+module "sns_kms_key" {
+  count  = var.create_cloudtrail && var.default_aws_region == var.aws_region ? 1 : 0
+  source = "github.com/Coalfire-CF/terraform-aws-kms?ref=v0.0.6"
+
+  kms_key_resource_type = "sns"
+  resource_prefix       = var.resource_prefix
+  key_policy            = data.aws_iam_policy_document.sns_key.json
+}
+
+
 module "additional_kms_keys" {
   source   = "github.com/Coalfire-CF/terraform-aws-kms?ref=v0.0.6"
   for_each = { for key in var.additional_kms_keys : key.name => key }
@@ -359,30 +367,33 @@ module "additional_kms_keys" {
 }
 
 data "aws_iam_policy_document" "cloudwatch_key" {
-  #checkov:skip=CKV_AWS_109: "Ensure IAM policies does not allow permissions management / resource exposure without constraints"
-  #checkov:skip=CKV_AWS_111: "Ensure IAM policies does not allow write access without constraints"
-  # https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-default.html
 
   dynamic "statement" {
     for_each = var.application_account_numbers
     content {
-      effect    = "Allow"
-      actions   = ["kms:*"]
-      resources = ["*"]
+      effect = "Allow"
+      actions = [
+      "kms:*"]
+      resources = [
+      "*"]
       principals {
-        identifiers = ["arn:${data.aws_partition.current.partition}:iam::${statement.value}:root"]
-        type        = "AWS"
+        identifiers = [
+        "arn:${data.aws_partition.current.partition}:iam::${statement.value}:root"]
+        type = "AWS"
       }
     }
   }
 
   statement {
-    effect    = "Allow"
-    actions   = ["kms:*"]
-    resources = ["*"]
+    effect = "Allow"
+    actions = [
+    "kms:*"]
+    resources = [
+    "*"]
     principals {
-      type        = "AWS"
-      identifiers = ["arn:${data.aws_partition.current.partition}:iam::${var.account_number}:root"]
+      type = "AWS"
+      identifiers = [
+      "arn:${data.aws_partition.current.partition}:iam::${var.account_number}:root"]
     }
   }
 
@@ -395,11 +406,13 @@ data "aws_iam_policy_document" "cloudwatch_key" {
       "kms:GenerateDataKey*",
       "kms:DescribeKey",
     ]
-    resources = ["*"]
+    resources = [
+    "*"]
 
     principals {
-      type        = "Service"
-      identifiers = ["delivery.logs.amazonaws.com"]
+      type = "Service"
+      identifiers = [
+      "delivery.logs.amazonaws.com"]
     }
   }
 
@@ -412,47 +425,99 @@ data "aws_iam_policy_document" "cloudwatch_key" {
       "kms:GenerateDataKey*",
       "kms:DescribeKey",
     ]
-    resources = ["*"]
+    resources = [
+    "*"]
 
     principals {
-      type        = "Service"
-      identifiers = ["logs.${var.default_aws_region}.amazonaws.com"]
+      type = "Service"
+      identifiers = [
+      "logs.${var.default_aws_region}.amazonaws.com"]
     }
   }
 
   statement {
-    sid       = "Enable CloudTrail Encrypt Permissions"
-    effect    = "Allow"
-    actions   = ["kms:GenerateDataKey*"]
-    resources = ["*"]
+    sid    = "Enable CloudTrail Encrypt Permissions"
+    effect = "Allow"
+    actions = [
+    "kms:GenerateDataKey*"]
+    resources = [
+    "*"]
     condition {
       test     = "StringLike"
       variable = "kms:EncryptionContext:aws:cloudtrail:arn"
-      values   = ["arn:${data.aws_partition.current.partition}:cloudtrail:*:${var.account_number}:trail/*"]
+      values = [
+      "arn:${data.aws_partition.current.partition}:cloudtrail:*:${var.account_number}:trail/*"]
     }
     principals {
-      type        = "Service"
-      identifiers = ["cloudtrail.amazonaws.com"]
+      type = "Service"
+      identifiers = [
+      "cloudtrail.amazonaws.com"]
     }
   }
 
   dynamic "statement" {
     for_each = var.application_account_numbers
     content {
-      effect    = "Allow"
-      actions   = ["kms:GenerateDataKey*"]
-      resources = ["*"]
+      effect = "Allow"
+      actions = [
+      "kms:GenerateDataKey*"]
+      resources = [
+      "*"]
       condition {
         test     = "StringLike"
         variable = "kms:EncryptionContext:aws:cloudtrail:arn"
-        values   = ["arn:${data.aws_partition.current.partition}:cloudtrail:*:${statement.value}:trail/*"]
+        values = [
+        "arn:${data.aws_partition.current.partition}:cloudtrail:*:${statement.value}:trail/*"]
       }
       principals {
-        type        = "Service"
-        identifiers = ["cloudtrail.amazonaws.com"]
+        type = "Service"
+        identifiers = [
+        "cloudtrail.amazonaws.com"]
       }
     }
   }
 }
 
+data "aws_iam_policy_document" "sns_key" {
+  dynamic "statement" {
+    for_each = var.application_account_numbers
+    content {
+      effect = "Allow"
+      actions = [
+      "kms:*"]
+      resources = [
+      "*"]
+      principals {
+        identifiers = [
+        "arn:${data.aws_partition.current.partition}:iam::${statement.value}:root"]
+        type = "AWS"
+      }
+    }
+  }
 
+  statement {
+    sid     = "Enable MGMT IAM User Permissions"
+    effect  = "Allow"
+    actions = ["kms:*"]
+    principals {
+      identifiers = ["arn:${data.aws_partition.current.partition}:iam::${var.account_number}:root"]
+      type        = "AWS"
+    }
+    resources = ["*"]
+  }
+
+  statement {
+    sid    = "Allow CloudTrail to use the key"
+    effect = "Allow"
+    actions = [
+      "kms:GenerateDataKey*",
+      "kms:Decrypt"
+    ]
+    resources = ["*"]
+    principals {
+      type = "Service"
+      identifiers = [
+      "cloudtrail.amazonaws.com"]
+    }
+  }
+}

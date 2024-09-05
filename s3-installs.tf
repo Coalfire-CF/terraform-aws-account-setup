@@ -14,4 +14,17 @@ module "s3-installs" {
   logging       = true
   target_bucket = module.s3-accesslogs[0].id
   target_prefix = "installs/"
+
+  lifecycle_configuration_rules = [
+    {
+      id      = "default"
+      enabled = true
+
+      enable_glacier_transition            = false
+      enable_current_object_expiration     = false
+      enable_noncurrent_version_expiration = false
+
+      abort_incomplete_multipart_upload_days = 1
+    }
+  ]
 }

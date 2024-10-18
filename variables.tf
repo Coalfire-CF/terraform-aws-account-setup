@@ -173,3 +173,9 @@ variable "create_packer_iam" {
   type        = bool
   default     = false
 }
+
+variable "packer_additional_iam_principal_arns" {
+  description = "List of IAM Principal ARNs allowed to assume the Packer IAM Role"
+  type        = list(string)
+  default     = []
+}

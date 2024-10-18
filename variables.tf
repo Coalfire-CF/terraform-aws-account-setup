@@ -19,11 +19,6 @@ variable "account_number" {
   type        = string
 }
 
-variable "root_org_account_number" {
-  description = "The AWS account number for the Root Org Account"
-  type        = string
-}
-
 variable "resource_prefix" {
   description = "The prefix for resources"
   type        = string

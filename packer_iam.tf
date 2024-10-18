@@ -82,7 +82,8 @@ data "aws_iam_policy_document" "packer_policy_document" {
       "ec2:RegisterImage",
       "ec2:RunInstances",
       "ec2:StopInstances",
-      "ec2:TerminateInstances"
+      "ec2:TerminateInstances",
+      "ec2:DescribeVpcs"
     ]
     resources = ["*"]
   }

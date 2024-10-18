@@ -94,7 +94,8 @@ data "aws_iam_policy_document" "packer_policy_document" {
       "ec2:CreateLaunchTemplate",
       "ec2:DeleteLaunchTemplate",
       "ec2:CreateFleet",
-      "ec2:DescribeSpotPriceHistory"
+      "ec2:DescribeSpotPriceHistory",
+      "ec2:DescribeInstanceTypeOfferings"
     ]
     resources = ["*"]
   }

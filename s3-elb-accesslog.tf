@@ -66,7 +66,7 @@ data "aws_iam_policy_document" "elb_accesslogs_bucket_policy" {
   }
 
   dynamic "statement" {
-    for_each = var.application_account_numbers
+    for_each = { for idx, account in var.application_account_numbers : idx => account if account != "" }
     content {
       actions = ["s3:PutObject"]
       effect  = "Allow"

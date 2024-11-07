@@ -75,7 +75,7 @@ data "aws_iam_policy_document" "ebs_key" {
   }
 
   dynamic "statement" {
-    for_each = var.application_account_numbers
+    for_each = { for idx, account in var.application_account_numbers : idx => account if account != "" }
     content {
       effect = "Allow"
       actions = [
@@ -96,7 +96,7 @@ data "aws_iam_policy_document" "ebs_key" {
     }
   }
   dynamic "statement" {
-    for_each = var.application_account_numbers
+    for_each = { for idx, account in var.application_account_numbers : idx => account if account != "" }
     content {
       effect = "Allow"
       actions = [
@@ -138,7 +138,7 @@ data "aws_iam_policy_document" "s3_key" {
   # https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-default.html
 
   dynamic "statement" {
-    for_each = var.application_account_numbers
+    for_each = { for idx, account in var.application_account_numbers : idx => account if account != "" }
     content {
       effect    = "Allow"
       actions   = ["kms:*"]
@@ -211,7 +211,7 @@ data "aws_iam_policy_document" "s3_key" {
   }
 
   dynamic "statement" {
-    for_each = var.application_account_numbers
+    for_each = { for idx, account in var.application_account_numbers : idx => account if account != "" }
     content {
       effect    = "Allow"
       actions   = ["kms:GenerateDataKey*"]
@@ -254,7 +254,7 @@ data "aws_iam_policy_document" "sns_key" {
     }
   }
   dynamic "statement" {
-    for_each = var.application_account_numbers
+    for_each = { for idx, account in var.application_account_numbers : idx => account if account != "" }
     content {
       effect = "Allow"
       actions = [
@@ -291,7 +291,7 @@ data "aws_iam_policy_document" "secrets_manager_key" {
   # https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-default.html
 
   dynamic "statement" {
-    for_each = var.application_account_numbers
+    for_each = { for idx, account in var.application_account_numbers : idx => account if account != "" }
     content {
       effect    = "Allow"
       actions   = ["kms:*"]
@@ -364,7 +364,7 @@ data "aws_iam_policy_document" "cloudwatch_key" {
   # https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-default.html
 
   dynamic "statement" {
-    for_each = var.application_account_numbers
+    for_each = { for idx, account in var.application_account_numbers : idx => account if account != "" }
     content {
       effect    = "Allow"
       actions   = ["kms:*"]
@@ -437,7 +437,7 @@ data "aws_iam_policy_document" "cloudwatch_key" {
   }
 
   dynamic "statement" {
-    for_each = var.application_account_numbers
+    for_each = { for idx, account in var.application_account_numbers : idx => account if account != "" }
     content {
       effect    = "Allow"
       actions   = ["kms:GenerateDataKey*"]
@@ -470,7 +470,7 @@ data "aws_iam_policy_document" "config_key" {
   # https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-default.html
 
   dynamic "statement" {
-    for_each = var.application_account_numbers
+    for_each = { for idx, account in var.application_account_numbers : idx => account if account != "" }
     content {
       effect    = "Allow"
       actions   = ["kms:*"]
@@ -483,7 +483,7 @@ data "aws_iam_policy_document" "config_key" {
   }
 
   dynamic "statement" {
-    for_each = var.application_account_numbers
+    for_each = { for idx, account in var.application_account_numbers : idx => account if account != "" }
     content {
       effect    = "Allow"
       actions   = ["kms:*"]
@@ -505,4 +505,3 @@ data "aws_iam_policy_document" "config_key" {
     }
   }
 }
-

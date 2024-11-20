@@ -54,7 +54,7 @@ data "aws_iam_policy_document" "s3_accesslogs_bucket_policy" {
     resources = ["arn:${data.aws_partition.current.partition}:s3:::${var.resource_prefix}-${var.aws_region}-s3-accesslogs/*"]
   }
   dynamic "statement" {
-    for_each = var.application_account_numbers
+    for_each = { for idx, account in var.application_account_numbers : idx => account if account != "" }
     content {
       actions = ["s3:PutObject"]
       effect  = "Allow"

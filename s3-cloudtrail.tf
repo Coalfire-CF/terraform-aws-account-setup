@@ -71,7 +71,7 @@ data "aws_iam_policy_document" "log_bucket_policy" {
   }
 
   dynamic "statement" {
-    for_each = var.application_account_numbers
+    for_each = { for idx, account in var.application_account_numbers : idx => account if account != "" }
     content {
       #sid = "AgencyAWSCloudTrailWrite"
       actions = ["s3:PutObject"]
@@ -90,7 +90,7 @@ data "aws_iam_policy_document" "log_bucket_policy" {
   }
 
   dynamic "statement" {
-    for_each = var.application_account_numbers
+    for_each = { for idx, account in var.application_account_numbers : idx => account if account != "" }
     content {
       #sid = "AgencyAWSCloudTrailAclCheck"
       actions = ["s3:GetBucketAcl"]

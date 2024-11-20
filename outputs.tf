@@ -149,3 +149,11 @@ output "s3_tstate_bucket_name" {
 output "dynamodb_table_name" {
   value = try(module.security-core[0].dynamodb_table_name, null)
 }
+
+output "packer_iam_role_arn" {
+  value = try(aws_iam_role.packer_role[0].arn, null)
+}
+
+output "packer_iam_role_name" {
+  value = try(aws_iam_role.packer_role[0].name, null)
+}

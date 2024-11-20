@@ -187,8 +187,8 @@ module "account-setup" {
 | <a name="input_default_aws_region"></a> [default\_aws\_region](#input\_default\_aws\_region) | The default AWS region to create resources in | `string` | n/a | yes |
 | <a name="input_is_organization"></a> [is\_organization](#input\_is\_organization) | Whether or not to enable certain settings for AWS Organization | `bool` | `true` | no |
 | <a name="input_organization_id"></a> [organization\_id](#input\_organization\_id) | AWS Organization ID | `string` | `null` | no |
+| <a name="input_packer_additional_iam_principal_arns"></a> [packer\_additional\_iam\_principal\_arns](#input\_packer\_additional\_iam\_principal\_arns) | List of IAM Principal ARNs allowed to assume the Packer IAM Role | `list(string)` | `[]` | no |
 | <a name="input_resource_prefix"></a> [resource\_prefix](#input\_resource\_prefix) | The prefix for resources | `string` | n/a | yes |
-| <a name="input_root_org_account_number"></a> [root\_org\_account\_number](#input\_root\_org\_account\_number) | The AWS account number for the Root Org Account | `string` | n/a | yes |
 
 ## Outputs
 
@@ -209,6 +209,8 @@ module "account-setup" {
 | <a name="output_ebs_kms_key_id"></a> [ebs\_kms\_key\_id](#output\_ebs\_kms\_key\_id) | n/a |
 | <a name="output_lambda_kms_key_arn"></a> [lambda\_kms\_key\_arn](#output\_lambda\_kms\_key\_arn) | n/a |
 | <a name="output_lambda_kms_key_id"></a> [lambda\_kms\_key\_id](#output\_lambda\_kms\_key\_id) | n/a |
+| <a name="output_packer_iam_role_arn"></a> [packer\_iam\_role\_arn](#output\_packer\_iam\_role\_arn) | n/a |
+| <a name="output_packer_iam_role_name"></a> [packer\_iam\_role\_name](#output\_packer\_iam\_role\_name) | n/a |
 | <a name="output_rds_kms_key_arn"></a> [rds\_kms\_key\_arn](#output\_rds\_kms\_key\_arn) | n/a |
 | <a name="output_rds_kms_key_id"></a> [rds\_kms\_key\_id](#output\_rds\_kms\_key\_id) | n/a |
 | <a name="output_s3_access_logs_arn"></a> [s3\_access\_logs\_arn](#output\_s3\_access\_logs\_arn) | n/a |

@@ -95,29 +95,42 @@ data "aws_iam_policy_document" "ebs_key" {
       }
     }
   }
-  dynamic "statement" {
-    for_each = var.application_account_numbers
-    content {
-      effect = "Allow"
-      actions = [
-        "kms:Encrypt",
-        "kms:Decrypt",
-        "kms:ReEncrypt*",
-        "kms:GenerateDataKey*",
-        "kms:DescribeKey",
-        "kms:CreateGrant",
-        "kms:ListGrants"
-      ]
-      resources = ["*"]
-      principals {
-        type        = "AWS"
-        identifiers = [statement.value]
-      }
-      condition {
-        test     = "ArnEquals"
-        variable = "aws:SourceArn"
-        values   = ["arn:${data.aws_partition.current.partition}:iam::${statement.value}:role/aws-service-role/autoscaling.amazonaws.com/AWSServiceRoleForAutoScaling"]
-      }
+
+  ################################################################################
+  # Auto-Scaling Group
+  ################################################################################
+
+  # https://docs.aws.amazon.com/autoscaling/ec2/userguide/key-policy-requirements-EBS-encryption.html#policy-example-cmk-access
+  statement {
+    effect = "Allow"
+    sid    = "Allow service-linked role use of the customer managed key"
+    actions = [
+      "kms:Encrypt",
+      "kms:Decrypt",
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+      "kms:DescribeKey"
+    ]
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:${data.aws_partition.current.partition}:iam::${var.account_number}:role/aws-service-role/autoscaling.amazonaws.com/AWSServiceRoleForAutoScaling"]
+    }
+    resources = ["*"]
+  }
+
+  statement {
+    effect  = "Allow"
+    sid     = "Allow attachment of persistent resources"
+    actions = ["kms:CreateGrant"]
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:${data.aws_partition.current.partition}:iam::${var.account_number}:role/aws-service-role/autoscaling.amazonaws.com/AWSServiceRoleForAutoScaling"]
+    }
+    resources = ["*"]
+    condition {
+      test     = "Bool"
+      variable = "kms:GrantIsForAWSResource"
+      values   = [true]
     }
   }
 }

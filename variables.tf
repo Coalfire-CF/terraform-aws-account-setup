@@ -19,11 +19,6 @@ variable "account_number" {
   type        = string
 }
 
-variable "root_org_account_number" {
-  description = "The AWS account number for the Root Org Account"
-  type        = string
-}
-
 variable "resource_prefix" {
   description = "The prefix for resources"
   type        = string
@@ -172,4 +167,10 @@ variable "create_packer_iam" {
   description = "Whether or not to create Packer IAM resources"
   type        = bool
   default     = false
+}
+
+variable "packer_additional_iam_principal_arns" {
+  description = "List of IAM Principal ARNs allowed to assume the Packer IAM Role"
+  type        = list(string)
+  default     = []
 }

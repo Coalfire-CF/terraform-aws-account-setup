@@ -6,6 +6,9 @@
 *.tfstate
 *.tfstate.*
 
+# Ignore Infracost
+**.infracost
+
 # Crash log files
 crash.log
 

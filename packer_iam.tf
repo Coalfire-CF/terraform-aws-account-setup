@@ -1,6 +1,6 @@
 data "aws_iam_policy_document" "packer_assume_role_policy_document" {
   statement {
-    sid     = "PackerAssumeRole"
+    sid     = "PackerAssumeRoleAdministrator"
     effect  = "Allow"
     actions = ["sts:AssumeRole"]
     principals {
@@ -8,6 +8,7 @@ data "aws_iam_policy_document" "packer_assume_role_policy_document" {
       identifiers = ["arn:${data.aws_partition.current.partition}:iam::${var.account_number}:root"]
     }
   }
+
   statement {
     sid     = "PackerEC2AssumeRole"
     effect  = "Allow"
@@ -17,7 +18,20 @@ data "aws_iam_policy_document" "packer_assume_role_policy_document" {
       identifiers = ["ec2.amazonaws.com"]
     }
   }
+
+  dynamic "statement" {
+    for_each = var.packer_additional_iam_principal_arns
+    content {
+      effect  = "Allow"
+      actions = ["sts:AssumeRole"]
+      principals {
+        type        = "AWS"
+        identifiers = [statement.value]
+      }
+    }
+  }
 }
+
 resource "aws_iam_role" "packer_role" {
   count = var.create_packer_iam ? 1 : 0
 
@@ -68,7 +82,20 @@ data "aws_iam_policy_document" "packer_policy_document" {
       "ec2:RegisterImage",
       "ec2:RunInstances",
       "ec2:StopInstances",
-      "ec2:TerminateInstances"
+      "ec2:TerminateInstances",
+      "ec2:DescribeVpcs"
+    ]
+    resources = ["*"]
+  }
+  statement {
+    sid    = "PackerEC2SpotPerms"
+    effect = "Allow"
+    actions = [
+      "ec2:CreateLaunchTemplate",
+      "ec2:DeleteLaunchTemplate",
+      "ec2:CreateFleet",
+      "ec2:DescribeSpotPriceHistory",
+      "ec2:DescribeInstanceTypeOfferings"
     ]
     resources = ["*"]
   }
@@ -79,7 +106,8 @@ data "aws_iam_policy_document" "packer_policy_document" {
       "iam:PassRole",
       "ec2:AssociateIamInstanceProfile",
       "ec2:ReplaceIamInstanceProfileAssociation",
-      "iam:GetInstanceProfile"
+      "iam:GetInstanceProfile",
+      "iam:CreateServiceLinkedRole"
     ]
     resources = ["*"]
   }

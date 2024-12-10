@@ -1,7 +1,7 @@
 module "s3-backups" {
   count = var.create_s3_backups_bucket ? 1 : 0
 
-  source = "github.com/Coalfire-CF/terraform-aws-s3?ref=v1.0.1"
+  source = "github.com/Coalfire-CF/terraform-aws-s3?ref=v1.0.4"
 
   name                    = "${var.resource_prefix}-${var.aws_region}-backups"
   kms_master_key_id       = module.s3_kms_key[0].kms_key_arn

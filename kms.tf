@@ -55,6 +55,8 @@ module "ebs_kms_key" {
   key_policy            = data.aws_iam_policy_document.ebs_key.json
   kms_key_resource_type = "ebs"
   resource_prefix       = var.resource_prefix
+
+  depends_on = [aws_iam_role_policy_attachment.attach_autoscale_policy]
 }
 
 data "aws_iam_policy_document" "ebs_key" {

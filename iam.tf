@@ -4,7 +4,7 @@ data "aws_iam_policy" "autoScalePolicy" {
 
 # Create the IAM role for Auto Scaling
 resource "aws_iam_role" "auto_scaling_role" {
-  name = "AutoScalingServiceRole"
+  name = "AWSServiceRoleForAutoScaling"
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
     Statement = [

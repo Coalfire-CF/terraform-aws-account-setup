@@ -4,6 +4,8 @@ variable "aws_region" {
   type        = string
 }
 
+variable "profile" {}
+
 variable "default_aws_region" {
   description = "The default AWS region to create resources in"
   type        = string
@@ -173,4 +175,10 @@ variable "packer_additional_iam_principal_arns" {
   description = "List of IAM Principal ARNs allowed to assume the Packer IAM Role"
   type        = list(string)
   default     = []
+}
+
+variable "create_eks_service_role" {
+  description = "Boolean to create an EKS Node Group service role"
+  type        = bool
+  default     = false
 }

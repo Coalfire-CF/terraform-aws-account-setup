@@ -31,11 +31,11 @@ data "aws_iam_policy" "ecr_pull_policy" {
 resource "aws_iam_role_policy_attachment" "eks_worker_attach" {
   count      = var.create_eks_service_role ? 1 : 0
   policy_arn = data.aws_iam_policy.eks_worker_policy.arn
-  role       = aws_iam_role.eks_node_role.name
+  role       = aws_iam_role.eks_node_role.name[0]
 }
 
 resource "aws_iam_role_policy_attachment" "ecr_pull_attach" {
   count      = var.create_eks_service_role ? 1 : 0
   policy_arn = data.aws_iam_policy.ecr_pull_policy.arn
-  role       = aws_iam_role.eks_node_role.name
+  role       = aws_iam_role.eks_node_role.name[0]
 }

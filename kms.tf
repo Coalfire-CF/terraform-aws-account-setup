@@ -538,7 +538,7 @@ data "aws_iam_policy_document" "ecr_kms_policy" {
     resources = ["*"]
     principals {
       type        = "AWS"
-      identifiers = ["arn:${var.partition}:iam::${var.mgmt_account_id}:root"]
+      identifiers = ["arn:${data.aws_partition.current.partition}:iam::${var.account_number}:root"]
     }
   }
 

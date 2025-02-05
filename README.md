@@ -106,6 +106,7 @@ module "account-setup" {
 | <a name="module_config_kms_key"></a> [config\_kms\_key](#module\_config\_kms\_key) | github.com/Coalfire-CF/terraform-aws-kms | v0.0.6 |
 | <a name="module_dynamo_kms_key"></a> [dynamo\_kms\_key](#module\_dynamo\_kms\_key) | github.com/Coalfire-CF/terraform-aws-kms | v0.0.6 |
 | <a name="module_ebs_kms_key"></a> [ebs\_kms\_key](#module\_ebs\_kms\_key) | github.com/Coalfire-CF/terraform-aws-kms | v0.0.6 |
+| <a name="module_ecr_kms_key"></a> [ecr\_kms\_key](#module\_ecr\_kms\_key) | github.com/Coalfire-CF/ACE-AWS-KMS | v1.0.1 |
 | <a name="module_lambda_kms_key"></a> [lambda\_kms\_key](#module\_lambda\_kms\_key) | github.com/Coalfire-CF/terraform-aws-kms | v0.0.6 |
 | <a name="module_rds_kms_key"></a> [rds\_kms\_key](#module\_rds\_kms\_key) | github.com/Coalfire-CF/terraform-aws-kms | v0.0.6 |
 | <a name="module_s3-accesslogs"></a> [s3-accesslogs](#module\_s3-accesslogs) | github.com/Coalfire-CF/terraform-aws-s3 | v1.0.4 |
@@ -153,6 +154,7 @@ module "account-setup" {
 | [aws_iam_policy_document.config_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.dynamo_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.ebs_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_iam_policy_document.ecr_kms_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.elb_accesslogs_bucket_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.log_bucket_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.packer_assume_role_policy_document](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
@@ -179,6 +181,7 @@ module "account-setup" {
 | <a name="input_create_config_kms_key"></a> [create\_config\_kms\_key](#input\_create\_config\_kms\_key) | create KMS key for AWS Cloudwatch | `bool` | `true` | no |
 | <a name="input_create_dynamo_kms_key"></a> [create\_dynamo\_kms\_key](#input\_create\_dynamo\_kms\_key) | create KMS key for dynamodb | `bool` | `true` | no |
 | <a name="input_create_ebs_kms_key"></a> [create\_ebs\_kms\_key](#input\_create\_ebs\_kms\_key) | create KMS key for ebs | `bool` | `true` | no |
+| <a name="input_create_ecr_kms_key"></a> [create\_ecr\_kms\_key](#input\_create\_ecr\_kms\_key) | create KMS key for ECR | `bool` | `true` | no |
 | <a name="input_create_eks_service_role"></a> [create\_eks\_service\_role](#input\_create\_eks\_service\_role) | Boolean to create an EKS Node Group service role | `bool` | `false` | no |
 | <a name="input_create_lambda_kms_key"></a> [create\_lambda\_kms\_key](#input\_create\_lambda\_kms\_key) | create KMS key for lambda | `bool` | `true` | no |
 | <a name="input_create_packer_iam"></a> [create\_packer\_iam](#input\_create\_packer\_iam) | Whether or not to create Packer IAM resources | `bool` | `false` | no |
@@ -217,6 +220,8 @@ module "account-setup" {
 | <a name="output_dynamodb_table_name"></a> [dynamodb\_table\_name](#output\_dynamodb\_table\_name) | n/a |
 | <a name="output_ebs_kms_key_arn"></a> [ebs\_kms\_key\_arn](#output\_ebs\_kms\_key\_arn) | n/a |
 | <a name="output_ebs_kms_key_id"></a> [ebs\_kms\_key\_id](#output\_ebs\_kms\_key\_id) | n/a |
+| <a name="output_ecr_kms_key_arn"></a> [ecr\_kms\_key\_arn](#output\_ecr\_kms\_key\_arn) | n/a |
+| <a name="output_ecr_kms_key_id"></a> [ecr\_kms\_key\_id](#output\_ecr\_kms\_key\_id) | n/a |
 | <a name="output_eks_node_role_arn"></a> [eks\_node\_role\_arn](#output\_eks\_node\_role\_arn) | n/a |
 | <a name="output_eks_node_role_name"></a> [eks\_node\_role\_name](#output\_eks\_node\_role\_name) | n/a |
 | <a name="output_lambda_kms_key_arn"></a> [lambda\_kms\_key\_arn](#output\_lambda\_kms\_key\_arn) | n/a |

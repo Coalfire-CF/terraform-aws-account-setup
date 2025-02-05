@@ -165,3 +165,10 @@ output "packer_iam_role_arn" {
 output "packer_iam_role_name" {
   value = try(aws_iam_role.packer_role[0].name, null)
 }
+
+output "eks_node_role_arn" {
+  value = try(aws_iam_role.eks_node_role[0].arn, null)
+}
+output "eks_node_role_name" {
+  value = try(aws_iam_role.eks_node_role[0].name, null)
+}

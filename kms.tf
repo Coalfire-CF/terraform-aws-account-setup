@@ -520,3 +520,38 @@ data "aws_iam_policy_document" "config_key" {
     }
   }
 }
+
+module "ecr_kms_key" {
+  count  = var.create_ecr_kms_key ? 1 : 0
+
+  source                    = "github.com/Coalfire-CF/ACE-AWS-KMS?ref=v1.0.1"
+  resource_prefix = var.resource_prefix
+  kms_key_resource_type = "ecr"
+  key_policy = data.aws_iam_policy_document.ecr_kms_policy.json
+}
+
+data "aws_iam_policy_document" "ecr_kms_policy" {
+  statement {
+    sid       = "source-account-full-access"
+    effect    = "Allow"
+    actions   = ["kms:*"]
+    resources = ["*"]
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:${var.partition}:iam::${var.mgmt_account_id}:root"]
+    }
+  }
+
+   dynamic "statement" {
+    for_each = { for idx, account in var.application_account_numbers : idx => account if account != "" }
+    content {
+      effect    = "Allow"
+      actions   = ["kms:*"]
+      resources = ["*"]
+      principals {
+        identifiers = ["arn:${data.aws_partition.current.partition}:iam::${statement.value}:root"]
+        type        = "AWS"
+      }
+    }
+  }     
+}

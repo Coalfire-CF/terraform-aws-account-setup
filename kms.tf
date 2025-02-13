@@ -340,7 +340,7 @@ module "cloudwatch_kms_key" {
 
   kms_key_resource_type = "cloudwatch"
   resource_prefix       = var.resource_prefix
-  key_policy            = data.aws_iam_policy_document.cloudwatch_key.json
+  key_policy            = data.aws_iam_policy_document.cloudwatch_key[0].json
   multi_region          = var.kms_multi_region
 }
 

@@ -211,7 +211,7 @@ variable "s3_backup_settings" {
 variable "s3_backup_policy" {
   description = "S3 backup policy to use for S3 buckets in conjunction with AWS Backups, should match an existing policy"
   type        = string
-  default     = null # What you specified in AWS Backups pak, may look like "aws-backup-${var.resource_prefix}-default-policy"
+  default     = "" # What you specified in AWS Backups pak, may look like "aws-backup-${var.resource_prefix}-default-policy"
 }
 
 variable "s3_tags" {

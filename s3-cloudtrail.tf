@@ -52,12 +52,12 @@ data "aws_iam_policy_document" "log_bucket_policy" {
   }
 
   statement {
-    sid = "AWSCloudTrailAclCheck"
+    sid     = "AWSCloudTrailAclCheck"
     actions = ["s3:GetBucketAcl"]
-    effect = "Allow"
+    effect  = "Allow"
     principals {
       identifiers = ["cloudtrail.amazonaws.com"]
-      type = "Service"
+      type        = "Service"
     }
     resources = [module.s3-cloudtrail[0].arn]
   }

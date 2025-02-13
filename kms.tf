@@ -345,7 +345,7 @@ module "cloudwatch_kms_key" {
 }
 
 data "aws_iam_policy_document" "cloudwatch_key" {
-  var.create_cloudwatch_kms_key ? 1 : 0
+  count = var.create_cloudwatch_kms_key ? 1 : 0
 
   #checkov:skip=CKV_AWS_109: "Ensure IAM policies does not allow permissions management / resource exposure without constraints"
   #checkov:skip=CKV_AWS_111: "Ensure IAM policies does not allow write access without constraints"
@@ -506,11 +506,11 @@ module "sqs_kms_key" {
   source                = "github.com/Coalfire-CF/ACE-AWS-KMS?ref=v1.0.1"
   resource_prefix       = var.resource_prefix
   kms_key_resource_type = "sqs"
-  key_policy            = data.aws_iam_policy_document.sqs_kms_policy[0].json
+  key_policy            = data.aws_iam_policy_document.sqs_key[0].json
   multi_region          = var.kms_multi_region
 }
 
-data "aws_iam_policy_document" "sqs_key_policy" {
+data "aws_iam_policy_document" "sqs_key" {
   count = var.create_sqs_kms_key ? 1 : 0
 
   #checkov:skip=CKV_AWS_109: "Ensure IAM policies does not allow permissions management / resource exposure without constraints"

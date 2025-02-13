@@ -4,8 +4,6 @@ variable "aws_region" {
   type        = string
 }
 
-variable "profile" {}
-
 variable "default_aws_region" {
   description = "The default AWS region to create resources in"
   type        = string
@@ -187,10 +185,10 @@ variable "s3_backup_settings" {
   }))
   default = {
     accesslogs = {
-      enable_backup = false  # Assuming that a SIEM will ingest and store these logs
+      enable_backup = false # Assuming that a SIEM will ingest and store these logs
     }
     elb-accesslogs = {
-      enable_backup = false  # Assuming that a SIEM will ingest and store these logs
+      enable_backup = false # Assuming that a SIEM will ingest and store these logs
     }
     backups = {
       enable_backup = true
@@ -202,7 +200,7 @@ variable "s3_backup_settings" {
       enable_backup = true
     }
     cloudtrail = {
-      enable_backup = false   # Assuming that a SIEM will ingest and store these logs
+      enable_backup = false # Assuming that a SIEM will ingest and store these logs
     }
     config = {
       enable_backup = true
@@ -218,7 +216,7 @@ variable "s3_backup_policy" {
 
 variable "s3_tags" {
   description = "Tags to be applied to S3 buckets"
-  type        = map(object)
+  type        = map(any)
   default     = {}
 }
 

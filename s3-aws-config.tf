@@ -57,26 +57,26 @@ data "aws_iam_policy_document" "s3_config_bucket_policy_doc" {
     }
   }
 
-  statement{
-      effect  = "Allow"
-      actions = ["s3:PutObject"]
-      resources = [
-        "${module.s3-config[0].arn}/*"
-      ]
-      principals {
-        type        = "Service"
-        identifiers = ["config.amazonaws.com"]
-      }
-      condition {
-        test     = "StringEquals"
-        variable = "s3:x-amz-acl"
-        values   = ["bucket-owner-full-control"]
-      }
-      condition {
-        test     = "StringEquals"
-        variable = "aws:SourceAccount"
-        values   = [var.account_number]
-      }
+  statement {
+    effect  = "Allow"
+    actions = ["s3:PutObject"]
+    resources = [
+      "${module.s3-config[0].arn}/*"
+    ]
+    principals {
+      type        = "Service"
+      identifiers = ["config.amazonaws.com"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "s3:x-amz-acl"
+      values   = ["bucket-owner-full-control"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "aws:SourceAccount"
+      values   = [var.account_number]
+    }
   }
 
   # Sharing with AWS Account IDs

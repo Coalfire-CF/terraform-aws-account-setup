@@ -89,7 +89,7 @@ data "aws_iam_policy_document" "elb_accesslogs_bucket_policy" {
 
   # Sharing using AWS Organization ID
   dynamic "statement" {
-    for_each = length(var.organization_id) > 0 ? [1] : []
+    for_each = var.organization_id != null ? [1] : []
     content {
       actions = ["s3:PutObject"]
       effect  = "Allow"

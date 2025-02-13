@@ -40,7 +40,7 @@ data "aws_iam_policy_document" "kms_base_and_sharing_permissions" {
 
   # Sharing KMS Key using AWS Organization ID
   dynamic "statement" {
-    for_each = var.is_organization && length(var.organization_id) > 0 ? [1] : []
+    for_each = var.is_organization && var.organization_id != null ? [1] : []
     content {
       effect    = "Allow"
       actions   = ["kms:*"]

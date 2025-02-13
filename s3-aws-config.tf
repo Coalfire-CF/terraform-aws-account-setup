@@ -36,6 +36,7 @@ data "aws_iam_policy_document" "s3_config_bucket_policy_doc" {
 
   # https://docs.aws.amazon.com/config/latest/developerguide/s3-bucket-policy.html#granting-access-in-another-account
 
+  # Base Permissions
   statement {
     effect = "Allow"
     actions = [
@@ -52,29 +53,127 @@ data "aws_iam_policy_document" "s3_config_bucket_policy_doc" {
     condition {
       test     = "StringEquals"
       variable = "aws:SourceAccount"
-      values   = concat([var.account_number], var.application_account_numbers)
+      values   = [var.account_number]
     }
   }
 
-  statement {
-    effect  = "Allow"
-    actions = ["s3:PutObject"]
-    resources = [
-      "${module.s3-config[0].arn}/*"
-    ]
-    principals {
-      type        = "Service"
-      identifiers = ["config.amazonaws.com"]
+  statement{
+      effect  = "Allow"
+      actions = ["s3:PutObject"]
+      resources = [
+        "${module.s3-config[0].arn}/*"
+      ]
+      principals {
+        type        = "Service"
+        identifiers = ["config.amazonaws.com"]
+      }
+      condition {
+        test     = "StringEquals"
+        variable = "s3:x-amz-acl"
+        values   = ["bucket-owner-full-control"]
+      }
+      condition {
+        test     = "StringEquals"
+        variable = "aws:SourceAccount"
+        values   = [var.account_number]
+      }
+  }
+
+  # Sharing with AWS Account IDs
+  dynamic "statement" {
+    for_each = length(var.application_account_numbers) > 0 ? [1] : []
+    content {
+      effect = "Allow"
+      actions = [
+        "s3:GetBucketAcl",
+        "s3:ListBucket"
+      ]
+      resources = [
+        module.s3-config[0].arn
+      ]
+      principals {
+        type        = "Service"
+        identifiers = ["config.amazonaws.com"]
+      }
+      condition {
+        test     = "StringEquals"
+        variable = "aws:SourceAccount"
+        values   = var.application_account_numbers
+      }
     }
-    condition {
-      test     = "StringEquals"
-      variable = "s3:x-amz-acl"
-      values   = ["bucket-owner-full-control"]
+  }
+
+  dynamic "statement" {
+    for_each = length(var.application_account_numbers) > 0 ? [1] : []
+    content {
+      effect  = "Allow"
+      actions = ["s3:PutObject"]
+      resources = [
+        "${module.s3-config[0].arn}/*"
+      ]
+      principals {
+        type        = "Service"
+        identifiers = ["config.amazonaws.com"]
+      }
+      condition {
+        test     = "StringEquals"
+        variable = "s3:x-amz-acl"
+        values   = ["bucket-owner-full-control"]
+      }
+      condition {
+        test     = "StringEquals"
+        variable = "aws:SourceAccount"
+        values   = var.application_account_numbers
+      }
     }
-    condition {
-      test     = "StringEquals"
-      variable = "aws:SourceAccount"
-      values   = concat([var.account_number], var.application_account_numbers)
+  }
+
+  # Sharing with AWS Organization ID
+  dynamic "statement" {
+    for_each = var.organization_id != null ? [1] : []
+    content {
+      effect = "Allow"
+      actions = [
+        "s3:GetBucketAcl",
+        "s3:ListBucket"
+      ]
+      resources = [
+        module.s3-config[0].arn
+      ]
+      principals {
+        type        = "Service"
+        identifiers = ["config.amazonaws.com"]
+      }
+      condition {
+        test     = "StringEquals"
+        variable = "aws:PrincipalOrgID"
+        values   = [var.organization_id]
+      }
+    }
+  }
+
+  dynamic "statement" {
+    for_each = var.organization_id != null ? [1] : []
+    content {
+      effect  = "Allow"
+      actions = ["s3:PutObject"]
+      resources = [
+        "${module.s3-config[0].arn}/*"
+      ]
+      principals {
+        type        = "Service"
+        identifiers = ["config.amazonaws.com"]
+      }
+      condition {
+        test     = "StringEquals"
+        variable = "s3:x-amz-acl"
+        values   = ["bucket-owner-full-control"]
+      }
+      condition {
+        test     = "StringEquals"
+        variable = "aws:PrincipalOrgID"
+        values   = [var.organization_id]
+      }
     }
   }
 }

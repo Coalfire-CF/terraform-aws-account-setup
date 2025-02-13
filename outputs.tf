@@ -142,12 +142,20 @@ output "ecr_kms_key_id" {
   value = try(module.ecr_kms_key[0].kms_key_id, null)
 }
 
+output "nfw_kms_key_arn" {
+  value = try(module.nfw_kms_key[0].kms_key_arn, null)
+}
+
+output "nfw_kms_key_id" {
+  value = try(module.nfw_kms_key[0].kms_key_id, null)
+}
+
 output "sqs_kms_key_arn" {
   value = try(module.sqs_kms_key[0].kms_key_arn, null)
 }
 
 output "sqs_kms_key_id" {
-  value = try(module.ecr_kms_key[0].sqs_key_id, null)
+  value = try(module.sqs_kms_key[0].kms_key_id, null)
 }
 
 output "additional_kms_key_arns" {

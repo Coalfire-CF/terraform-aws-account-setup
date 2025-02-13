@@ -534,3 +534,14 @@ data "aws_iam_policy_document" "sqs_key_policy" {
     resources = ["*"]
   }
 }
+
+module "nfw_kms_key" {
+  count = var.create_nfw_kms_key ? 1 : 0
+
+  source = "github.com/Coalfire-CF/terraform-aws-kms?ref=v1.0.1"
+
+  key_policy            = data.aws_iam_policy_document.kms_base_and_sharing_permissions.json
+  kms_key_resource_type = "nfw"
+  resource_prefix       = var.resource_prefix
+  multi_region          = var.kms_multi_region
+}

@@ -131,6 +131,12 @@ variable "create_sqs_kms_key" {
   default     = true
 }
 
+variable "create_nfw_kms_key" {
+  description = "create KMS key for NFW"
+  type        = bool
+  default     = true
+}
+
 variable "kms_multi_region" {
   description = "Indicates whether the KMS key is a multi-Region (true) or regional (false) key."
   type        = bool

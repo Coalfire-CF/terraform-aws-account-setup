@@ -16,38 +16,91 @@ Resources that are created as a part of this module include:
 
 - IAM role, policies, and instance profiles for Packer to assume during AMI creation (Optional, one account can build and store AMIs and share them with other accounts)
 - KMS keys and typically required IAM permissions for commonly used services (S3, DynamoDB, ELB, RDS, EBS, etc.)
-- S3 buckets (ELB Access Logs bucket is optional, with multiple accounts, you can designate one as a centralized logging account and have other accounts send ELB logs to one account's bucket, this is not possible with S3 access logs where the bucket must be in the same account)
+- S3 buckets (ELB Access Logs bucket is optional, with multiple accounts, you can designate one as a centralized logging account and have other accounts send ELB logs to one account's bucket, this is not possible with S3 access logs where the bucket must be in the same account & region)
   - Set "create_s3_elb_accesslogs_bucket" to "true" if this is run in an account where you want the logs to be sent.
 - Security core module resources (Optional, Terraform state resources don't have to be in every account)
 
-## Assumptions
-* `application_account_numbers` isn't required - you can feed it `application_account_numbers=[""]`
+## Cross-Account Permissions
+There are 3 supported configurations regarding IAM cross-account permissions.  Sharing principally concerns S3 Buckets (where applicable) and KMS Key permissions.
+
+Sharing is based on AWS Organization (Recommended, easier to maintain since permissions are granted via AWS Organization ID instead of individual account IDs):
+```hcl
+### Sharing ###
+  is_organization                        = true # Should be "false" if setting "application_account_numbers"
+  organization_id                        = "your-organization-id"
+```
+
+There is no cross-account sharing at all (standalone account):
+```hcl
+### Sharing ###
+  is_organization                        = false # Should be "false" if setting "application_account_numbers"
+```
+Set "is_organization" to "false" (default is "true"), and you can omit "application_account_numbers" and "organization_id".
+
+Sharing is based on a list of AWS Account IDs:
+```hcl
+### Sharing ###
+  application_account_numbers            = ["account-number1", "account-number2", "account-number3"]
+  is_organization                        = false # Should be "false" if setting "application_account_numbers"
+```
+
+## AWS Backups
+AWS Backups are based on the presence of a tag and can be applied to S3 buckets.
+
+The configuration depends on "s3_backup_settings" and "s3_backup_policy".
+
+Example:
+```hcl
+### AWS Backup ###
+  s3_backup_policy = "aws-backup-${var.resource_prefix}-default-policy"
+  s3_backup_settings = {
+    accesslogs = {
+      enable_backup = true # Normally "false" because we're assuming that a SIEM will ingest and store these logs
+    }
+    elb-accesslogs = {
+      enable_backup = true # Normally "false" because we're assuming that a SIEM will ingest and store these logs
+    }
+    backups = {
+      enable_backup = true
+    }
+    installs = {
+      enable_backup = true
+    }
+    fedrampdoc = {
+      enable_backup = true
+    }
+    cloudtrail = {
+      enable_backup = true # Normally "false" because we're assuming that a SIEM will ingest and store these logs
+    }
+    config = {
+      enable_backup = true
+    }
+  }
+```
+
+At a minimum, "s3_backup_policy" must be defined in order for the S3 buckets to be tagged.  "s3_backup_settings" is a map variable that lets you enable or disable AWS Backups on individual S3 buckets that this pak creates.  The default value will NOT tag the S3 Access Logs, ELB Access Logs, or Cloudtrail buckets for AWS Backup.  This is an opinionated default that assumes that a SIEM solution will ingest and store these logs, so having a backup is a waste of money.  But if this is not true, then you can individually override this as shown in the example above.
 
 ## Usage
 "Management Core" account.  Terraform state is stored here, Packer AMIs are built here, is also Management Account for AWS Organizations:
-```
+```hcl
 module "account-setup" {
   source = "github.com/Coalfire-CF/terraform-aws-account-setup?ref=v0.0.20"
 
   aws_region         = "us-gov-west-1"
   default_aws_region = "us-gov-west-1"
-
-  application_account_numbers = ["account-number1", "account-number2", "account-number3"]
-  account_number              = "your-account-number"
+  account_number     = "your-account-number"
 
   resource_prefix         = "pak"
   
   ### Cloudtrail ###
   create_cloudtrail                      = true
-  is_organization                        = true
-  organization_id                        = "your-organization-id"
   cloudwatch_log_group_retention_in_days = 30
 
   ### KMS ###
   additional_kms_keys = [
     {
-      name   = "nfw"
-      policy = "${data.aws_iam_policy_document.default_key_policy.json}"
+      name   = "elasticache"
+      policy = "${data.aws_iam_policy_document.elasticache_key_policy.json}"
     }
   ]
 
@@ -56,18 +109,24 @@ module "account-setup" {
 
   ### Terraform ###
   create_security_core = true # Terraform state will be kept on this account
+
+  ### Sharing ###
+  is_organization                        = true # Should be "false" if setting "application_account_numbers"
+  organization_id                        = "your-organization-id"
+
+  ### AWS Backup ###
+  s3_backup_policy = "aws-backup-${var.resource_prefix}-default-policy"
 }
 ```
 
-Member account.  Does not need Terraform resources (S3 bucket to store state, DynamoDB table for state lock), Packer AMIs will not be built in this account, is not a Management account for AWS Organizations.
-```
+Member account.  Does not need Terraform resources (S3 bucket to store state, DynamoDB table for state lock), Packer AMIs will not be built in this account, is not a Management account for AWS Organizations, does not need to share IAM permissions (s3 buckets, KMS keys) to any other account.  The default configuration also creates individually owned Customer KMS Keys.
+```hcl
 module "account-setup" {
   source = "github.com/Coalfire-CF/terraform-aws-account-setup?ref=v0.0.20"
 
   aws_region         = "us-gov-west-1"
   default_aws_region = "us-gov-west-1"
 
-  application_account_numbers = ["account-number1", "account-number2", "account-number3"]
   account_number              = "your-account-number"
 
   resource_prefix         = "pak"
@@ -75,10 +134,16 @@ module "account-setup" {
   ### KMS ###
   additional_kms_keys = [
     {
-      name   = "nfw"
-      policy = "${data.aws_iam_policy_document.default_key_policy.json}"
+      name   = "elasticache"
+      policy = "${data.aws_iam_policy_document.elasticache_key_policy.json}"
     }
   ]
+
+  ### Sharing ###
+  is_organization                        = false # Should be "false" if setting "application_account_numbers"
+
+  ### AWS Backup ###
+  s3_backup_policy = "aws-backup-${var.resource_prefix}-default-policy"
 }
 ```
 

@@ -1,4 +1,6 @@
 data "aws_iam_policy_document" "packer_assume_role_policy_document" {
+  count = var.create_packer_iam ? 1 : 0
+
   statement {
     sid     = "PackerAssumeRoleAdministrator"
     effect  = "Allow"
@@ -37,10 +39,12 @@ resource "aws_iam_role" "packer_role" {
 
   name = "${var.resource_prefix}_packer_role"
 
-  assume_role_policy = data.aws_iam_policy_document.packer_assume_role_policy_document.json
+  assume_role_policy = data.aws_iam_policy_document.packer_assume_role_policy_document[0].json
 }
 
 data "aws_iam_policy_document" "packer_policy_document" {
+  count = var.create_packer_iam ? 1 : 0
+
   #checkov:skip=CKV_AWS_111: "Ensure IAM policies does not allow write access without constraints"
   #checkov:skip=CKV_AWS_109: "Ensure IAM policies does not allow permissions management / resource exposure without constraints"
   #checkov:skip=CKV_AWS_110: "Ensure IAM policies does not allow privilege escalation"
@@ -146,7 +150,7 @@ resource "aws_iam_policy" "packer_policy" {
 
   name        = "${var.resource_prefix}_packer_policy"
   description = "General Policy which will attach to ec2 for packer to give access to ec2,s3"
-  policy      = data.aws_iam_policy_document.packer_policy_document.json
+  policy      = data.aws_iam_policy_document.packer_policy_document[0].json
 }
 
 resource "aws_iam_policy_attachment" "packer_access_attach_policy" {

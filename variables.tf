@@ -4,8 +4,6 @@ variable "aws_region" {
   type        = string
 }
 
-variable "profile" {}
-
 variable "default_aws_region" {
   description = "The default AWS region to create resources in"
   type        = string
@@ -14,6 +12,7 @@ variable "default_aws_region" {
 variable "application_account_numbers" {
   description = "AWS account numbers for all application accounts that might need shared access to resources like KMS keys"
   type        = list(string)
+  default     = []
 }
 
 variable "account_number" {
@@ -124,6 +123,24 @@ variable "create_ecr_kms_key" {
   default     = true
 }
 
+variable "create_sqs_kms_key" {
+  description = "create KMS key for SQS"
+  type        = bool
+  default     = true
+}
+
+variable "create_nfw_kms_key" {
+  description = "create KMS key for NFW"
+  type        = bool
+  default     = true
+}
+
+variable "kms_multi_region" {
+  description = "Indicates whether the KMS key is a multi-Region (true) or regional (false) key."
+  type        = bool
+  default     = false
+}
+
 ### S3 ###
 variable "create_s3_accesslogs_bucket" {
   description = "Create S3 Access Logs Bucket"
@@ -159,6 +176,48 @@ variable "create_s3_config_bucket" {
   description = "Create S3 AWS Config Bucket for conformance pack storage"
   type        = bool
   default     = true
+}
+
+variable "s3_backup_settings" {
+  description = "Map of S3 bucket types to their backup settings"
+  type = map(object({
+    enable_backup = bool
+  }))
+  default = {
+    accesslogs = {
+      enable_backup = false # Assuming that a SIEM will ingest and store these logs
+    }
+    elb-accesslogs = {
+      enable_backup = false # Assuming that a SIEM will ingest and store these logs
+    }
+    backups = {
+      enable_backup = true
+    }
+    installs = {
+      enable_backup = true
+    }
+    fedrampdoc = {
+      enable_backup = true
+    }
+    cloudtrail = {
+      enable_backup = false # Assuming that a SIEM will ingest and store these logs
+    }
+    config = {
+      enable_backup = true
+    }
+  }
+}
+
+variable "s3_backup_policy" {
+  description = "S3 backup policy to use for S3 buckets in conjunction with AWS Backups, should match an existing policy"
+  type        = string
+  default     = "" # What you specified in AWS Backups pak, may look like "aws-backup-${var.resource_prefix}-default-policy"
+}
+
+variable "s3_tags" {
+  description = "Tags to be applied to S3 buckets"
+  type        = map(any)
+  default     = {}
 }
 
 ### Misc ###

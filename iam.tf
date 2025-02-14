@@ -3,21 +3,21 @@ resource "aws_iam_service_linked_role" "autoscale" {
 }
 
 resource "aws_iam_role" "eks_node_role" {
-  count      = var.create_eks_service_role ? 1 : 0
-  name = "EKSNodeRole"
+  count = var.create_eks_service_role ? 1 : 0
+  name  = "EKSNodeRole"
 
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Effect = "Allow",
-        Principal = {
-          Service = "ec2.amazonaws.com"
-        }
-        Action = "sts:AssumeRole"
-      }
-    ]
-  })
+  assume_role_policy = data.aws_iam_policy_document.eks_assume_role_policy.json
+}
+
+data "aws_iam_policy_document" "eks_assume_role_policy" {
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
+  }
 }
 
 data "aws_iam_policy" "eks_worker_policy" {

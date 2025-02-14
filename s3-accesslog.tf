@@ -1,3 +1,4 @@
+# Note: Cross-account and cross-region are impossible for S3 Access Logs, there must be 1 bucket per account, per region.
 module "s3-accesslogs" {
   count = var.create_s3_accesslogs_bucket ? 1 : 0
 
@@ -17,6 +18,14 @@ module "s3-accesslogs" {
   # Bucket Policy
   bucket_policy           = true
   aws_iam_policy_document = data.aws_iam_policy_document.s3_accesslogs_bucket_policy.json
+
+  # Tags
+  tags = merge(
+    try(var.s3_backup_settings["accesslogs"].enable_backup, false) && length(var.s3_backup_policy) > 0 ? {
+      backup_policy = var.s3_backup_policy
+    } : {},
+    var.s3_tags
+  )
 }
 
 data "aws_iam_policy_document" "s3_accesslogs_bucket_policy" {
@@ -53,21 +62,18 @@ data "aws_iam_policy_document" "s3_accesslogs_bucket_policy" {
     }
     resources = ["arn:${data.aws_partition.current.partition}:s3:::${var.resource_prefix}-${var.aws_region}-s3-accesslogs/*"]
   }
-  dynamic "statement" {
-    for_each = { for idx, account in var.application_account_numbers : idx => account if account != "" }
-    content {
-      actions = ["s3:PutObject"]
-      effect  = "Allow"
-      principals {
-        identifiers = [statement.value]
-        type        = "AWS"
-      }
-      condition {
-        test     = "StringEquals"
-        variable = "s3:x-amz-acl"
-        values   = ["bucket-owner-full-control"]
-      }
-      resources = ["arn:${data.aws_partition.current.partition}:s3:::${var.resource_prefix}-${var.aws_region}-s3-accesslogs/*"]
+  statement {
+    actions = ["s3:PutObject"]
+    effect  = "Allow"
+    principals {
+      identifiers = [var.account_number]
+      type        = "AWS"
     }
+    condition {
+      test     = "StringEquals"
+      variable = "s3:x-amz-acl"
+      values   = ["bucket-owner-full-control"]
+    }
+    resources = ["arn:${data.aws_partition.current.partition}:s3:::${var.resource_prefix}-${var.aws_region}-s3-accesslogs/*"]
   }
 }

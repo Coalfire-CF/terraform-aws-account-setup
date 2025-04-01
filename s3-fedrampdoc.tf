@@ -14,4 +14,12 @@ module "s3-fedrampdoc" {
   logging       = true
   target_bucket = module.s3-accesslogs[0].id
   target_prefix = "fedrampdoc/"
+
+  # Tags
+  tags = merge(
+    try(var.s3_backup_settings["fedrampdoc"].enable_backup, false) && length(var.s3_backup_policy) > 0 ? {
+      backup_policy = var.s3_backup_policy
+    } : {},
+    var.s3_tags
+  )
 }

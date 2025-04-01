@@ -22,6 +22,14 @@ module "s3-elb-accesslogs" {
   # Bucket Policy
   bucket_policy           = true
   aws_iam_policy_document = data.aws_iam_policy_document.elb_accesslogs_bucket_policy.json
+
+  # Tags
+  tags = merge(
+    try(var.s3_backup_settings["elb-accesslogs"].enable_backup, false) && length(var.s3_backup_policy) > 0 ? {
+      backup_policy = var.s3_backup_policy
+    } : {},
+    var.s3_tags
+  )
 }
 # https://docs.aws.amazon.com/elasticloadbalancing/latest/application/enable-access-logging.html
 data "aws_elb_service_account" "main" {}
@@ -65,8 +73,9 @@ data "aws_iam_policy_document" "elb_accesslogs_bucket_policy" {
     ]
   }
 
+  # Sharing using Account IDs
   dynamic "statement" {
-    for_each = { for idx, account in var.application_account_numbers : idx => account if account != "" }
+    for_each = toset(var.application_account_numbers)
     content {
       actions = ["s3:PutObject"]
       effect  = "Allow"
@@ -75,6 +84,25 @@ data "aws_iam_policy_document" "elb_accesslogs_bucket_policy" {
         type        = "AWS"
       }
       resources = ["arn:${data.aws_partition.current.partition}:s3:::${var.resource_prefix}-${var.aws_region}-elb-accesslogs/lb/AWSLogs/${statement.value}/*"]
+    }
+  }
+
+  # Sharing using AWS Organization ID
+  dynamic "statement" {
+    for_each = var.organization_id != null ? [1] : []
+    content {
+      actions = ["s3:PutObject"]
+      effect  = "Allow"
+      principals {
+        identifiers = ["arn:${data.aws_partition.current.partition}:iam::${data.aws_elb_service_account.main.id}:root"]
+        type        = "AWS"
+      }
+      resources = ["arn:${data.aws_partition.current.partition}:s3:::${var.resource_prefix}-${var.aws_region}-elb-accesslogs/lb/AWSLogs/*"]
+      condition {
+        test     = "StringEquals"
+        variable = "aws:PrincipalOrgID"
+        values   = [var.organization_id]
+      }
     }
   }
 }

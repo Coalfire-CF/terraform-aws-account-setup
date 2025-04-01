@@ -12,15 +12,11 @@ variable "default_aws_region" {
 variable "application_account_numbers" {
   description = "AWS account numbers for all application accounts that might need shared access to resources like KMS keys"
   type        = list(string)
+  default     = []
 }
 
 variable "account_number" {
   description = "The AWS account number resources are being deployed into"
-  type        = string
-}
-
-variable "root_org_account_number" {
-  description = "The AWS account number for the Root Org Account"
   type        = string
 }
 
@@ -121,6 +117,30 @@ variable "create_config_kms_key" {
   default     = true
 }
 
+variable "create_ecr_kms_key" {
+  description = "create KMS key for ECR"
+  type        = bool
+  default     = true
+}
+
+variable "create_sqs_kms_key" {
+  description = "create KMS key for SQS"
+  type        = bool
+  default     = true
+}
+
+variable "create_nfw_kms_key" {
+  description = "create KMS key for NFW"
+  type        = bool
+  default     = true
+}
+
+variable "kms_multi_region" {
+  description = "Indicates whether the KMS key is a multi-Region (true) or regional (false) key."
+  type        = bool
+  default     = false
+}
+
 ### S3 ###
 variable "create_s3_accesslogs_bucket" {
   description = "Create S3 Access Logs Bucket"
@@ -158,6 +178,48 @@ variable "create_s3_config_bucket" {
   default     = true
 }
 
+variable "s3_backup_settings" {
+  description = "Map of S3 bucket types to their backup settings"
+  type = map(object({
+    enable_backup = bool
+  }))
+  default = {
+    accesslogs = {
+      enable_backup = false # Assuming that a SIEM will ingest and store these logs
+    }
+    elb-accesslogs = {
+      enable_backup = false # Assuming that a SIEM will ingest and store these logs
+    }
+    backups = {
+      enable_backup = true
+    }
+    installs = {
+      enable_backup = true
+    }
+    fedrampdoc = {
+      enable_backup = true
+    }
+    cloudtrail = {
+      enable_backup = false # Assuming that a SIEM will ingest and store these logs
+    }
+    config = {
+      enable_backup = true
+    }
+  }
+}
+
+variable "s3_backup_policy" {
+  description = "S3 backup policy to use for S3 buckets in conjunction with AWS Backups, should match an existing policy"
+  type        = string
+  default     = "" # What you specified in AWS Backups pak, may look like "aws-backup-${var.resource_prefix}-default-policy"
+}
+
+variable "s3_tags" {
+  description = "Tags to be applied to S3 buckets"
+  type        = map(any)
+  default     = {}
+}
+
 ### Misc ###
 # Note: To my knowledge, it's not a common configuration to have Terraform state across multiple accounts, so this will default to false
 variable "create_security_core" {
@@ -170,6 +232,18 @@ variable "create_security_core" {
 # This is to prevent excessive numbers of AMIs in each account.
 variable "create_packer_iam" {
   description = "Whether or not to create Packer IAM resources"
+  type        = bool
+  default     = false
+}
+
+variable "packer_additional_iam_principal_arns" {
+  description = "List of IAM Principal ARNs allowed to assume the Packer IAM Role"
+  type        = list(string)
+  default     = []
+}
+
+variable "create_eks_service_role" {
+  description = "Boolean to create an EKS Node Group service role"
   type        = bool
   default     = false
 }

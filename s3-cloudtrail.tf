@@ -14,6 +14,14 @@ module "s3-cloudtrail" {
   logging       = true
   target_bucket = module.s3-accesslogs[0].id
   target_prefix = "cloudtrail/"
+
+  # Tags
+  tags = merge(
+    try(var.s3_backup_settings["cloudtrail"].enable_backup, false) && length(var.s3_backup_policy) > 0 ? {
+      backup_policy = var.s3_backup_policy
+    } : {},
+    var.s3_tags
+  )
 }
 
 resource "aws_s3_bucket_policy" "cloudtrail_bucket_policy" {
@@ -69,7 +77,7 @@ data "aws_iam_policy_document" "log_bucket_policy" {
   }
 
   dynamic "statement" {
-    for_each = { for idx, account in var.application_account_numbers : idx => account if account != "" }
+    for_each = toset(var.application_account_numbers)
     content {
       sid     = "AgencyAWSCloudTrailWrite-${statement.key}"
       actions = ["s3:PutObject"]
@@ -89,7 +97,7 @@ data "aws_iam_policy_document" "log_bucket_policy" {
   }
 
   dynamic "statement" {
-    for_each = { for idx, account in var.application_account_numbers : idx => account if account != "" }
+    for_each = toset(var.application_account_numbers)    
     content {
       sid     = "AgencyAWSCloudTrailAclCheck-${statement.key}"
       actions = ["s3:GetBucketAcl"]
@@ -99,6 +107,48 @@ data "aws_iam_policy_document" "log_bucket_policy" {
         type        = "AWS"
       }
       resources = [module.s3-cloudtrail[0].arn]
+    }
+  }
+
+# Sharing using AWS Organization ID
+  dynamic "statement" {
+    for_each = var.organization_id != null ? [1] : []
+    content {
+      actions = ["s3:PutObject"]
+      effect  = "Allow"
+      principals {
+        identifiers = ["*"]
+        type        = "AWS"
+      }
+      resources = ["${module.s3-cloudtrail[0].arn}/*"]
+      condition {
+        test     = "StringEquals"
+        variable = "s3:x-amz-acl"
+        values   = ["bucket-owner-full-control"]
+      }
+      condition {
+        test     = "StringEquals"
+        variable = "aws:PrincipalOrgID"
+        values   = [var.organization_id]
+      }
+    }
+  }
+
+  dynamic "statement" {
+    for_each = var.organization_id != null ? [1] : []
+    content {
+      actions = ["s3:GetBucketAcl"]
+      effect  = "Allow"
+      principals {
+        identifiers = ["*"]
+        type        = "AWS"
+      }
+      resources = [module.s3-cloudtrail[0].arn]
+      condition {
+        test     = "StringEquals"
+        variable = "aws:PrincipalOrgID"
+        values   = [var.organization_id]
+      }
     }
   }
 }

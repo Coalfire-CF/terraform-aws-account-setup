@@ -23,14 +23,14 @@ resource "aws_s3_bucket_policy" "cloudtrail_bucket_policy" {
   policy = data.aws_iam_policy_document.log_bucket_policy[0].json
 }
 
+
 data "aws_iam_policy_document" "log_bucket_policy" {
   count = var.create_cloudtrail && var.default_aws_region == var.aws_region ? 1 : 0
 
   statement {
     sid = "AWSCloudTrailWrite"
-    actions = [
-    "s3:PutObject"]
-    effect = "Allow"
+    actions = ["s3:PutObject"]
+    effect  = "Allow"
     principals {
       identifiers = [
       "cloudtrail.amazonaws.com"]
@@ -47,20 +47,18 @@ data "aws_iam_policy_document" "log_bucket_policy" {
 
   statement {
     sid = "AWSCloudTrailAclCheck"
-    actions = [
-    "s3:GetBucketAcl"]
-    effect = "Allow"
+    actions = ["s3:GetBucketAcl"]
+    effect  = "Allow"
     principals {
       identifiers = [
       "cloudtrail.amazonaws.com"]
       type = "Service"
     }
-    resources = [
-    module.s3-cloudtrail[0].arn]
+    resources = [module.s3-cloudtrail[0].arn]
   }
 
   statement {
-    sid     = "Stmt1546879543826"
+    sid     = "AllowEc2GetObject"
     actions = ["s3:GetObject"]
     effect  = "Allow"
     principals {
@@ -73,26 +71,27 @@ data "aws_iam_policy_document" "log_bucket_policy" {
   dynamic "statement" {
     for_each = { for idx, account in var.application_account_numbers : idx => account if account != "" }
     content {
-      #sid = "AgencyAWSCloudTrailWrite"
+      sid     = "AgencyAWSCloudTrailWrite-${statement.key}"
       actions = ["s3:PutObject"]
       effect  = "Allow"
       principals {
         identifiers = [statement.value]
         type        = "AWS"
       }
+      resources = ["${module.s3-cloudtrail[0].arn}/*"]
+
       condition {
         test     = "StringEquals"
         variable = "s3:x-amz-acl"
         values   = ["bucket-owner-full-control"]
       }
-      resources = ["${module.s3-cloudtrail[0].arn}/*"]
     }
   }
 
   dynamic "statement" {
     for_each = { for idx, account in var.application_account_numbers : idx => account if account != "" }
     content {
-      #sid = "AgencyAWSCloudTrailAclCheck"
+      sid     = "AgencyAWSCloudTrailAclCheck-${statement.key}"
       actions = ["s3:GetBucketAcl"]
       effect  = "Allow"
       principals {
@@ -103,3 +102,85 @@ data "aws_iam_policy_document" "log_bucket_policy" {
     }
   }
 }
+
+
+# data "aws_iam_policy_document" "log_bucket_policy" {
+#   count = var.create_cloudtrail && var.default_aws_region == var.aws_region ? 1 : 0
+
+#   statement {
+#     sid = "AWSCloudTrailWrite"
+#     actions = [
+#     "s3:PutObject"]
+#     effect = "Allow"
+#     principals {
+#       identifiers = [
+#       "cloudtrail.amazonaws.com"]
+#       type = "Service"
+#     }
+#     resources = ["${module.s3-cloudtrail[0].arn}/*"]
+
+#     condition {
+#       test     = "StringEquals"
+#       variable = "s3:x-amz-acl"
+#       values   = ["bucket-owner-full-control"]
+#     }
+#   }
+
+#   statement {
+#     sid = "AWSCloudTrailAclCheck"
+#     actions = [
+#     "s3:GetBucketAcl"]
+#     effect = "Allow"
+#     principals {
+#       identifiers = [
+#       "cloudtrail.amazonaws.com"]
+#       type = "Service"
+#     }
+#     resources = [
+#     module.s3-cloudtrail[0].arn]
+#   }
+
+#   statement {
+#     sid     = "AllowEc2GetObject"
+#     actions = ["s3:GetObject"]
+#     effect  = "Allow"
+#     principals {
+#       identifiers = ["ec2.amazonaws.com"]
+#       type        = "Service"
+#     }
+#     resources = ["${module.s3-cloudtrail[0].arn}/*"]
+#   }
+
+#   dynamic "statement" {
+#     for_each = { for idx, account in var.application_account_numbers : idx => account if account != "" }
+#     content {
+#       #sid = "AgencyAWSCloudTrailWrite"
+#       actions = ["s3:PutObject"]
+#       effect  = "Allow"
+#       principals {
+#         identifiers = [statement.value]
+#         type        = "AWS"
+#       }
+#       condition {
+#         test     = "StringEquals"
+#         variable = "s3:x-amz-acl"
+#         values   = ["bucket-owner-full-control"]
+#       }
+#       resources = ["${module.s3-cloudtrail[0].arn}/*"]
+#     }
+#   }
+
+#   dynamic "statement" {
+#     for_each = { for idx, account in var.application_account_numbers : idx => account if account != "" }
+#     content {
+#       #sid = "AgencyAWSCloudTrailAclCheck"
+#       actions = ["s3:GetBucketAcl"]
+#       effect  = "Allow"
+#       principals {
+#         identifiers = [statement.value]
+#         type        = "AWS"
+#       }
+#       resources = [module.s3-cloudtrail[0].arn]
+#     }
+#   }
+# }

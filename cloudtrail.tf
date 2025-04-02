@@ -15,7 +15,6 @@ resource "aws_cloudtrail" "all_cloudtrail" {
 
   lifecycle {
     ignore_changes = all # Ignores ALL changes
-    prevent_destroy = true  # Prevents accidental deletion
   }
 }
 resource "aws_cloudwatch_log_group" "cloudtrail_log_group" {

@@ -14,7 +14,7 @@ resource "aws_cloudtrail" "all_cloudtrail" {
   depends_on                    = [aws_s3_bucket_policy.cloudtrail_bucket_policy]
 
   lifecycle {
-    ignore_changes = all # Ignores ALL changes
+    ignore_changes = all # Ignores ALL changes for reapplys to be cleaner. Can destroy and recreate if changes are needed.
   }
 }
 resource "aws_cloudwatch_log_group" "cloudtrail_log_group" {

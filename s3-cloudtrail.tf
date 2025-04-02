@@ -79,7 +79,7 @@ data "aws_iam_policy_document" "log_bucket_policy" {
   dynamic "statement" {
     for_each = toset(var.application_account_numbers)
     content {
-      sid     = "AgencyAWSCloudTrailWrite-${statement.key}"
+      sid     = "AWSCloudTrailWrite-${statement.key}"
       actions = ["s3:PutObject"]
       effect  = "Allow"
       principals {
@@ -99,7 +99,7 @@ data "aws_iam_policy_document" "log_bucket_policy" {
   dynamic "statement" {
     for_each = toset(var.application_account_numbers)    
     content {
-      sid     = "AgencyAWSCloudTrailAclCheck-${statement.key}"
+      sid     = "AWSCloudTrailAclGET-${statement.key}"
       actions = ["s3:GetBucketAcl"]
       effect  = "Allow"
       principals {
@@ -114,6 +114,7 @@ data "aws_iam_policy_document" "log_bucket_policy" {
   dynamic "statement" {
     for_each = var.organization_id != null ? [1] : []
     content {
+      sid     = "AWSCloudTrailAclOrgPUT"
       actions = ["s3:PutObject"]
       effect  = "Allow"
       principals {
@@ -137,6 +138,7 @@ data "aws_iam_policy_document" "log_bucket_policy" {
   dynamic "statement" {
     for_each = var.organization_id != null ? [1] : []
     content {
+      sid     = "AWSCloudTrailAclOrgGET"
       actions = ["s3:GetBucketAcl"]
       effect  = "Allow"
       principals {

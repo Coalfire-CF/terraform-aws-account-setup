@@ -31,16 +31,18 @@ resource "aws_s3_bucket_policy" "cloudtrail_bucket_policy" {
   policy = data.aws_iam_policy_document.log_bucket_policy[0].json
 }
 
+
 data "aws_iam_policy_document" "log_bucket_policy" {
   count = var.create_cloudtrail && var.default_aws_region == var.aws_region ? 1 : 0
 
   statement {
-    sid     = "AWSCloudTrailWrite"
+    sid = "AWSCloudTrailWrite"
     actions = ["s3:PutObject"]
     effect  = "Allow"
     principals {
-      identifiers = ["cloudtrail.amazonaws.com"]
-      type        = "Service"
+      identifiers = [
+      "cloudtrail.amazonaws.com"]
+      type = "Service"
     }
     resources = ["${module.s3-cloudtrail[0].arn}/*"]
 
@@ -52,18 +54,19 @@ data "aws_iam_policy_document" "log_bucket_policy" {
   }
 
   statement {
-    sid     = "AWSCloudTrailAclCheck"
+    sid = "AWSCloudTrailAclCheck"
     actions = ["s3:GetBucketAcl"]
     effect  = "Allow"
     principals {
-      identifiers = ["cloudtrail.amazonaws.com"]
-      type        = "Service"
+      identifiers = [
+      "cloudtrail.amazonaws.com"]
+      type = "Service"
     }
     resources = [module.s3-cloudtrail[0].arn]
   }
 
   statement {
-    sid     = "Stmt1546879543826"
+    sid     = "AllowEc2GetObject"
     actions = ["s3:GetObject"]
     effect  = "Allow"
     principals {
@@ -73,28 +76,30 @@ data "aws_iam_policy_document" "log_bucket_policy" {
     resources = ["${module.s3-cloudtrail[0].arn}/*"]
   }
 
-  # Sharing using Account IDs
   dynamic "statement" {
     for_each = toset(var.application_account_numbers)
     content {
+      sid     = "AWSCloudTrailWrite-${statement.key}"
       actions = ["s3:PutObject"]
       effect  = "Allow"
       principals {
         identifiers = [statement.value]
         type        = "AWS"
       }
+      resources = ["${module.s3-cloudtrail[0].arn}/*"]
+
       condition {
         test     = "StringEquals"
         variable = "s3:x-amz-acl"
         values   = ["bucket-owner-full-control"]
       }
-      resources = ["${module.s3-cloudtrail[0].arn}/*"]
     }
   }
 
   dynamic "statement" {
-    for_each = toset(var.application_account_numbers)
+    for_each = toset(var.application_account_numbers)    
     content {
+      sid     = "AWSCloudTrailAclGET-${statement.key}"
       actions = ["s3:GetBucketAcl"]
       effect  = "Allow"
       principals {
@@ -105,10 +110,11 @@ data "aws_iam_policy_document" "log_bucket_policy" {
     }
   }
 
-  # Sharing using AWS Organization ID
+# Sharing using AWS Organization ID
   dynamic "statement" {
     for_each = var.organization_id != null ? [1] : []
     content {
+      sid     = "AWSCloudTrailAclOrgPUT"
       actions = ["s3:PutObject"]
       effect  = "Allow"
       principals {
@@ -132,6 +138,7 @@ data "aws_iam_policy_document" "log_bucket_policy" {
   dynamic "statement" {
     for_each = var.organization_id != null ? [1] : []
     content {
+      sid     = "AWSCloudTrailAclOrgGET"
       actions = ["s3:GetBucketAcl"]
       effect  = "Allow"
       principals {
@@ -139,11 +146,6 @@ data "aws_iam_policy_document" "log_bucket_policy" {
         type        = "AWS"
       }
       resources = [module.s3-cloudtrail[0].arn]
-      condition {
-        test     = "StringEquals"
-        variable = "s3:x-amz-acl"
-        values   = ["bucket-owner-full-control"]
-      }
       condition {
         test     = "StringEquals"
         variable = "aws:PrincipalOrgID"

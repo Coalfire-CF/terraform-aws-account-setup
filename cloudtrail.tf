@@ -12,6 +12,10 @@ resource "aws_cloudtrail" "all_cloudtrail" {
   enable_log_file_validation    = true
   kms_key_id                    = module.s3_kms_key[0].kms_key_arn
   depends_on                    = [aws_s3_bucket_policy.cloudtrail_bucket_policy]
+
+  lifecycle {
+    ignore_changes = all # Ignores ALL changes for reapplys to be cleaner. Can destroy and recreate if changes are needed.
+  }
 }
 resource "aws_cloudwatch_log_group" "cloudtrail_log_group" {
   count = var.create_cloudtrail ? 1 : 0

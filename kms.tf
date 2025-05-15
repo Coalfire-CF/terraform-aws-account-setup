@@ -115,7 +115,7 @@ module "ebs_kms_key" {
   resource_prefix       = var.resource_prefix
   multi_region          = var.kms_multi_region
 
-  depends_on = [aws_iam_service_linked_role.autoscale]
+  #depends_on = [aws_iam_service_linked_role.autoscale]
 }
 
 data "aws_iam_policy_document" "ebs_key" {

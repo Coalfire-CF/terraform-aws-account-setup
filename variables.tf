@@ -50,6 +50,13 @@ variable "cloudwatch_log_group_retention_in_days" {
   default     = 30
 }
 
+### AWS AutoScale IAM Role ###
+variable "create_autoscale_role" {
+  description = "Create AWS Autoscale IAM Role (needed for any autoscaling aws resources)"
+  type = bool
+  default = true
+}
+
 ### KMS ###
 variable "additional_kms_keys" {
   description = "a list of maps of any additional KMS keys that need to be created"
@@ -242,8 +249,8 @@ variable "packer_additional_iam_principal_arns" {
   default     = []
 }
 
-variable "create_eks_service_role" {
-  description = "Boolean to create an EKS Node Group service role"
-  type        = bool
-  default     = false
-}
+# variable "create_eks_service_role" {
+#   description = "Boolean to create an EKS Node Group service role"
+#   type        = bool
+#   default     = false
+# }

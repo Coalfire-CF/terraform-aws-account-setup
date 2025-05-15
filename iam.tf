@@ -1,6 +1,7 @@
-# resource "aws_iam_service_linked_role" "autoscale" {
-#   aws_service_name = "autoscaling.amazonaws.com"
-# }
+resource "aws_iam_service_linked_role" "autoscale" {
+  count = var.create_autoscale_role ? 1 : 0
+  aws_service_name = "autoscaling.amazonaws.com"
+}
 
 # resource "aws_iam_role" "eks_node_role" {
 #   count = var.create_eks_service_role ? 1 : 0

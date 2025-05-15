@@ -248,9 +248,3 @@ variable "packer_additional_iam_principal_arns" {
   type        = list(string)
   default     = []
 }
-
-# variable "create_eks_service_role" {
-#   description = "Boolean to create an EKS Node Group service role"
-#   type        = bool
-#   default     = false
-# }

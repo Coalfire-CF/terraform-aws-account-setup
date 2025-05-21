@@ -1,0 +1,11 @@
+name: Org Terraform Validate
+on:
+    pull_request:
+        types:
+        - opened
+
+jobs:
+  create-release:
+    uses: Coalfire-CF/Actions/.github/workflows/org-terraform-validate.yml@main
+    with:
+      terraform_version: '1.9.5'

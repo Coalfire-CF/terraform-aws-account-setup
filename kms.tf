@@ -58,53 +58,6 @@ data "aws_iam_policy_document" "kms_base_and_sharing_permissions" {
   }
 }
 
-module "dynamo_kms_key" {
-  count = var.create_dynamo_kms_key ? 1 : 0
-
-  source = "github.com/Coalfire-CF/terraform-aws-kms?ref=v1.0.1"
-
-  key_policy            = data.aws_iam_policy_document.dynamo_key[0].json
-  kms_key_resource_type = "dynamodb"
-  resource_prefix       = var.resource_prefix
-  multi_region          = var.kms_multi_region
-}
-
-data "aws_iam_policy_document" "dynamo_key" {
-  count = var.create_dynamo_kms_key ? 1 : 0
-
-  #checkov:skip=CKV_AWS_109: "Ensure IAM policies does not allow permissions management / resource exposure without constraints"
-  #checkov:skip=CKV_AWS_111: "Ensure IAM policies does not allow write access without constraints"
-  # https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-default.html
-
-  source_policy_documents = [
-    data.aws_iam_policy_document.kms_base_and_sharing_permissions.json
-  ]
-
-  statement {
-    effect = "Allow"
-    actions = [
-      "kms:Encrypt",
-      "kms:Decrypt",
-      "kms:ReEncrypt*",
-      "kms:GenerateDataKey*",
-      "kms:DescribeKey",
-      "kms:CreateGrant",
-      "kms:ListGrants"
-    ]
-    resources = ["*"]
-    principals {
-      type        = "AWS"
-      identifiers = ["arn:${data.aws_partition.current.partition}:iam::${var.account_number}:root"]
-    }
-    condition {
-      test     = "StringLike"
-      variable = "kms:ViaService"
-      values   = ["dynamodb.*.amazonaws.com"]
-
-    }
-  }
-}
-
 module "ebs_kms_key" {
   count = var.create_ebs_kms_key ? 1 : 0
 

@@ -1,0 +1,15 @@
+name: Terraform fmt
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  terraform-docs:
+    uses: Coalfire-CF/Actions/.github/workflows/org-terraform-fmt.yml@main
+    with:
+      terraform_version: '1.9.5'

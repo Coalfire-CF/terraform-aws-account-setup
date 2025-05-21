@@ -62,14 +62,6 @@ output "s3_kms_key_id" {
   value = try(module.s3_kms_key[0].kms_key_id, null)
 }
 
-output "dynamo_kms_key_arn" {
-  value = try(module.dynamo_kms_key[0].kms_key_arn, null)
-}
-
-output "dynamo_kms_key_id" {
-  value = try(module.dynamo_kms_key[0].kms_key_id, null)
-}
-
 output "ebs_kms_key_arn" {
   value = try(module.ebs_kms_key[0].kms_key_arn, null)
 }
@@ -168,10 +160,6 @@ output "additional_kms_key_ids" {
 
 output "s3_tstate_bucket_name" {
   value = try(module.security-core[0].tstate_bucket_name, null)
-}
-
-output "dynamodb_table_name" {
-  value = try(module.security-core[0].dynamodb_table_name, null)
 }
 
 output "packer_iam_role_arn" {

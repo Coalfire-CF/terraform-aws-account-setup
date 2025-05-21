@@ -131,7 +131,7 @@ data "aws_iam_policy_document" "ebs_key" {
   ################################################################################
   # Auto-Scaling Group
   ################################################################################
-  # AWS Account must have AutoScale Role which is created by variable create_autoscale_role
+  # AWS Account must have AWSServiceRoleForAutoScaling Role which is created by variable create_autoscale_role
   # https://docs.aws.amazon.com/autoscaling/ec2/userguide/key-policy-requirements-EBS-encryption.html#policy-example-cmk-access
   statement {
     effect = "Allow"

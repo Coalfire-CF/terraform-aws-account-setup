@@ -15,7 +15,7 @@ FedRAMP Compliance: High
 Resources that are created as a part of this module include:
 
 - IAM role, policies, and instance profiles for Packer to assume during AMI creation (Optional, one account can build and store AMIs and share them with other accounts)
-- KMS keys and typically required IAM permissions for commonly used services (S3, DynamoDB, ELB, RDS, EBS, etc.)
+- KMS keys and typically required IAM permissions for commonly used services (S3, ELB, RDS, EBS, etc.)
 - S3 buckets (ELB Access Logs bucket is optional, with multiple accounts, you can designate one as a centralized logging account and have other accounts send ELB logs to one account's bucket, this is not possible with S3 access logs where the bucket must be in the same account & region)
   - Set "create_s3_elb_accesslogs_bucket" to "true" if this is run in an account where you want the logs to be sent.
 - Security core module resources (Optional, Terraform state resources don't have to be in every account)
@@ -119,7 +119,7 @@ module "account-setup" {
 }
 ```
 
-Member account.  Does not need Terraform resources (S3 bucket to store state, DynamoDB table for state lock), Packer AMIs will not be built in this account, is not a Management account for AWS Organizations, does not need to share IAM permissions (s3 buckets, KMS keys) to any other account.  The default configuration also creates individually owned Customer KMS Keys.
+Member account.  Does not need Terraform resources (S3 bucket to store state), Packer AMIs will not be built in this account, is not a Management account for AWS Organizations, does not need to share IAM permissions (s3 buckets, KMS keys) to any other account.  The default configuration also creates individually owned Customer KMS Keys.
 ```hcl
 module "account-setup" {
   source = "github.com/Coalfire-CF/terraform-aws-account-setup?ref=v0.0.20"

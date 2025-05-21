@@ -68,11 +68,10 @@ module "ebs_kms_key" {
   resource_prefix       = var.resource_prefix
   multi_region          = var.kms_multi_region
 
-  depends_on = [aws_iam_service_linked_role.autoscale]
 }
 
 data "aws_iam_policy_document" "ebs_key" {
-  count = var.create_ebs_kms_key ? 1 : 0
+  count = (var.create_ebs_kms_key || var.create_autoscale_role) ? 1 : 0 
 
   #checkov:skip=CKV_AWS_109: "Ensure IAM policies does not allow permissions management / resource exposure without constraints"
   #checkov:skip=CKV_AWS_111: "Ensure IAM policies does not allow write access without constraints"
@@ -85,7 +84,7 @@ data "aws_iam_policy_document" "ebs_key" {
   ################################################################################
   # Auto-Scaling Group
   ################################################################################
-
+  # AWS Account must have AWSServiceRoleForAutoScaling Role which is created by variable create_autoscale_role
   # https://docs.aws.amazon.com/autoscaling/ec2/userguide/key-policy-requirements-EBS-encryption.html#policy-example-cmk-access
   statement {
     effect = "Allow"

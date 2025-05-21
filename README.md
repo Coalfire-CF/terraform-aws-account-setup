@@ -471,6 +471,7 @@ Copyright © 2023 Coalfire Systems Inc.
 ## Tree
 ```
 .
+|-- CHANGELOG.md
 |-- CONTRIBUTING.md
 |-- License.md
 |-- README.md

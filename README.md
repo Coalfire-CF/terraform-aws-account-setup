@@ -182,7 +182,7 @@ module "account-setup" {
 | <a name="module_s3-fedrampdoc"></a> [s3-fedrampdoc](#module\_s3-fedrampdoc) | github.com/Coalfire-CF/terraform-aws-s3 | v1.0.4 |
 | <a name="module_s3-installs"></a> [s3-installs](#module\_s3-installs) | github.com/Coalfire-CF/terraform-aws-s3 | v1.0.4 |
 | <a name="module_s3_kms_key"></a> [s3\_kms\_key](#module\_s3\_kms\_key) | github.com/Coalfire-CF/terraform-aws-kms | v1.0.1 |
-| <a name="module_security-core"></a> [security-core](#module\_security-core) | github.com/Coalfire-CF/terraform-aws-securitycore | v0.0.23 |
+| <a name="module_security-core"></a> [security-core](#module\_security-core) | github.com/Coalfire-CF/terraform-aws-securitycore | v0.0.24 |
 | <a name="module_sm_kms_key"></a> [sm\_kms\_key](#module\_sm\_kms\_key) | github.com/Coalfire-CF/terraform-aws-kms | v1.0.1 |
 | <a name="module_sns_kms_key"></a> [sns\_kms\_key](#module\_sns\_kms\_key) | github.com/Coalfire-CF/terraform-aws-kms | v1.0.1 |
 | <a name="module_sqs_kms_key"></a> [sqs\_kms\_key](#module\_sqs\_kms\_key) | github.com/Coalfire-CF/ACE-AWS-KMS | v1.0.1 |
@@ -248,7 +248,6 @@ module "account-setup" {
 | <a name="input_create_cloudtrail"></a> [create\_cloudtrail](#input\_create\_cloudtrail) | Whether or not to create cloudtrail resources | `bool` | `false` | no |
 | <a name="input_create_cloudwatch_kms_key"></a> [create\_cloudwatch\_kms\_key](#input\_create\_cloudwatch\_kms\_key) | create KMS key for AWS Cloudwatch | `bool` | `true` | no |
 | <a name="input_create_config_kms_key"></a> [create\_config\_kms\_key](#input\_create\_config\_kms\_key) | create KMS key for AWS Cloudwatch | `bool` | `true` | no |
-| <a name="input_create_dynamo_kms_key"></a> [create\_dynamo\_kms\_key](#input\_create\_dynamo\_kms\_key) | create KMS key for dynamodb | `bool` | `true` | no |
 | <a name="input_create_ebs_kms_key"></a> [create\_ebs\_kms\_key](#input\_create\_ebs\_kms\_key) | create KMS key for ebs | `bool` | `true` | no |
 | <a name="input_create_ecr_kms_key"></a> [create\_ecr\_kms\_key](#input\_create\_ecr\_kms\_key) | create KMS key for ECR | `bool` | `true` | no |
 | <a name="input_create_eks_service_role"></a> [create\_eks\_service\_role](#input\_create\_eks\_service\_role) | Boolean to create an EKS Node Group service role | `bool` | `false` | no |

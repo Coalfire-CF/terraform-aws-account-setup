@@ -88,12 +88,6 @@ variable "create_sm_kms_key" {
   default     = true
 }
 
-variable "create_dynamo_kms_key" {
-  description = "create KMS key for dynamodb"
-  type        = bool
-  default     = true
-}
-
 variable "create_lambda_kms_key" {
   description = "create KMS key for lambda"
   type        = bool

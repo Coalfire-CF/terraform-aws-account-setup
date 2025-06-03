@@ -279,3 +279,30 @@ Copyright © 2023 Coalfire Systems Inc.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+## Tree
+```
+.
+|-- CHANGELOG.md
+|-- CONTRIBUTING.md
+|-- License.md
+|-- README.md
+|-- cloudtrail.tf
+|-- coalfire_logo.png
+|-- data.tf
+|-- iam.tf
+|-- kms.tf
+|-- outputs.tf
+|-- packer_iam.tf
+|-- providers.tf
+|-- release-please-config.json
+|-- s3-accesslog.tf
+|-- s3-aws-config.tf
+|-- s3-backups.tf
+|-- s3-cloudtrail.tf
+|-- s3-elb-accesslog.tf
+|-- s3-fedrampdoc.tf
+|-- s3-installs.tf
+|-- security-core.tf
+|-- update-readme-tree.sh
+|-- variables.tf
+```

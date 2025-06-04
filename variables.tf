@@ -53,8 +53,8 @@ variable "cloudwatch_log_group_retention_in_days" {
 ### AWS AutoScale IAM Role ###
 variable "create_autoscale_role" {
   description = "Create AWS Autoscale IAM Role (needed for any autoscaling aws resources)"
-  type = bool
-  default = true #If AWSServiceRoleForAutoScaling role already exists in environment will have to set this var to false where the module is called
+  type        = bool
+  default     = true #If AWSServiceRoleForAutoScaling role already exists in environment will have to set this var to false where the module is called
 }
 
 ### KMS ###

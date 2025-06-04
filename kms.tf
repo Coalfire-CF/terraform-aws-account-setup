@@ -71,7 +71,7 @@ module "ebs_kms_key" {
 }
 
 data "aws_iam_policy_document" "ebs_key" {
-  count = (var.create_ebs_kms_key || var.create_autoscale_role) ? 1 : 0 
+  count = (var.create_ebs_kms_key || var.create_autoscale_role) ? 1 : 0
 
   #checkov:skip=CKV_AWS_109: "Ensure IAM policies does not allow permissions management / resource exposure without constraints"
   #checkov:skip=CKV_AWS_111: "Ensure IAM policies does not allow write access without constraints"

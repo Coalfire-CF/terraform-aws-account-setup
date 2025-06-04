@@ -478,6 +478,7 @@ Copyright © 2023 Coalfire Systems Inc.
 |-- cloudtrail.tf
 |-- coalfire_logo.png
 |-- data.tf
+|-- ec2-key-pair.tf
 |-- iam.tf
 |-- kms.tf
 |-- outputs.tf

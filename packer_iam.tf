@@ -142,6 +142,19 @@ data "aws_iam_policy_document" "packer_policy_document" {
     ]
     resources = ["*"]
   }
+
+  # Not officially part of the permission set provided by Hashicorp, but still generally needed by all EC2 using IMDSv2
+  # and you want to use metadata and/or IAM permissions for something else (scripting, Ansible, etc.)
+  statement {
+    sid    = "IMDSv2Permissions"
+    effect = "Allow"
+    actions = [
+      "ec2:MetadataHttpEndpoint",
+      "ec2:MetadataHttpPutResponseHopLimit",
+      "ec2:MetadataHttpTokens"
+    ]
+    resources = ["*"]
+  }
 }
 
 

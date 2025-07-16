@@ -242,3 +242,15 @@ variable "packer_additional_iam_principal_arns" {
   type        = list(string)
   default     = []
 }
+
+variable "ssh_key_name" {
+  description = "The name of the SSH key pair to use for EC2 instances."
+  type        = string
+  default     = "fedramp-mgmt-gov-key"
+}
+
+variable "ssh_key_secret_name" {
+  description = "The name of the secret in Secrets Manager that stores the private SSH key."
+  type        = string
+  default     = "/management/fedramp-mgmt-gov/ec2-key-pair "
+}

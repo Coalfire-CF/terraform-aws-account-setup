@@ -387,6 +387,8 @@ SSO-based authentication (via IAM Identity Center SSO):
 | <a name="input_s3_backup_policy"></a> [s3\_backup\_policy](#input\_s3\_backup\_policy) | S3 backup policy to use for S3 buckets in conjunction with AWS Backups, should match an existing policy | `string` | `""` | no |
 | <a name="input_s3_backup_settings"></a> [s3\_backup\_settings](#input\_s3\_backup\_settings) | Map of S3 bucket types to their backup settings | <pre>map(object({<br/>    enable_backup = bool<br/>  }))</pre> | <pre>{<br/>  "accesslogs": {<br/>    "enable_backup": false<br/>  },<br/>  "backups": {<br/>    "enable_backup": true<br/>  },<br/>  "cloudtrail": {<br/>    "enable_backup": false<br/>  },<br/>  "config": {<br/>    "enable_backup": true<br/>  },<br/>  "elb-accesslogs": {<br/>    "enable_backup": false<br/>  },<br/>  "fedrampdoc": {<br/>    "enable_backup": true<br/>  },<br/>  "installs": {<br/>    "enable_backup": true<br/>  }<br/>}</pre> | no |
 | <a name="input_s3_tags"></a> [s3\_tags](#input\_s3\_tags) | Tags to be applied to S3 buckets | `map(any)` | `{}` | no |
+| <a name="input_ssh_key_name"></a> [ssh\_key\_name](#input\_ssh\_key\_name) | The name of the SSH key pair to use for EC2 instances. | `string` | `"fedramp-mgmt-gov-key"` | no |
+| <a name="input_ssh_key_secret_name"></a> [ssh\_key\_secret\_name](#input\_ssh\_key\_secret\_name) | The name of the secret in Secrets Manager that stores the private SSH key. | `string` | `"/management/fedramp-mgmt-gov/ec2-key-pair "` | no |
 
 ## Outputs
 

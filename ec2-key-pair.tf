@@ -4,13 +4,14 @@ resource "tls_private_key" "ssh_key" {
 }
 
 resource "aws_key_pair" "generated_key" {
-  key_name   = "prefix-fedramp-mgmt-gov-key" #replace prefix with proper name
+  key_name = "${var.resource_prefix}-fedramp-mgmt-gov-key"
   public_key = tls_private_key.ssh_key.public_key_openssh
 }
 
 # Store the private key in AWS Secrets Manager
 resource "aws_secretsmanager_secret" "keypair_secret" {
-  name       = "/management/fedramp-mgmt-gov/prefix-ec2-key-pair" #replace with proper prefix
+  name       = "/management/fedramp-mgmt-gov/${var.resource_prefix}-ec2-key-pair"
+
   kms_key_id = module.setup.sm_kms_key_id
 }
 

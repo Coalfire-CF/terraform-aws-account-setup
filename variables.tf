@@ -252,5 +252,5 @@ variable "ssh_key_name" {
 variable "ssh_key_secret_name" {
   description = "The name of the secret in Secrets Manager that stores the private SSH key."
   type        = string
-  default     = "/management/fedramp-mgmt-gov/ec2-key-pair "
+  default     = "/management/fedramp-mgmt-gov/ec2-key-pair"
 }

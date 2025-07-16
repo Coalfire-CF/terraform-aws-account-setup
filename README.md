@@ -275,7 +275,6 @@ SSO-based authentication (via IAM Identity Center SSO):
 | Name | Version |
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 5.0 |
-| <a name="provider_aws.pak-testing"></a> [aws.pak-testing](#provider\_aws.pak-testing) | ~> 5.0 |
 | <a name="provider_tls"></a> [tls](#provider\_tls) | n/a |
 
 ## Modules

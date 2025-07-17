@@ -12,7 +12,8 @@ resource "aws_key_pair" "generated_key" {
 resource "aws_secretsmanager_secret" "keypair_secret" {
   name = var.ssh_key_secret_name
 
-  kms_key_id = module.setup.sm_kms_key_id
+  # kms_key_id = module.setup.sm_kms_key_id
+  kms_key_id = module.sm_kms_key.kms_key_id
 }
 
 resource "aws_secretsmanager_secret_version" "keypair_secret_version" {

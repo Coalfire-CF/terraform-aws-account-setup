@@ -8,7 +8,7 @@ data "aws_iam_policy_document" "default_key_policy" {
     effect  = "Allow"
     actions = ["kms:*"]
     principals {
-      identifiers = ["arn:${ata.aws_partition.current.partition}:iam::${var.account_number}:root"]
+      identifiers = ["arn:${data.aws_partition.current.partition}:iam::${var.account_number}:root"]
       type        = "AWS"
     }
     resources = ["*"]

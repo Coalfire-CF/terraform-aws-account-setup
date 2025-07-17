@@ -394,7 +394,8 @@ data "aws_iam_policy_document" "additional_kms_keys" {
 
   source_policy_documents = [
     data.aws_iam_policy_document.kms_base_and_sharing_permissions.json,
-    each.value.policy
+    each.value.policy,
+    data.aws_iam_policy_document.default_key_policy.json # KMT
   ]
 }
 

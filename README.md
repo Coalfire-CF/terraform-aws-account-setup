@@ -465,6 +465,7 @@ Copyright © 2023 Coalfire Systems Inc.
 |-- data.tf
 |-- ec2-key-pair.tf
 |-- iam.tf
+|-- kms-iam.tf
 |-- kms.tf
 |-- outputs.tf
 |-- packer_iam.tf

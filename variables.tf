@@ -53,8 +53,8 @@ variable "cloudwatch_log_group_retention_in_days" {
 ### AWS AutoScale IAM Role ###
 variable "create_autoscale_role" {
   description = "Create AWS Autoscale IAM Role (needed for any autoscaling aws resources)"
-  type = bool
-  default = true #If AWSServiceRoleForAutoScaling role already exists in environment will have to set this var to false where the module is called
+  type        = bool
+  default     = true #If AWSServiceRoleForAutoScaling role already exists in environment will have to set this var to false where the module is called
 }
 
 ### KMS ###
@@ -241,4 +241,16 @@ variable "packer_additional_iam_principal_arns" {
   description = "List of IAM Principal ARNs allowed to assume the Packer IAM Role"
   type        = list(string)
   default     = []
+}
+
+variable "ssh_key_name" {
+  description = "The name of the SSH key pair to use for EC2 instances."
+  type        = string
+  default     = "fedramp-mgmt-gov-key"
+}
+
+variable "ssh_key_secret_name" {
+  description = "The name of the secret in Secrets Manager that stores the private SSH key."
+  type        = string
+  default     = "/management/fedramp-mgmt-gov/ec2-key-pair"
 }

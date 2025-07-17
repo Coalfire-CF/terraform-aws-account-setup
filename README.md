@@ -275,6 +275,7 @@ SSO-based authentication (via IAM Identity Center SSO):
 | Name | Version |
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 5.0 |
+| <a name="provider_tls"></a> [tls](#provider\_tls) | n/a |
 
 ## Modules
 
@@ -316,10 +317,14 @@ SSO-based authentication (via IAM Identity Center SSO):
 | [aws_iam_role.cloudtrail-role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role.packer_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_service_linked_role.autoscale](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_service_linked_role) | resource |
+| [aws_key_pair.generated_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/key_pair) | resource |
 | [aws_kms_grant.packer_ebs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_grant) | resource |
 | [aws_kms_grant.packer_s3](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_grant) | resource |
 | [aws_s3_bucket_policy.cloudtrail_bucket_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy) | resource |
 | [aws_s3_bucket_policy.config_bucket_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy) | resource |
+| [aws_secretsmanager_secret.keypair_secret](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret) | resource |
+| [aws_secretsmanager_secret_version.keypair_secret_version](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret_version) | resource |
+| [tls_private_key.ssh_key](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key) | resource |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 | [aws_elb_service_account.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/elb_service_account) | data source |
 | [aws_iam_policy_document.additional_kms_keys](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
@@ -382,6 +387,8 @@ SSO-based authentication (via IAM Identity Center SSO):
 | <a name="input_s3_backup_policy"></a> [s3\_backup\_policy](#input\_s3\_backup\_policy) | S3 backup policy to use for S3 buckets in conjunction with AWS Backups, should match an existing policy | `string` | `""` | no |
 | <a name="input_s3_backup_settings"></a> [s3\_backup\_settings](#input\_s3\_backup\_settings) | Map of S3 bucket types to their backup settings | <pre>map(object({<br/>    enable_backup = bool<br/>  }))</pre> | <pre>{<br/>  "accesslogs": {<br/>    "enable_backup": false<br/>  },<br/>  "backups": {<br/>    "enable_backup": true<br/>  },<br/>  "cloudtrail": {<br/>    "enable_backup": false<br/>  },<br/>  "config": {<br/>    "enable_backup": true<br/>  },<br/>  "elb-accesslogs": {<br/>    "enable_backup": false<br/>  },<br/>  "fedrampdoc": {<br/>    "enable_backup": true<br/>  },<br/>  "installs": {<br/>    "enable_backup": true<br/>  }<br/>}</pre> | no |
 | <a name="input_s3_tags"></a> [s3\_tags](#input\_s3\_tags) | Tags to be applied to S3 buckets | `map(any)` | `{}` | no |
+| <a name="input_ssh_key_name"></a> [ssh\_key\_name](#input\_ssh\_key\_name) | The name of the SSH key pair to use for EC2 instances. | `string` | `"fedramp-mgmt-gov-key"` | no |
+| <a name="input_ssh_key_secret_name"></a> [ssh\_key\_secret\_name](#input\_ssh\_key\_secret\_name) | The name of the secret in Secrets Manager that stores the private SSH key. | `string` | `"/management/fedramp-mgmt-gov/ec2-key-pair"` | no |
 
 ## Outputs
 
@@ -456,6 +463,7 @@ Copyright © 2023 Coalfire Systems Inc.
 |-- cloudtrail.tf
 |-- coalfire_logo.png
 |-- data.tf
+|-- ec2-key-pair.tf
 |-- iam.tf
 |-- kms.tf
 |-- outputs.tf

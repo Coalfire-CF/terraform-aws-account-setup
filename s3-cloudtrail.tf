@@ -36,7 +36,7 @@ data "aws_iam_policy_document" "log_bucket_policy" {
   count = var.create_cloudtrail && var.default_aws_region == var.aws_region ? 1 : 0
 
   statement {
-    sid = "AWSCloudTrailWrite"
+    sid     = "AWSCloudTrailWrite"
     actions = ["s3:PutObject"]
     effect  = "Allow"
     principals {
@@ -54,7 +54,7 @@ data "aws_iam_policy_document" "log_bucket_policy" {
   }
 
   statement {
-    sid = "AWSCloudTrailAclCheck"
+    sid     = "AWSCloudTrailAclCheck"
     actions = ["s3:GetBucketAcl"]
     effect  = "Allow"
     principals {
@@ -97,7 +97,7 @@ data "aws_iam_policy_document" "log_bucket_policy" {
   }
 
   dynamic "statement" {
-    for_each = toset(var.application_account_numbers)    
+    for_each = toset(var.application_account_numbers)
     content {
       sid     = "AWSCloudTrailAclGET-${statement.key}"
       actions = ["s3:GetBucketAcl"]
@@ -110,7 +110,7 @@ data "aws_iam_policy_document" "log_bucket_policy" {
     }
   }
 
-# Sharing using AWS Organization ID
+  # Sharing using AWS Organization ID
   dynamic "statement" {
     for_each = var.organization_id != null ? [1] : []
     content {

@@ -199,7 +199,7 @@ module "s3_config_conformance_pack" {
 
   # Tags
   tags = merge(
-    try(var.s3_backup_settings["config-conformance"].enable_backup, false) && length(var.s3_backup_policy) > 0 ? {  #leave as config or config-conformance?
+    try(var.s3_backup_settings["config-conformance"].enable_backup, false) && length(var.s3_backup_policy) > 0 ? {
       backup_policy = var.s3_backup_policy
     } : {},
     var.s3_tags

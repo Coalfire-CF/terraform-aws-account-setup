@@ -209,8 +209,7 @@ module "s3_config_conformance_pack" {
 resource "aws_s3_bucket_policy" "conformance_pack_bucket_policy" {
   count  = var.create_s3_config_bucket && var.default_aws_region == var.aws_region ? 1 : 0
   bucket = module.s3_config_conformance_pack[0].id
-
-  policy = data.aws_iam_policy_document.s3_config_conformance_pack_bucket_policy_doc[0].json
+  policy = data.aws_iam_policy_document.s3_config_conformance_pack_policy_doc[0].json
 }
 
 data "aws_iam_policy_document" "s3_config_conformance_pack_policy_doc" {

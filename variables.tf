@@ -64,6 +64,12 @@ variable "additional_kms_keys" {
   default     = []
 }
 
+variable "create_default_kms_key" {
+  description = "create default kms key"
+  type        = bool
+  default     = true
+}
+
 variable "create_s3_kms_key" {
   description = "create KMS key for S3"
   type        = bool

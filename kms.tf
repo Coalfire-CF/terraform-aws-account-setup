@@ -374,6 +374,18 @@ data "aws_iam_policy_document" "cloudwatch_key" {
   }
 }
 
+## Adding default_key_policy
+# In your kms-iam.tf file in the module
+module "default_kms_key" {
+  count  = var.create_default_kms_key ? 1 : 0
+  source = "github.com/Coalfire-CF/terraform-aws-kms?ref=v1.0.1"
+
+  key_policy            = data.aws_iam_policy_document.default_key_policy.json
+  kms_key_resource_type = "default-key-policy"
+  resource_prefix       = var.resource_prefix
+  multi_region          = var.kms_multi_region
+}
+
 module "additional_kms_keys" {
   source   = "github.com/Coalfire-CF/terraform-aws-kms?ref=v1.0.1"
   for_each = { for key in var.additional_kms_keys : key.name => key }
@@ -394,7 +406,7 @@ data "aws_iam_policy_document" "additional_kms_keys" {
 
   source_policy_documents = [
     data.aws_iam_policy_document.kms_base_and_sharing_permissions.json,
-    each.value.policy
+    each.value.policy,
   ]
 }
 

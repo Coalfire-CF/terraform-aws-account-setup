@@ -10,18 +10,18 @@ FedRAMP Compliance: High
 
 ## Dependencies
 
-- If applicable: AWS Organization (AWS ORG) ID (https://github.com/Coalfire-CF/terraform-aws-organization)
+- If applicable: AWS Organization (AWS GOV ORG) ID (https://github.com/Coalfire-CF/terraform-aws-organization)
 
 ## Resource List
 
 Resources that are created as a part of this module include:
 
 - IAM role, policies, and instance profiles for Packer to assume during AMI creation (optional: one account can build and store Packer AMIs and share them with other accounts).
-- KMS keys and typically required IAM permissions for commonly used services (S3, DynamoDB, ELB, RDS, EBS, etc.).
+- KMS keys and typically required IAM permissions for commonly used services (S3, ELB, RDS, EBS, etc.).
 - S3 buckets:
   - ELB Access Logs bucket is optional. With multiple accounts: you can designate one as a centralized logging account and have other accounts send ELB logs to one account's bucket, this is not possible with S3 access logs where the bucket must be in the same account & region).
   - Set 'create_s3_elb_accesslogs_bucket' to 'true' if this is run in an account where you want the logs to be sent.
-- Optional: Security core module resources (Terraform state resources should only exist in the AWS Management account and AWS Org Master Payer account).
+- Optional: Security core module resources (Terraform state resources should only exist in the AWS Management account and AWS GOV ORG Root account).
 
 ## Cross-Account Permissions
 There are 3 supported deployment configurations regarding IAM cross-account permissions. Sharing principally concerns S3 Buckets (where applicable) and KMS Key permissions.
@@ -78,70 +78,81 @@ AWS Backups are based on the presence of a tag and can be applied to S3 buckets.
 ```
 
 ## Usage
-"Management Core" account: Terraform state is stored here, Packer AMIs are built here, is also Management Account for AWS Organizations:
+"Management plane" account: Terraform state is stored here, Packer AMIs are built here. This is different from the AWS GOV ORG Root account where AWS ORG should have been deployed. 
 ```hcl
 module "account-setup" {
-  source = "github.com/Coalfire-CF/terraform-aws-account-setup?ref=v0.0.20"
+   source = "github.com/Coalfire-CF/terraform-aws-account-setup?ref=vx.x.x"
 
-  aws_region         = "us-gov-west-1"
-  default_aws_region = "us-gov-west-1"
-  account_number     = "your-account-number"
+   aws_region         = var.aws_region
+   default_aws_region = var.default_aws_region
+   account_number     = var.account_number
+   resource_prefix    = var.resource_prefix
 
-  resource_prefix         = "pak"
-  
-  ### Cloudtrail ###
-  create_cloudtrail                      = true
-  cloudwatch_log_group_retention_in_days = 30
+   ### Cloudtrail ###
+   create_cloudtrail                      = var.create_cloudtrail # false
+   cloudwatch_log_group_retention_in_days = var.cloudwatch_log_group_retention_in_days # 30
 
-  ### KMS ###
-  additional_kms_keys = [
-    {
-      name   = "elasticache"
-      policy = "${data.aws_iam_policy_document.elasticache_key_policy.json}"
-    }
-  ]
+   ### Secrets Manager ### (EC2 Keypair) 
+   ssh_key_name        = var.ssh_key_name
+   ssh_key_secret_name = var.ssh_key_secret_name
+   
+   ### KMS ### (Optional)
+   additional_kms_keys = [
+      {
+         name   = "elasticache"
+         policy = "${data.aws_iam_policy_document.elasticache_key_policy.json}"
+      }
+   ]
 
-  ### Packer ###
-  create_packer_iam = true # Packer AMIs will be built and kept on this account and shared with other accounts (share accounts is provided to Packer as a variable at build time)
+   ### Packer ###
+   create_packer_iam = var.create_packer_iam # true (Packer AMIs will be built and kept on this account and shared with other accounts (share accounts is provided to Packer as a variable at build time)
 
-  ### Terraform ###
-  create_security_core = true # Terraform state will be kept on this account
+   ### Terraform ###
+   create_security_core = var.create_security_core # true (Terraform state will be kept on this account)
 
-  ### Sharing ###
-  is_organization = true # Should be "false" if setting "application_account_numbers"
-  organization_id = "your-organization-id"
+   ### Sharing ###
+   is_organization = var.is_organization # true (Should be "false" if setting "application_account_numbers")
+   organization_id = var.organization_id
 
-  ### AWS Backup ###
-  s3_backup_policy = "aws-backup-${var.resource_prefix}-default-policy"
+   ### AWS Backup ###
+   s3_backup_policy = "aws-backup-${var.resource_prefix}-default-policy"
 }
 ```
-Optional: "Member account". **This code is not intended to be deployed in every account unless there's a clear need for supporting infrastructure**. Does not need Terraform resources (S3 bucket to store state, DynamoDB table for state lock since these will be stored in MGMT account), Packer AMIs will not be built in this account, is not a Management account for AWS Organizations, does not need to share IAM permissions (s3 buckets, KMS keys) to any other account.  The default configuration also creates individually owned Customer KMS Keys.
+Optional: "AWS ORG Member account". **This code is not intended to be deployed in every account unless there's a clear need for supporting infrastructure**. Does not need Terraform resources (S3 bucket to store state, DynamoDB table for state lock since these will be stored in MGMT account), Packer AMIs will not be built in this account, is not a Management account for AWS Organizations, does not need to share IAM permissions (s3 buckets, KMS keys) to any other account.  The default configuration also creates individually owned Customer KMS Keys.
 ```hcl
 module "account-setup" {
-  source = "github.com/Coalfire-CF/terraform-aws-account-setup?ref=v0.0.20"
+   source = "github.com/Coalfire-CF/terraform-aws-account-setup?ref=vx.x.x"
 
-  aws_region         = "us-gov-west-1"
-  default_aws_region = "us-gov-west-1"
+   # Use the OrganizationAccountAccessRole in member account to deploy resources into it using MGMT account CLI credentials
+   providers = { 
+      aws = aws.example-member-account
+   }
 
-  account_number = "your-account-number"
+   ## GLOBAL ##
+   aws_region         = var.aws_region
+   default_aws_region = var.default_aws_region
+   account_number     = var.account_number
+   resource_prefix    = var.resource_prefix
 
-  resource_prefix = "pak"
+   ### Sharing ###
+   is_organization = var.is_organization
+   organization_id = var.organization_id
 
-  ### KMS ###
-  additional_kms_keys = [
-    {
-      name   = "elasticache"
-      policy = "${data.aws_iam_policy_document.elasticache_key_policy.json}"
-    }
-  ]
+   ### Secrets Manager ### (EC2 Keypair) 
+   ssh_key_name        = var.ssh_key_name
+   ssh_key_secret_name = var.ssh_key_secret_name
 
-  ### Sharing ###
-  is_organization = false # Should be "false" if setting "application_account_numbers"
+   ### AWS Backup ###
+   s3_backup_policy = "aws-backup-${var.resource_prefix}-default-policy"
 
-  ### AWS Backup ###
-  s3_backup_policy = "aws-backup-${var.resource_prefix}-default-policy"
+   ### Disable Resources Not Needed ###
+   create_nfw_kms_key          = false
+   create_config_kms_key       = false
+   create_s3_config_bucket     = false
+   create_s3_fedrampdoc_bucket = false
 }
 ```
+The 'OrganizationAccountAccessRole' roles are automatically created in each AWS GOV ORG member account (including MGMT) when they are added to the ORG and should by default only be assumed by the ORG root account. You will need to make sure that the MGMT plane account has access to assume the 'OrganizationAccountAccessRole' in each required member account it needs to deploy resources to by reviewing the trust relationship of the roles.
 
 ## Environment Setup
 
@@ -190,18 +201,7 @@ SSO-based authentication (via IAM Identity Center SSO):
      │   ├── ...
      ```
 
-   (Optional) Example AWS ORG Member Account 'main.tf' file using alias:
-     ```hcl
-     module "account-setup" {
-     source = "github.com/Coalfire-CF/terraform-aws-account-setup?ref=v0.0.40"
-     providers = {
-      aws = aws.example-member-account
-     }
-     ...
-     }
-     ```
-
-   (Optional) Example AWS ORG Member Account 'providers.tf'. Set your alias to the account specified name ('example-member-account'). Alias should match the provider being used in main.tf file. Example:
+   Optional: Example AWS GOV ORG **Member Account** 'providers.tf'. Set your alias to the account specified name ('example-member-account'). Alias should match the provider being used in main.tf file. Example:
      ```hcl
      provider "aws" {
      region                 = var.aws_region
@@ -210,8 +210,8 @@ SSO-based authentication (via IAM Identity Center SSO):
      use_fips_endpoint      = true
      alias                  = "example-member-account"
      assume_role {
-     role_arn = "arn:${local.partition}:iam::${local.example_member_account_account_id}:role/OrganizationAccountAccessRole"
-     }
+      role_arn = "arn:${local.partition}:iam::${local.example_member_account_account_id}:role/OrganizationAccountAccessRole"
+      }
      }
      ```
 
@@ -230,7 +230,7 @@ SSO-based authentication (via IAM Identity Center SSO):
    backend "local"{}
    }
    ```
-   AWS ORG Member Account: In 'remote-data.tf', set the key to a directory structure in the format show in the example below:
+   Optional: AWS ORG Member Account example. In 'remote-data.tf', set the key to a directory structure in the format show in the example below:
    ```hcl
    //terraform {
    //  backend "s3" {

@@ -179,6 +179,12 @@ variable "create_s3_accesslogs_bucket" {
   default     = true # S3 access logs MUST be in the same region and AWS Account, cross-account logging is NOT supported
 }
 
+variable "accesslogs_bucket_name" {
+  description = "(Optional) custom name for the access logs S3 bucket; if left undefined, a default name is created"
+  type        = string
+  default     = null
+}
+
 variable "create_s3_backups_bucket" {
   description = "Create S3 Backups Bucket"
   type        = bool
@@ -191,10 +197,22 @@ variable "create_s3_elb_accesslogs_bucket" {
   default     = true # ELB Access Logs must be in the same region, but the bucket and load balancer can be in different accounts
 }
 
+variable "elb_accesslogs_bucket_name" {
+  description = "(Optional) custom name for the ELB access logs S3 bucket; if left undefined, a default name is created"
+  type        = string
+  default     = null
+}
+
 variable "create_s3_fedrampdoc_bucket" {
   description = "Create S3 FedRAMP Documents Bucket"
   type        = bool
   default     = true
+}
+
+variable "fedrampdoc_bucket_name" {
+  description = "(Optional) custom name for the FedRAMP docs S3 bucket; if left undefined, a default name is created"
+  type        = string
+  default     = null
 }
 
 variable "create_s3_installs_bucket" {
@@ -203,10 +221,22 @@ variable "create_s3_installs_bucket" {
   default     = true
 }
 
+variable "installs_bucket_name" {
+  description = "(Optional) custom name for the installs S3 bucket; if left undefined, a default name is created"
+  type        = string
+  default     = null
+}
+
 variable "create_s3_config_bucket" {
   description = "Create S3 AWS Config Bucket for conformance pack storage"
   type        = bool
   default     = true
+}
+
+variable "config_bucket_name" {
+  description = "(Optional) custom name for the configuration S3 bucket; if left undefined, a default name is created"
+  type        = string
+  default     = null
 }
 
 variable "s3_backup_settings" {
@@ -237,6 +267,12 @@ variable "s3_backup_settings" {
       enable_backup = true
     }
   }
+}
+
+variable "backups_bucket_name" {
+  description = "(Optional) custom name for the backups S3 bucket; if left undefined, a default name is created"
+  type        = string
+  default     = null
 }
 
 variable "s3_backup_policy" {

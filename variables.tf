@@ -50,6 +50,13 @@ variable "cloudwatch_log_group_retention_in_days" {
   default     = 30
 }
 
+variable "cloudtrail_name" {
+  description = "(Optional) custom name for the cloudtrail resource"
+  type        = string
+  default     = null
+}
+
+
 ### AWS AutoScale IAM Role ###
 variable "create_autoscale_role" {
   description = "Create AWS Autoscale IAM Role (needed for any autoscaling aws resources)"

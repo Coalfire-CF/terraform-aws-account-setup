@@ -1,7 +1,7 @@
 resource "aws_cloudtrail" "all_cloudtrail" {
   count = var.create_cloudtrail ? 1 : 0
 
-  name                          = "${var.resource_prefix}-cloudtrail"
+  name                          = local.cloudtrail_name
   s3_bucket_name                = module.s3-cloudtrail[0].id
   s3_key_prefix                 = "${var.resource_prefix}-cloudtrail"
   cloud_watch_logs_group_arn    = "${aws_cloudwatch_log_group.cloudtrail_log_group[0].arn}:*"

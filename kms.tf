@@ -445,7 +445,7 @@ data "aws_iam_policy_document" "config_key" {
 module "ecr_kms_key" {
   count = var.create_ecr_kms_key ? 1 : 0
 
-  source                = "github.com/Coalfire-CF/ACE-AWS-KMS?ref=v1.0.1"
+  source                = "github.com/Coalfire-CF/terraform-aws-kms?ref=v1.0.1"
   resource_prefix       = var.resource_prefix
   kms_key_resource_type = "ecr"
   key_policy            = data.aws_iam_policy_document.ecr_kms_policy[0].json
@@ -467,7 +467,7 @@ data "aws_iam_policy_document" "ecr_kms_policy" {
 module "sqs_kms_key" {
   count = var.create_sqs_kms_key ? 1 : 0
 
-  source                = "github.com/Coalfire-CF/ACE-AWS-KMS?ref=v1.0.1"
+  source                = "github.com/Coalfire-CF/terraform-aws-kms?ref=v1.0.1"
   resource_prefix       = var.resource_prefix
   kms_key_resource_type = "sqs"
   key_policy            = data.aws_iam_policy_document.sqs_key[0].json

@@ -473,6 +473,7 @@ Copyright © 2023 Coalfire Systems Inc.
 |-- iam.tf
 |-- kms-iam.tf
 |-- kms.tf
+|-- locals.tf
 |-- outputs.tf
 |-- packer_iam.tf
 |-- providers.tf

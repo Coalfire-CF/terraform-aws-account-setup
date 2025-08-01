@@ -267,6 +267,36 @@ variable "create_packer_iam" {
   default     = false
 }
 
+variable "packer_iam_role_name" {
+  description = "(Optional) custom name for the Packer IAM role; if left undefined, a default name is created"
+  type        = string
+  default     = null
+}
+
+variable "packer_iam_policy_name" {
+  description = "(Optional) custom name for the Packer IAM policy; if left undefined, a default name is created"
+  type        = string
+  default     = null
+}
+
+variable "packer_iam_instanceprofile_name" {
+  description = "(Optional) custom name for the Packer IAM instance profile; if left undefined, a default name is created"
+  type        = string
+  default     = null
+}
+
+variable "packer_s3_kmsgrant_name" {
+  description = "(Optional) custom name for the KMS grant allowing Packer to access the S3 bucket KMS key; if left undefined, a default name is created"
+  type        = string
+  default     = null
+}
+
+variable "packer_ebs_kmsgrant_name" {
+  description = "(Optional) custom name for the KMS grant allowing Packer to access the EBS KMS key; if left undefined, a default name is created"
+  type        = string
+  default     = null
+}
+
 variable "packer_additional_iam_principal_arns" {
   description = "List of IAM Principal ARNs allowed to assume the Packer IAM Role"
   type        = list(string)

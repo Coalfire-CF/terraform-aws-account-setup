@@ -32,7 +32,7 @@ resource "aws_cloudwatch_log_group" "cloudtrail_log_group" {
 resource "aws_iam_role" "cloudtrail-role" {
   count = var.create_cloudtrail ? 1 : 0
 
-  name = "${var.resource_prefix}-cloudtrail-to-cloudwatch"
+  name = local.cloudtrail_iam_role_name
 
   assume_role_policy = data.aws_iam_policy_document.cloudtrail_assume_role_policy_document[0].json
 }
@@ -53,7 +53,7 @@ data "aws_iam_policy_document" "cloudtrail_assume_role_policy_document" {
 resource "aws_iam_policy" "cloudtrail-to-cloudwatch" {
   count = var.create_cloudtrail ? 1 : 0
 
-  name        = "${var.resource_prefix}-cloudtrail-to-cloudwatch"
+  name        = local.cloudtrail_iam_role_name
   description = "Policy to allow cloudtrail to send logs to cloudwatch"
 
   policy = data.aws_iam_policy_document.cloudtrail_to_cloudwatch_policy_document[0].json

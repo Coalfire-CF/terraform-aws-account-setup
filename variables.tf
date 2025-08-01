@@ -68,6 +68,12 @@ variable "cloudtrail_bucket_name" {
   default     = null
 }
 
+variable "cloudtrail_iam_role_name" {
+  description = "(Optional) custom name for the Cloudtrail to Cloudwatch IAM role; if left undefined, a default name is created"
+  type        = string
+  default     = null
+}
+
 ### AWS AutoScale IAM Role ###
 variable "create_autoscale_role" {
   description = "Create AWS Autoscale IAM Role (needed for any autoscaling aws resources)"

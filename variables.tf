@@ -51,11 +51,22 @@ variable "cloudwatch_log_group_retention_in_days" {
 }
 
 variable "cloudtrail_name" {
-  description = "(Optional) custom name for the cloudtrail resource"
+  description = "(Optional) custom name for the Cloudtrail resource; if left undefined, a default name is created"
   type        = string
   default     = null
 }
 
+variable "cloudtrail_log_group_name" {
+  description = "(Optional) custom name for the Cloudtrail log group in Cloudwatch; if left undefined, a default name is created"
+  type        = string
+  default     = null
+}
+
+variable "cloudtrail_bucket_name" {
+  description = "(Optional) custom name for the Cloudtrail S3 Bucket; if left undefined, a default name is created"
+  type        = string
+  default     = null
+}
 
 ### AWS AutoScale IAM Role ###
 variable "create_autoscale_role" {

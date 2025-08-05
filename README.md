@@ -154,6 +154,57 @@ module "account-setup" {
 ```
 The 'OrganizationAccountAccessRole' roles are automatically created in each AWS GOV ORG member account (including MGMT) when they are added to the ORG and should by default only be assumed by the ORG root account. You will need to make sure that the MGMT plane account has access to assume the 'OrganizationAccountAccessRole' in each required member account it needs to deploy resources to by reviewing the trust relationship of the roles.
 
+### (Optional) Custom Resource Names
+It is possible to specify custom resource names for most resources deployed by this module, in order to conform to a given naming convention. The following inputs are supported:
+
+```
+cloudtrail_name                 
+cloudtrail_bucket_name          
+cloudtrail_log_group_name       
+cloudtrail_iam_role_name        
+packer_iam_role_name            
+packer_iam_policy_name          
+packer_iam_instanceprofile_name
+packer_s3_kmsgrant_name         
+packer_ebs_kmsgrant_name        
+accesslogs_bucket_name          
+config_bucket_name              
+backups_bucket_name             
+elb_accesslogs_bucket_name      
+fedrampdoc_bucket_name          
+installs_bucket_name            
+```
+
+#### Example code
+
+```hcl
+module "account-setup" {
+   source = "github.com/Coalfire-CF/terraform-aws-account-setup?ref=vx.x.x"
+   
+   ...
+
+   cloudtrail_name                 = "example-cloudtrail-mgmt"
+   cloudtrail_bucket_name          = "example-s3-cloudtrail-mgmt"
+   cloudtrail_log_group_name       = "example-loggroup-cloudtrail-mgmt"
+   cloudtrail_iam_role_name        = "example-iamrole-cloudtrail-mgmt"
+   packer_iam_role_name            = "example-iamrole-packer-mgmt"
+   packer_iam_policy_name          = "example-iampolicy-packer-mgmt"
+   packer_iam_instanceprofile_name = "example-instanceprof-packer-mgmt"
+   packer_s3_kmsgrant_name         = "example-kmsgrant-packer-s3-mgmt"
+   packer_ebs_kmsgrant_name        = "example-kmsgrant-packer-ebs-mgmt"
+   accesslogs_bucket_name          = "example-s3-accesslogs-mgmt"
+   config_bucket_name              = "example-s3-config-mgmt"
+   backups_bucket_name             = "example-s3-backups-mgmt"
+   elb_accesslogs_bucket_name      = "example-s3-elb-accesslogs-mgmt"
+   fedrampdoc_bucket_name          = "example-s3-docs-mgmt"
+   installs_bucket_name            = "example-s3-installs-mgmt"
+   
+   ...
+
+}
+```
+
+
 ## Environment Setup
 
 Establish a secure connection to the Management AWS account used for the build:

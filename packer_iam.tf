@@ -37,7 +37,7 @@ data "aws_iam_policy_document" "packer_assume_role_policy_document" {
 resource "aws_iam_role" "packer_role" {
   count = var.create_packer_iam ? 1 : 0
 
-  name = "${var.resource_prefix}_packer_role"
+  name = local.packer_iam_role_name
 
   assume_role_policy = data.aws_iam_policy_document.packer_assume_role_policy_document[0].json
 }
@@ -161,7 +161,7 @@ data "aws_iam_policy_document" "packer_policy_document" {
 resource "aws_iam_policy" "packer_policy" {
   count = var.create_packer_iam ? 1 : 0
 
-  name        = "${var.resource_prefix}_packer_policy"
+  name        = local.packer_iam_policy_name
   description = "General Policy which will attach to ec2 for packer to give access to ec2,s3"
   policy      = data.aws_iam_policy_document.packer_policy_document[0].json
 }
@@ -177,14 +177,14 @@ resource "aws_iam_policy_attachment" "packer_access_attach_policy" {
 resource "aws_iam_instance_profile" "packer_profile" {
   count = var.create_packer_iam ? 1 : 0
 
-  name = "${var.resource_prefix}_packer_profile"
+  name = local.packer_iam_instanceprofile_name
   role = aws_iam_role.packer_role[0].name
 }
 
 resource "aws_kms_grant" "packer_s3" {
   count = var.create_packer_iam ? 1 : 0
 
-  name              = "packer_${var.resource_prefix}_${var.aws_region}_s3_access"
+  name              = local.packer_s3_kmsgrant_name
   key_id            = module.s3_kms_key[0].kms_key_arn
   grantee_principal = aws_iam_role.packer_role[0].arn
   operations = [
@@ -196,7 +196,7 @@ resource "aws_kms_grant" "packer_s3" {
 resource "aws_kms_grant" "packer_ebs" {
   count = var.create_packer_iam ? 1 : 0
 
-  name              = "packer_${var.resource_prefix}_${var.aws_region}_ebs_access"
+  name              = local.packer_ebs_kmsgrant_name
   key_id            = module.ebs_kms_key[0].kms_key_id
   grantee_principal = aws_iam_role.packer_role[0].arn
   operations = [

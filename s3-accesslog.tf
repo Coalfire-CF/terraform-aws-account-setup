@@ -5,7 +5,7 @@ module "s3-accesslogs" {
   #checkov:skip=CKV_AWS_145: "Ensure that S3 buckets are encrypted with KMS by default"
   source = "github.com/Coalfire-CF/terraform-aws-s3?ref=v1.0.4"
 
-  name                    = "${var.resource_prefix}-${var.aws_region}-s3-accesslogs"
+  name                    = local.accesslogs_bucket_name
   attach_public_policy    = false
   block_public_acls       = true
   ignore_public_acls      = true
@@ -36,7 +36,7 @@ data "aws_iam_policy_document" "s3_accesslogs_bucket_policy" {
       identifiers = ["delivery.logs.amazonaws.com"]
       type        = "Service"
     }
-    resources = ["arn:${data.aws_partition.current.partition}:s3:::${var.resource_prefix}-${var.aws_region}-s3-accesslogs"]
+    resources = ["arn:${data.aws_partition.current.partition}:s3:::${local.accesslogs_bucket_name}"]
   }
 
   statement {
@@ -46,7 +46,7 @@ data "aws_iam_policy_document" "s3_accesslogs_bucket_policy" {
       identifiers = ["delivery.logs.amazonaws.com"]
       type        = "Service"
     }
-    resources = ["arn:${data.aws_partition.current.partition}:s3:::${var.resource_prefix}-${var.aws_region}-s3-accesslogs/*"]
+    resources = ["arn:${data.aws_partition.current.partition}:s3:::${local.accesslogs_bucket_name}/*"]
     condition {
       test     = "StringEquals"
       values   = ["bucket-owner-full-control"]
@@ -60,7 +60,7 @@ data "aws_iam_policy_document" "s3_accesslogs_bucket_policy" {
       identifiers = ["logging.s3.amazonaws.com"]
       type        = "Service"
     }
-    resources = ["arn:${data.aws_partition.current.partition}:s3:::${var.resource_prefix}-${var.aws_region}-s3-accesslogs/*"]
+    resources = ["arn:${data.aws_partition.current.partition}:s3:::${local.accesslogs_bucket_name}/*"]
   }
   statement {
     actions = ["s3:PutObject"]
@@ -74,6 +74,6 @@ data "aws_iam_policy_document" "s3_accesslogs_bucket_policy" {
       variable = "s3:x-amz-acl"
       values   = ["bucket-owner-full-control"]
     }
-    resources = ["arn:${data.aws_partition.current.partition}:s3:::${var.resource_prefix}-${var.aws_region}-s3-accesslogs/*"]
+    resources = ["arn:${data.aws_partition.current.partition}:s3:::${local.accesslogs_bucket_name}/*"]
   }
 }

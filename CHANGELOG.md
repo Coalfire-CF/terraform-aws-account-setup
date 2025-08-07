@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.1.0](https://github.com/Coalfire-CF/terraform-aws-account-setup/compare/v0.0.44...v0.1.0) (2025-08-07)
+
+
+### Features
+
+* allow optional custom resource name via variable inputs ([0ded6ac](https://github.com/Coalfire-CF/terraform-aws-account-setup/commit/0ded6acb4c4d78d8bf372c7968a2adaf64cd0006))
+
+
+### Bug Fixes
+
+* aws_iam_policy_document.elb_accesslogs_bucket_policy dynamic refs ([3c7eb5d](https://github.com/Coalfire-CF/terraform-aws-account-setup/commit/3c7eb5dd4a2e2b059c98133e434003d9466c0cc4))
+* kms mod reference name ([e68d60d](https://github.com/Coalfire-CF/terraform-aws-account-setup/commit/e68d60d90a78659613366df54d44fa1dad4109e6))
+* local var interpolation in literal string ([63196fa](https://github.com/Coalfire-CF/terraform-aws-account-setup/commit/63196fa3fe87fde92779fc6c937b2f9ea0771adb))
+* s3_accesslogs_bucket_policy name reference ([67bcc82](https://github.com/Coalfire-CF/terraform-aws-account-setup/commit/67bcc82063a41c733541406e80734bbedcb309e3))
+
 ## [0.0.44](https://github.com/Coalfire-CF/terraform-aws-account-setup/compare/v0.0.43...v0.0.44) (2025-07-18)
 
 

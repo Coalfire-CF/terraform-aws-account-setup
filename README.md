@@ -338,7 +338,7 @@ SSO-based authentication (via IAM Identity Center SSO):
 | <a name="module_config_kms_key"></a> [config\_kms\_key](#module\_config\_kms\_key) | github.com/Coalfire-CF/terraform-aws-kms | v1.0.1 |
 | <a name="module_default_kms_key"></a> [default\_kms\_key](#module\_default\_kms\_key) | github.com/Coalfire-CF/terraform-aws-kms | v1.0.1 |
 | <a name="module_ebs_kms_key"></a> [ebs\_kms\_key](#module\_ebs\_kms\_key) | github.com/Coalfire-CF/terraform-aws-kms | v1.0.1 |
-| <a name="module_ecr_kms_key"></a> [ecr\_kms\_key](#module\_ecr\_kms\_key) | github.com/Coalfire-CF/ACE-AWS-KMS | v1.0.1 |
+| <a name="module_ecr_kms_key"></a> [ecr\_kms\_key](#module\_ecr\_kms\_key) | github.com/Coalfire-CF/terraform-aws-kms | v1.0.1 |
 | <a name="module_lambda_kms_key"></a> [lambda\_kms\_key](#module\_lambda\_kms\_key) | github.com/Coalfire-CF/terraform-aws-kms | v1.0.1 |
 | <a name="module_nfw_kms_key"></a> [nfw\_kms\_key](#module\_nfw\_kms\_key) | github.com/Coalfire-CF/terraform-aws-kms | v1.0.1 |
 | <a name="module_rds_kms_key"></a> [rds\_kms\_key](#module\_rds\_kms\_key) | github.com/Coalfire-CF/terraform-aws-kms | v1.0.1 |
@@ -354,7 +354,7 @@ SSO-based authentication (via IAM Identity Center SSO):
 | <a name="module_security-core"></a> [security-core](#module\_security-core) | github.com/Coalfire-CF/terraform-aws-securitycore | v0.0.24 |
 | <a name="module_sm_kms_key"></a> [sm\_kms\_key](#module\_sm\_kms\_key) | github.com/Coalfire-CF/terraform-aws-kms | v1.0.1 |
 | <a name="module_sns_kms_key"></a> [sns\_kms\_key](#module\_sns\_kms\_key) | github.com/Coalfire-CF/terraform-aws-kms | v1.0.1 |
-| <a name="module_sqs_kms_key"></a> [sqs\_kms\_key](#module\_sqs\_kms\_key) | github.com/Coalfire-CF/ACE-AWS-KMS | v1.0.1 |
+| <a name="module_sqs_kms_key"></a> [sqs\_kms\_key](#module\_sqs\_kms\_key) | github.com/Coalfire-CF/terraform-aws-kms | v1.0.1 |
 
 ## Resources
 

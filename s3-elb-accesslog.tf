@@ -4,7 +4,7 @@ module "s3-elb-accesslogs" {
   #checkov:skip=CKV_AWS_145: "Ensure that S3 buckets are encrypted with KMS by default"
   source = "github.com/Coalfire-CF/terraform-aws-s3?ref=v1.0.4"
 
-  name                    = "${var.resource_prefix}-${var.aws_region}-elb-accesslogs"
+  name                    = local.elb_accesslogs_bucket_name
   attach_public_policy    = false
   block_public_acls       = true
   ignore_public_acls      = true
@@ -42,7 +42,7 @@ data "aws_iam_policy_document" "elb_accesslogs_bucket_policy" {
       identifiers = ["delivery.logs.amazonaws.com"]
       type        = "Service"
     }
-    resources = ["arn:${data.aws_partition.current.partition}:s3:::${var.resource_prefix}-${var.aws_region}-elb-accesslogs"]
+    resources = ["arn:${data.aws_partition.current.partition}:s3:::${local.elb_accesslogs_bucket_name}"]
   }
 
   statement {
@@ -52,7 +52,7 @@ data "aws_iam_policy_document" "elb_accesslogs_bucket_policy" {
       identifiers = ["delivery.logs.amazonaws.com"]
       type        = "Service"
     }
-    resources = ["arn:${data.aws_partition.current.partition}:s3:::${var.resource_prefix}-${var.aws_region}-elb-accesslogs/*"]
+    resources = ["arn:${data.aws_partition.current.partition}:s3:::${local.elb_accesslogs_bucket_name}/*"]
     condition {
       test     = "StringEquals"
       values   = ["bucket-owner-full-control"]
@@ -68,8 +68,8 @@ data "aws_iam_policy_document" "elb_accesslogs_bucket_policy" {
       type        = "AWS"
     }
     resources = [
-      "arn:${data.aws_partition.current.partition}:s3:::${var.resource_prefix}-${var.aws_region}-elb-accesslogs/lb/AWSLogs/${var.account_number}/*",
-      "arn:${data.aws_partition.current.partition}:s3:::${var.resource_prefix}-${var.aws_region}-elb-accesslogs/AWSLogs/${var.account_number}/*"
+      "arn:${data.aws_partition.current.partition}:s3:::${local.elb_accesslogs_bucket_name}/lb/AWSLogs/${var.account_number}/*",
+      "arn:${data.aws_partition.current.partition}:s3:::${local.elb_accesslogs_bucket_name}/AWSLogs/${var.account_number}/*"
     ]
   }
 
@@ -83,7 +83,7 @@ data "aws_iam_policy_document" "elb_accesslogs_bucket_policy" {
         identifiers = ["arn:${data.aws_partition.current.partition}:iam::${data.aws_elb_service_account.main.id}:root"]
         type        = "AWS"
       }
-      resources = ["arn:${data.aws_partition.current.partition}:s3:::${var.resource_prefix}-${var.aws_region}-elb-accesslogs/lb/AWSLogs/${statement.value}/*"]
+      resources = ["arn:${data.aws_partition.current.partition}:s3:::${local.elb_accesslogs_bucket_name}/lb/AWSLogs/${statement.value}/*"]
     }
   }
 
@@ -97,7 +97,7 @@ data "aws_iam_policy_document" "elb_accesslogs_bucket_policy" {
         identifiers = ["arn:${data.aws_partition.current.partition}:iam::${data.aws_elb_service_account.main.id}:root"]
         type        = "AWS"
       }
-      resources = ["arn:${data.aws_partition.current.partition}:s3:::${var.resource_prefix}-${var.aws_region}-elb-accesslogs/lb/AWSLogs/*"]
+      resources = ["arn:${data.aws_partition.current.partition}:s3:::${local.elb_accesslogs_bucket_name}/lb/AWSLogs/*"]
       condition {
         test     = "StringEquals"
         variable = "aws:PrincipalOrgID"

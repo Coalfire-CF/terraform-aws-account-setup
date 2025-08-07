@@ -3,7 +3,7 @@ module "s3-backups" {
 
   source = "github.com/Coalfire-CF/terraform-aws-s3?ref=v1.0.4"
 
-  name                    = "${var.resource_prefix}-${var.aws_region}-backups"
+  name                    = local.backups_bucket_name
   kms_master_key_id       = module.s3_kms_key[0].kms_key_arn
   attach_public_policy    = false
   block_public_acls       = true

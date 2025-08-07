@@ -50,6 +50,30 @@ variable "cloudwatch_log_group_retention_in_days" {
   default     = 30
 }
 
+variable "cloudtrail_name" {
+  description = "(Optional) custom name for the Cloudtrail resource; if left undefined, a default name is created"
+  type        = string
+  default     = null
+}
+
+variable "cloudtrail_log_group_name" {
+  description = "(Optional) custom name for the Cloudtrail log group in Cloudwatch; if left undefined, a default name is created"
+  type        = string
+  default     = null
+}
+
+variable "cloudtrail_bucket_name" {
+  description = "(Optional) custom name for the Cloudtrail S3 Bucket; if left undefined, a default name is created"
+  type        = string
+  default     = null
+}
+
+variable "cloudtrail_iam_role_name" {
+  description = "(Optional) custom name for the Cloudtrail to Cloudwatch IAM role; if left undefined, a default name is created"
+  type        = string
+  default     = null
+}
+
 ### AWS AutoScale IAM Role ###
 variable "create_autoscale_role" {
   description = "Create AWS Autoscale IAM Role (needed for any autoscaling aws resources)"
@@ -155,6 +179,12 @@ variable "create_s3_accesslogs_bucket" {
   default     = true # S3 access logs MUST be in the same region and AWS Account, cross-account logging is NOT supported
 }
 
+variable "accesslogs_bucket_name" {
+  description = "(Optional) custom name for the access logs S3 bucket; if left undefined, a default name is created"
+  type        = string
+  default     = null
+}
+
 variable "create_s3_backups_bucket" {
   description = "Create S3 Backups Bucket"
   type        = bool
@@ -167,10 +197,22 @@ variable "create_s3_elb_accesslogs_bucket" {
   default     = true # ELB Access Logs must be in the same region, but the bucket and load balancer can be in different accounts
 }
 
+variable "elb_accesslogs_bucket_name" {
+  description = "(Optional) custom name for the ELB access logs S3 bucket; if left undefined, a default name is created"
+  type        = string
+  default     = null
+}
+
 variable "create_s3_fedrampdoc_bucket" {
   description = "Create S3 FedRAMP Documents Bucket"
   type        = bool
   default     = true
+}
+
+variable "fedrampdoc_bucket_name" {
+  description = "(Optional) custom name for the FedRAMP docs S3 bucket; if left undefined, a default name is created"
+  type        = string
+  default     = null
 }
 
 variable "create_s3_installs_bucket" {
@@ -179,10 +221,22 @@ variable "create_s3_installs_bucket" {
   default     = true
 }
 
+variable "installs_bucket_name" {
+  description = "(Optional) custom name for the installs S3 bucket; if left undefined, a default name is created"
+  type        = string
+  default     = null
+}
+
 variable "create_s3_config_bucket" {
   description = "Create S3 AWS Config Bucket for conformance pack storage"
   type        = bool
   default     = true
+}
+
+variable "config_bucket_name" {
+  description = "(Optional) custom name for the configuration S3 bucket; if left undefined, a default name is created"
+  type        = string
+  default     = null
 }
 
 variable "s3_backup_settings" {
@@ -215,6 +269,12 @@ variable "s3_backup_settings" {
   }
 }
 
+variable "backups_bucket_name" {
+  description = "(Optional) custom name for the backups S3 bucket; if left undefined, a default name is created"
+  type        = string
+  default     = null
+}
+
 variable "s3_backup_policy" {
   description = "S3 backup policy to use for S3 buckets in conjunction with AWS Backups, should match an existing policy"
   type        = string
@@ -241,6 +301,36 @@ variable "create_packer_iam" {
   description = "Whether or not to create Packer IAM resources"
   type        = bool
   default     = false
+}
+
+variable "packer_iam_role_name" {
+  description = "(Optional) custom name for the Packer IAM role; if left undefined, a default name is created"
+  type        = string
+  default     = null
+}
+
+variable "packer_iam_policy_name" {
+  description = "(Optional) custom name for the Packer IAM policy; if left undefined, a default name is created"
+  type        = string
+  default     = null
+}
+
+variable "packer_iam_instanceprofile_name" {
+  description = "(Optional) custom name for the Packer IAM instance profile; if left undefined, a default name is created"
+  type        = string
+  default     = null
+}
+
+variable "packer_s3_kmsgrant_name" {
+  description = "(Optional) custom name for the KMS grant allowing Packer to access the S3 bucket KMS key; if left undefined, a default name is created"
+  type        = string
+  default     = null
+}
+
+variable "packer_ebs_kmsgrant_name" {
+  description = "(Optional) custom name for the KMS grant allowing Packer to access the EBS KMS key; if left undefined, a default name is created"
+  type        = string
+  default     = null
 }
 
 variable "packer_additional_iam_principal_arns" {

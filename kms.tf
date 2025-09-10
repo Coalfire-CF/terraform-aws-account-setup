@@ -462,6 +462,22 @@ data "aws_iam_policy_document" "ecr_kms_policy" {
   source_policy_documents = [
     data.aws_iam_policy_document.kms_base_and_sharing_permissions.json
   ]
+
+  statement {
+    effect    = "Allow"
+    actions   = [
+      "kms:Encrypt",
+      "kms:Decrypt",
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+      "kms:DescribeKey",
+    ]
+    resources = ["*"]
+    principals {
+      type        = "Service"
+      identifiers = ["ecr.amazonaws.com"]
+    }
+  }
 }
 
 module "sqs_kms_key" {

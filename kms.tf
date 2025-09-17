@@ -268,7 +268,7 @@ module "backup_kms_key" {
 
 module "lambda_kms_key" {
   count  = var.create_lambda_kms_key ? 1 : 0
-  source = "git::https://github.com/Coalfire-CF/terraform-aws-kms?ref=v1.0.1"
+  source = "git::https://github.com/Coalfire-CF/terraform-aws-kms?ref=v1.1.1"
 
   kms_key_resource_type = "lambda"
   key_policy            = data.aws_iam_policy_document.kms_base_and_sharing_permissions.json

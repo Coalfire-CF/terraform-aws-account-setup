@@ -1,18 +1,34 @@
 {
   "packages": {
     ".": {
-      "release-type": "terraform-module",
-      "draft": false,
+      "bump-minor-pre-major": true,
       "changelog-path": "CHANGELOG.md",
       "changelog-sections": [
-        { "type": "feat", "section": "Features", "hidden": false },
-        { "type": "fix", "section": "Bug Fixes", "hidden": false },
-        { "type": "chore", "section": "Miscellaneous", "hidden": false },
-        { "type": "docs", "section": "Documentation", "hidden": false }
+        {
+          "hidden": false,
+          "section": "Features",
+          "type": "feat"
+        },
+        {
+          "hidden": false,
+          "section": "Bug Fixes",
+          "type": "fix"
+        },
+        {
+          "hidden": false,
+          "section": "Miscellaneous",
+          "type": "chore"
+        },
+        {
+          "hidden": false,
+          "section": "Documentation",
+          "type": "docs"
+        }
       ],
-      "bump-minor-pre-major": true,
-      "versioning": "default",
-      "extra-files": []
+      "draft": false,
+      "extra-files": [],
+      "release-type": "terraform-module",
+      "versioning": "default"
     }
   }
 }

@@ -3,7 +3,7 @@ module "s3-accesslogs" {
   count = var.create_s3_accesslogs_bucket ? 1 : 0
 
   #checkov:skip=CKV_AWS_145: "Ensure that S3 buckets are encrypted with KMS by default"
-  source = "github.com/Coalfire-CF/terraform-aws-s3?ref=v1.0.4"
+  source = "git::https://github.com/Coalfire-CF/terraform-aws-s3?ref=v1.0.4"
 
   name                    = local.accesslogs_bucket_name
   attach_public_policy    = false

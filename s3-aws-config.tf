@@ -2,7 +2,7 @@
 module "s3-config" {
   count = var.create_s3_config_bucket ? 1 : 0
 
-  source = "github.com/Coalfire-CF/terraform-aws-s3?ref=v1.0.4"
+  source = "git::https://github.com/Coalfire-CF/terraform-aws-s3?ref=v1.0.4"
 
   name                    = local.config_bucket_name
   kms_master_key_id       = module.s3_kms_key[0].kms_key_arn
@@ -183,7 +183,7 @@ data "aws_iam_policy_document" "s3_config_bucket_policy_doc" {
 module "s3_config_conformance_pack" {
   count = var.create_s3_config_bucket ? 1 : 0
 
-  source = "github.com/Coalfire-CF/terraform-aws-s3?ref=v1.0.4"
+  source = "git::https://github.com/Coalfire-CF/terraform-aws-s3?ref=v1.0.4"
 
   name                    = "awsconfigconforms-${var.resource_prefix}-${var.aws_region}"
   kms_master_key_id       = module.s3_kms_key[0].kms_key_arn

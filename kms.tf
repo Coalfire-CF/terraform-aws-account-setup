@@ -445,7 +445,7 @@ data "aws_iam_policy_document" "config_key" {
 module "ecr_kms_key" {
   count = var.create_ecr_kms_key ? 1 : 0
 
-  source                = "git::https://github.com/Coalfire-CF/terraform-aws-kms?ref=v1.0.1"
+  source                = "git::https://github.com/Coalfire-CF/terraform-aws-kms?ref=v1.1.1"
   resource_prefix       = var.resource_prefix
   kms_key_resource_type = "ecr"
   key_policy            = data.aws_iam_policy_document.ecr_kms_policy[0].json

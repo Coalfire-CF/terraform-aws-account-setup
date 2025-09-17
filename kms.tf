@@ -61,7 +61,7 @@ data "aws_iam_policy_document" "kms_base_and_sharing_permissions" {
 module "ebs_kms_key" {
   count = var.create_ebs_kms_key ? 1 : 0
 
-  source = "github.com/Coalfire-CF/terraform-aws-kms?ref=v1.0.1"
+  source = "git::https://github.com/Coalfire-CF/terraform-aws-kms?ref=v1.0.1"
 
   key_policy            = data.aws_iam_policy_document.ebs_key[0].json
   kms_key_resource_type = "ebs"
@@ -123,7 +123,7 @@ data "aws_iam_policy_document" "ebs_key" {
 module "s3_kms_key" {
   count = var.create_s3_kms_key ? 1 : 0
 
-  source = "github.com/Coalfire-CF/terraform-aws-kms?ref=v1.0.1"
+  source = "git::https://github.com/Coalfire-CF/terraform-aws-kms?ref=v1.0.1"
 
   key_policy            = data.aws_iam_policy_document.s3_key[0].json
   kms_key_resource_type = "s3"
@@ -214,7 +214,7 @@ data "aws_iam_policy_document" "s3_key" {
 module "sns_kms_key" {
   count = var.create_sns_kms_key ? 1 : 0
 
-  source = "github.com/Coalfire-CF/terraform-aws-kms?ref=v1.0.1"
+  source = "git::https://github.com/Coalfire-CF/terraform-aws-kms?ref=v1.0.1"
 
   key_policy            = data.aws_iam_policy_document.sns_key[0].json
   kms_key_resource_type = "sns"
@@ -236,7 +236,7 @@ data "aws_iam_policy_document" "sns_key" {
 
 module "sm_kms_key" {
   count  = var.create_sm_kms_key ? 1 : 0
-  source = "github.com/Coalfire-CF/terraform-aws-kms?ref=v1.0.1"
+  source = "git::https://github.com/Coalfire-CF/terraform-aws-kms?ref=v1.0.1"
 
   key_policy            = data.aws_iam_policy_document.secrets_manager_key[0].json
   kms_key_resource_type = "sm"
@@ -258,7 +258,7 @@ data "aws_iam_policy_document" "secrets_manager_key" {
 
 module "backup_kms_key" {
   count  = var.create_backup_kms_key ? 1 : 0
-  source = "github.com/Coalfire-CF/terraform-aws-kms?ref=v1.0.1"
+  source = "git::https://github.com/Coalfire-CF/terraform-aws-kms?ref=v1.0.1"
 
   key_policy            = data.aws_iam_policy_document.s3_key[0].json
   kms_key_resource_type = "backup"
@@ -268,7 +268,7 @@ module "backup_kms_key" {
 
 module "lambda_kms_key" {
   count  = var.create_lambda_kms_key ? 1 : 0
-  source = "github.com/Coalfire-CF/terraform-aws-kms?ref=v1.0.1"
+  source = "git::https://github.com/Coalfire-CF/terraform-aws-kms?ref=v1.0.1"
 
   kms_key_resource_type = "lambda"
   key_policy            = data.aws_iam_policy_document.kms_base_and_sharing_permissions.json
@@ -278,7 +278,7 @@ module "lambda_kms_key" {
 
 module "rds_kms_key" {
   count  = var.create_rds_kms_key ? 1 : 0
-  source = "github.com/Coalfire-CF/terraform-aws-kms?ref=v1.0.1"
+  source = "git::https://github.com/Coalfire-CF/terraform-aws-kms?ref=v1.0.1"
 
   kms_key_resource_type = "rds"
   key_policy            = data.aws_iam_policy_document.kms_base_and_sharing_permissions.json
@@ -288,7 +288,7 @@ module "rds_kms_key" {
 
 module "cloudwatch_kms_key" {
   count  = var.create_cloudwatch_kms_key ? 1 : 0
-  source = "github.com/Coalfire-CF/terraform-aws-kms?ref=v1.0.1"
+  source = "git::https://github.com/Coalfire-CF/terraform-aws-kms?ref=v1.0.1"
 
   kms_key_resource_type = "cloudwatch"
   resource_prefix       = var.resource_prefix
@@ -378,7 +378,7 @@ data "aws_iam_policy_document" "cloudwatch_key" {
 # In your kms-iam.tf file in the module
 module "default_kms_key" {
   count  = var.create_default_kms_key ? 1 : 0
-  source = "github.com/Coalfire-CF/terraform-aws-kms?ref=v1.0.1"
+  source = "git::https://github.com/Coalfire-CF/terraform-aws-kms?ref=v1.0.1"
 
   key_policy            = data.aws_iam_policy_document.default_key_policy.json
   kms_key_resource_type = "default-key-policy"
@@ -387,7 +387,7 @@ module "default_kms_key" {
 }
 
 module "additional_kms_keys" {
-  source   = "github.com/Coalfire-CF/terraform-aws-kms?ref=v1.0.1"
+  source   = "git::https://github.com/Coalfire-CF/terraform-aws-kms?ref=v1.0.1"
   for_each = { for key in var.additional_kms_keys : key.name => key }
 
   key_policy            = data.aws_iam_policy_document.additional_kms_keys[each.key].json
@@ -412,7 +412,7 @@ data "aws_iam_policy_document" "additional_kms_keys" {
 
 module "config_kms_key" {
   count  = var.create_config_kms_key ? 1 : 0
-  source = "github.com/Coalfire-CF/terraform-aws-kms?ref=v1.0.1"
+  source = "git::https://github.com/Coalfire-CF/terraform-aws-kms?ref=v1.0.1"
 
   kms_key_resource_type = "config"
   resource_prefix       = var.resource_prefix
@@ -445,7 +445,7 @@ data "aws_iam_policy_document" "config_key" {
 module "ecr_kms_key" {
   count = var.create_ecr_kms_key ? 1 : 0
 
-  source                = "github.com/Coalfire-CF/terraform-aws-kms?ref=v1.0.1"
+  source                = "git::https://github.com/Coalfire-CF/terraform-aws-kms?ref=v1.0.1"
   resource_prefix       = var.resource_prefix
   kms_key_resource_type = "ecr"
   key_policy            = data.aws_iam_policy_document.ecr_kms_policy[0].json
@@ -483,7 +483,7 @@ data "aws_iam_policy_document" "ecr_kms_policy" {
 module "sqs_kms_key" {
   count = var.create_sqs_kms_key ? 1 : 0
 
-  source                = "github.com/Coalfire-CF/terraform-aws-kms?ref=v1.0.1"
+  source                = "git::https://github.com/Coalfire-CF/terraform-aws-kms?ref=v1.0.1"
   resource_prefix       = var.resource_prefix
   kms_key_resource_type = "sqs"
   key_policy            = data.aws_iam_policy_document.sqs_key[0].json
@@ -518,7 +518,7 @@ data "aws_iam_policy_document" "sqs_key" {
 module "nfw_kms_key" {
   count = var.create_nfw_kms_key ? 1 : 0
 
-  source = "github.com/Coalfire-CF/terraform-aws-kms?ref=v1.0.1"
+  source = "git::https://github.com/Coalfire-CF/terraform-aws-kms?ref=v1.0.1"
 
   key_policy            = data.aws_iam_policy_document.kms_base_and_sharing_permissions.json
   kms_key_resource_type = "nfw"

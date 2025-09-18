@@ -236,7 +236,7 @@ data "aws_iam_policy_document" "sns_key" {
 
 module "sm_kms_key" {
   count  = var.create_sm_kms_key ? 1 : 0
-  source = "git::https://github.com/Coalfire-CF/terraform-aws-kms?ref=v1.0.1"
+  source = "git::https://github.com/Coalfire-CF/terraform-aws-kms?ref=v1.1.3"
 
   key_policy            = data.aws_iam_policy_document.secrets_manager_key[0].json
   kms_key_resource_type = "sm"

@@ -1,14 +1,17 @@
 name: Org Release
-on:
-  push:
-    branches:
-      - main
 
 permissions:
   contents: write
-  issues: write
   pull-requests: write
+  issues: write
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
 
 jobs:
   create-release:
-    uses: Coalfire-CF/Actions/.github/workflows/org-release.yml@v0.0.20
+    uses: Coalfire-CF/Actions/.github/workflows/org-release.yml@v0.1.0

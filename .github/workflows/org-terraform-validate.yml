@@ -1,11 +1,22 @@
 name: Org Terraform Validate
+
+permissions:
+  contents: write
+  pull-requests: write
+
 on:
-    pull_request:
-        types:
-        - opened
+  pull_request:
+    types:
+      - opened
+    paths:
+      - "**.tf"
+      - "**.tfvars"
+      - "**.hcl"
+      - ".terraform.lock.hcl"
+      - "**/terraform/**"
 
 jobs:
   create-release:
-    uses: Coalfire-CF/Actions/.github/workflows/org-terraform-validate.yml@main
+    uses: Coalfire-CF/Actions/.github/workflows/org-terraform-validate.yml@v0.1.0
     with:
-      terraform_version: '1.9.5'
+      terraform_version: "1.13.3"

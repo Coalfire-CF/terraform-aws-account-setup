@@ -266,6 +266,9 @@ variable "s3_backup_settings" {
     config = {
       enable_backup = true
     }
+    config-conformance = {
+      enable_backup = true
+    }
   }
 }
 
@@ -275,6 +278,7 @@ variable "backups_bucket_name" {
   default     = null
 }
 
+## Should this variable default be "aws-backup-minimum-compliance"? ##
 variable "s3_backup_policy" {
   description = "S3 backup policy to use for S3 buckets in conjunction with AWS Backups, should match an existing policy"
   type        = string

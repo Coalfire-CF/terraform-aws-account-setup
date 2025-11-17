@@ -412,7 +412,7 @@ data "aws_iam_policy_document" "additional_kms_keys" {
 
 module "config_kms_key" {
   count  = var.create_config_kms_key ? 1 : 0
-  source = "git::https://github.com/Coalfire-CF/terraform-aws-kms?ref=v1.0.1"
+  source = "git::https://github.com/Coalfire-CF/terraform-aws-kms?ref=v1.1.3"
 
   kms_key_resource_type = "config"
   resource_prefix       = var.resource_prefix

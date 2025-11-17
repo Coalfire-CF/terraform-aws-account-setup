@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.2.0](https://github.com/Coalfire-CF/terraform-aws-account-setup/compare/v0.1.4...v0.2.0) (2025-11-17)
+
+
+### Features
+
+* initialize dependabot (coalforge) ([0017dd6](https://github.com/Coalfire-CF/terraform-aws-account-setup/commit/0017dd6d9d925bfe7b6af64847e8fdec887d8a27))
+* initialize dependabot (coalforge) ([680cf39](https://github.com/Coalfire-CF/terraform-aws-account-setup/commit/680cf397dd41976ce2c20eef39f771a75697516e))
+* initialize release-please (coalforge) ([bcb07d2](https://github.com/Coalfire-CF/terraform-aws-account-setup/commit/bcb07d2c17a638c805c64963fb3650004c14820b))
+* initialize release-please (coalforge) ([cecdc90](https://github.com/Coalfire-CF/terraform-aws-account-setup/commit/cecdc9049248214413b4a5eb95d17694e07d509c))
+
+
+### Miscellaneous
+
+* refresh dependabot.yml & TF sources ([71ebb4a](https://github.com/Coalfire-CF/terraform-aws-account-setup/commit/71ebb4a80e7a835166ce398890c5d2ddfe4d6f1b))
+* Sync template files ([314db20](https://github.com/Coalfire-CF/terraform-aws-account-setup/commit/314db205beb6f5720aa0e441c5ea1f7f45fbde29))
+* Sync template files from Coalfire-CF/CS-ToolingTemplate ([2660346](https://github.com/Coalfire-CF/terraform-aws-account-setup/commit/26603460247ae131d440bf30f76cffa52b4ea5ab))
+
 ## [0.0.44](https://github.com/Coalfire-CF/terraform-aws-account-setup/compare/v0.0.43...v0.0.44) (2025-07-18)
 
 

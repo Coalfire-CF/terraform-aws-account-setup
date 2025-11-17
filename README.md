@@ -530,7 +530,7 @@ Copyright © 2023 Coalfire Systems Inc.
 .
 |-- CHANGELOG.md
 |-- CONTRIBUTING.md
-|-- License.md
+|-- LICENSE
 |-- README.md
 |-- cloudtrail.tf
 |-- coalfire_logo.png

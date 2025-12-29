@@ -278,11 +278,10 @@ variable "backups_bucket_name" {
   default     = null
 }
 
-## Should this variable default be "aws-backup-minimum-compliance"? ##
 variable "s3_backup_policy" {
   description = "S3 backup policy to use for S3 buckets in conjunction with AWS Backups, should match an existing policy"
   type        = string
-  default     = "" # What you specified in AWS Backups pak, may look like "aws-backup-${var.resource_prefix}-default-policy"
+  default     = "aws-backup-minimum-compliance" # Do not change this unless you want to change it everywhere else
 }
 
 variable "s3_tags" {

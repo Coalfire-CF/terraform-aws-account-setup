@@ -464,8 +464,8 @@ data "aws_iam_policy_document" "ecr_kms_policy" {
   ]
 
   statement {
-    effect    = "Allow"
-    actions   = [
+    effect = "Allow"
+    actions = [
       "kms:Encrypt",
       "kms:Decrypt",
       "kms:ReEncrypt*",

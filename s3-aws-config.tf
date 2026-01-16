@@ -37,6 +37,39 @@ data "aws_iam_policy_document" "s3_config_bucket_policy_doc" {
 
   # https://docs.aws.amazon.com/config/latest/developerguide/s3-bucket-policy.html#granting-access-in-another-account
 
+  ############################################
+  # Cross-account root access (console SID 1)
+  ############################################
+  statement {
+    sid    = "AllowConfigCrossAccountAccess"
+    effect = "Allow"
+
+    principals {
+      type = "AWS"
+      identifiers = [
+        for acct in var.config_cross_account_ids :
+        "arn:aws-us-gov:iam::${acct}:root"
+      ]
+    }
+
+    actions = [
+      "s3:GetBucketAcl",
+      "s3:GetBucketLocation",
+      "s3:GetObject",
+      "s3:GetObjectVersion",
+      "s3:PutObject",
+      "s3:PutObjectTagging"
+    ]
+
+    resources = [
+      module.s3-config[0].arn,
+      "${module.s3-config[0].arn}/*"
+    ]
+  }
+
+  ############################################
+  # AWS Config – same-account bucket access
+  ############################################
   # Base Permissions
   statement {
     effect = "Allow"
@@ -147,7 +180,7 @@ data "aws_iam_policy_document" "s3_config_bucket_policy_doc" {
       }
       condition {
         test     = "StringEquals"
-        variable = "aws:PrincipalOrgID"
+        variable = "aws:SourceOrgID"
         values   = [var.organization_id]
       }
     }
@@ -172,7 +205,7 @@ data "aws_iam_policy_document" "s3_config_bucket_policy_doc" {
       }
       condition {
         test     = "StringEquals"
-        variable = "aws:PrincipalOrgID"
+        variable = "aws:SourceOrgID"
         values   = [var.organization_id]
       }
     }
@@ -217,6 +250,35 @@ data "aws_iam_policy_document" "s3_config_conformance_pack_bucket_policy_doc" {
   count = var.create_s3_config_bucket && var.default_aws_region == var.aws_region ? 1 : 0
 
   # https://docs.aws.amazon.com/config/latest/developerguide/s3-bucket-policy.html#granting-access-in-another-account
+
+
+  # Cross-account root access
+  statement {
+    sid    = "AllowConfigCrossAccountAccess"
+    effect = "Allow"
+
+    principals {
+      type = "AWS"
+      identifiers = [
+        for acct in var.config_cross_account_ids :
+        "arn:aws-us-gov:iam::${acct}:root"
+      ]
+    }
+
+    actions = [
+      "s3:GetBucketAcl",
+      "s3:GetBucketLocation",
+      "s3:GetObject",
+      "s3:GetObjectVersion",
+      "s3:PutObject",
+      "s3:PutObjectTagging"
+    ]
+
+    resources = [
+      module.s3_config_conformance_pack[0].arn,
+      "${module.s3_config_conformance_pack[0].arn}/*"
+    ]
+  }
 
   # Base Permissions
   statement {
@@ -328,7 +390,7 @@ data "aws_iam_policy_document" "s3_config_conformance_pack_bucket_policy_doc" {
       }
       condition {
         test     = "StringEquals"
-        variable = "aws:PrincipalOrgID"
+        variable = "aws:SourceOrgID"
         values   = [var.organization_id]
       }
     }
@@ -353,7 +415,7 @@ data "aws_iam_policy_document" "s3_config_conformance_pack_bucket_policy_doc" {
       }
       condition {
         test     = "StringEquals"
-        variable = "aws:PrincipalOrgID"
+        variable = "aws:SourceOrgID"
         values   = [var.organization_id]
       }
     }

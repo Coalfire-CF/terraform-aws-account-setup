@@ -532,7 +532,6 @@ Copyright © 2023 Coalfire Systems Inc.
 |-- CHANGELOG.md
 |-- CONTRIBUTING.md
 |-- LICENSE
-|-- License.md
 |-- README.md
 |-- cloudtrail.tf
 |-- coalfire_logo.png

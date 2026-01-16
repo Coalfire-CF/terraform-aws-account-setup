@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/Coalfire-CF/terraform-aws-account-setup/compare/v0.2.0...v0.2.1) (2026-01-16)
+
+
+### Miscellaneous
+
+* update README tree ([ea1361a](https://github.com/Coalfire-CF/terraform-aws-account-setup/commit/ea1361a9f661def7930d872974a6536229fee39d))
+
 ## [0.2.0](https://github.com/Coalfire-CF/terraform-aws-account-setup/compare/v0.1.4...v0.2.0) (2026-01-15)
 
 

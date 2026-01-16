@@ -290,6 +290,11 @@ variable "s3_tags" {
   default     = {}
 }
 
+variable "config_cross_account_ids" {
+  type        = list(string)
+  description = "AWS account IDs allowed cross-account access to the Config bucket"
+}
+
 ### Misc ###
 # Note: To my knowledge, it's not a common configuration to have Terraform state across multiple accounts, so this will default to false
 variable "create_security_core" {

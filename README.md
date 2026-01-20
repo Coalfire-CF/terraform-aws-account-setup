@@ -553,6 +553,5 @@ Copyright © 2023 Coalfire Systems Inc.
 |-- s3-fedrampdoc.tf
 |-- s3-installs.tf
 |-- security-core.tf
-|-- update-readme-tree.sh
 |-- variables.tf
 ```

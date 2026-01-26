@@ -153,4 +153,23 @@ data "aws_iam_policy_document" "log_bucket_policy" {
       }
     }
   }
+
+  dynamic "statement" {
+    for_each = var.organization_id != null ? [1] : []
+    content {
+      sid     = "AWSCloudTrailNotifOrgPUT"
+      actions = ["s3:PutBucketNotification"]
+      effect  = "Allow"
+      principals {
+        identifiers = ["*"]
+        type        = "AWS"
+      }
+      resources = [module.s3-cloudtrail[0].arn]
+      condition {
+        test     = "StringEquals"
+        variable = "aws:PrincipalOrgID"
+        values   = [var.organization_id]
+      }
+    }
+  }
 }

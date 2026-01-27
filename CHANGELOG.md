@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.2.2](https://github.com/Coalfire-CF/terraform-aws-account-setup/compare/v0.2.1...v0.2.2) (2026-01-27)
+
+
+### Bug Fixes
+
+* Update S3 Cloudtrail Bucket Policy ([ac2fb58](https://github.com/Coalfire-CF/terraform-aws-account-setup/commit/ac2fb5892c9e92d1df174a3c08b8b6fd5b14c4b4))
+* Update S3 Cloudtrail Bucket Policy ([88aa486](https://github.com/Coalfire-CF/terraform-aws-account-setup/commit/88aa486e72012dd9e9ec8d9ec41c4c0999d20494))
+* use correct CoalForge team slug ([996cfca](https://github.com/Coalfire-CF/terraform-aws-account-setup/commit/996cfcad152cc387fbb11ec2354390c642064bd8))
+
+
+### Miscellaneous
+
+* remove obsolete update-readme-tree.sh script ([#96](https://github.com/Coalfire-CF/terraform-aws-account-setup/issues/96)) ([6c74285](https://github.com/Coalfire-CF/terraform-aws-account-setup/commit/6c74285ee71d3d0732d69dde281de16a83cc2df6))
+* update CODEOWNERS ([f6f8533](https://github.com/Coalfire-CF/terraform-aws-account-setup/commit/f6f8533c6b392acf1ff16b2e7f20041d475027d4))
+* update CODEOWNERS ([7653a59](https://github.com/Coalfire-CF/terraform-aws-account-setup/commit/7653a5907b1e38a0c599805e8b2f598a24b96d05))
+* update org-release.yml to v0.2.1 ([#98](https://github.com/Coalfire-CF/terraform-aws-account-setup/issues/98)) ([45009f2](https://github.com/Coalfire-CF/terraform-aws-account-setup/commit/45009f2518c23b159e9aec4a7d889fe73ab39822))
+* update README tree ([e1afee2](https://github.com/Coalfire-CF/terraform-aws-account-setup/commit/e1afee2c93457d72bc17fb3194b4e6ed8d3fd736))
+
 ## [0.2.1](https://github.com/Coalfire-CF/terraform-aws-account-setup/compare/v0.2.0...v0.2.1) (2026-01-16)
 
 

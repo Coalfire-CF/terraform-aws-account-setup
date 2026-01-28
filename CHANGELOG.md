@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.3](https://github.com/Coalfire-CF/terraform-aws-account-setup/compare/v0.2.2...v0.2.3) (2026-01-28)
+
+
+### Bug Fixes
+
+* tf validate workflow ([6ddf808](https://github.com/Coalfire-CF/terraform-aws-account-setup/commit/6ddf80899eb1aa05de124911eaf9a502a56718f1))
+* tf validate workflow ([d5be541](https://github.com/Coalfire-CF/terraform-aws-account-setup/commit/d5be5414bedcefe70cf7db05b8a2132bae2cee75))
+
 ## [0.2.2](https://github.com/Coalfire-CF/terraform-aws-account-setup/compare/v0.2.1...v0.2.2) (2026-01-27)
 
 

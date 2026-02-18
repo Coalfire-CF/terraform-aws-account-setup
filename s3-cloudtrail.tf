@@ -1,5 +1,5 @@
 module "s3-cloudtrail" {
-  source = "git::https://github.com/Coalfire-CF/terraform-aws-s3?ref=v1.0.4"
+  source = "git::https://github.com/Coalfire-CF/terraform-aws-s3?ref=resource-naming-cleanup"
 
   count = var.create_cloudtrail && var.default_aws_region == var.aws_region ? 1 : 0
 

@@ -1,7 +1,7 @@
 module "s3-fedrampdoc" {
   count = var.create_s3_fedrampdoc_bucket ? 1 : 0
 
-  source = "git::https://github.com/Coalfire-CF/terraform-aws-s3?ref=v1.1.1"
+  source = "git::https://github.com/Coalfire-CF/terraform-aws-s3?ref=provider-v6-imp"
 
   name                    = local.fedrampdoc_bucket_name
   kms_master_key_id       = module.s3_kms_key[0].kms_key_arn

@@ -1,7 +1,7 @@
 module "security-core" {
   count = var.create_security_core ? 1 : 0
 
-  source = "git::https://github.com/Coalfire-CF/terraform-aws-securitycore?ref=v0.1.0"
+  source = "git::https://github.com/Coalfire-CF/terraform-aws-securitycore?ref=provider-v6-imp"
 
   application_account_numbers = var.application_account_numbers
   aws_region                  = var.aws_region

@@ -1,5 +1,5 @@
 module "s3-cloudtrail" {
-  source = "git::https://github.com/Coalfire-CF/terraform-aws-s3?ref=v1.1.1"
+  source = "git::https://github.com/Coalfire-CF/terraform-aws-s3?ref=v1.1.2"
 
   count = var.create_cloudtrail && var.default_aws_region == var.aws_region ? 1 : 0
 

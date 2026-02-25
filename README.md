@@ -543,8 +543,8 @@ Copyright © 2023 Coalfire Systems Inc.
 |-- locals.tf
 |-- outputs.tf
 |-- packer_iam.tf
-|-- providers.tf
 |-- release-please-config.json
+|-- required_providers.tf
 |-- s3-accesslog.tf
 |-- s3-aws-config.tf
 |-- s3-backups.tf

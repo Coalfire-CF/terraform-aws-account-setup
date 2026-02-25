@@ -319,42 +319,42 @@ SSO-based authentication (via IAM Identity Center SSO):
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=1.10.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 6.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 5.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 6.0 |
 | <a name="provider_tls"></a> [tls](#provider\_tls) | n/a |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_additional_kms_keys"></a> [additional\_kms\_keys](#module\_additional\_kms\_keys) | git::https://github.com/Coalfire-CF/terraform-aws-kms | v1.0.1 |
-| <a name="module_backup_kms_key"></a> [backup\_kms\_key](#module\_backup\_kms\_key) | git::https://github.com/Coalfire-CF/terraform-aws-kms | v1.0.1 |
-| <a name="module_cloudwatch_kms_key"></a> [cloudwatch\_kms\_key](#module\_cloudwatch\_kms\_key) | git::https://github.com/Coalfire-CF/terraform-aws-kms | v1.0.1 |
-| <a name="module_config_kms_key"></a> [config\_kms\_key](#module\_config\_kms\_key) | git::https://github.com/Coalfire-CF/terraform-aws-kms | v1.0.1 |
-| <a name="module_default_kms_key"></a> [default\_kms\_key](#module\_default\_kms\_key) | git::https://github.com/Coalfire-CF/terraform-aws-kms | v1.0.1 |
-| <a name="module_ebs_kms_key"></a> [ebs\_kms\_key](#module\_ebs\_kms\_key) | git::https://github.com/Coalfire-CF/terraform-aws-kms | v1.0.1 |
-| <a name="module_ecr_kms_key"></a> [ecr\_kms\_key](#module\_ecr\_kms\_key) | git::https://github.com/Coalfire-CF/terraform-aws-kms | v1.0.1 |
-| <a name="module_lambda_kms_key"></a> [lambda\_kms\_key](#module\_lambda\_kms\_key) | git::https://github.com/Coalfire-CF/terraform-aws-kms | v1.0.1 |
-| <a name="module_nfw_kms_key"></a> [nfw\_kms\_key](#module\_nfw\_kms\_key) | git::https://github.com/Coalfire-CF/terraform-aws-kms | v1.0.1 |
-| <a name="module_rds_kms_key"></a> [rds\_kms\_key](#module\_rds\_kms\_key) | git::https://github.com/Coalfire-CF/terraform-aws-kms | v1.0.1 |
-| <a name="module_s3-accesslogs"></a> [s3-accesslogs](#module\_s3-accesslogs) | git::https://github.com/Coalfire-CF/terraform-aws-s3 | v1.1.1 |
-| <a name="module_s3-backups"></a> [s3-backups](#module\_s3-backups) | git::https://github.com/Coalfire-CF/terraform-aws-s3 | v1.1.1 |
-| <a name="module_s3-cloudtrail"></a> [s3-cloudtrail](#module\_s3-cloudtrail) | git::https://github.com/Coalfire-CF/terraform-aws-s3 | v1.1.1 |
-| <a name="module_s3-config"></a> [s3-config](#module\_s3-config) | git::https://github.com/Coalfire-CF/terraform-aws-s3 | v1.1.1 |
-| <a name="module_s3-elb-accesslogs"></a> [s3-elb-accesslogs](#module\_s3-elb-accesslogs) | git::https://github.com/Coalfire-CF/terraform-aws-s3 | v1.1.1 |
-| <a name="module_s3-fedrampdoc"></a> [s3-fedrampdoc](#module\_s3-fedrampdoc) | git::https://github.com/Coalfire-CF/terraform-aws-s3 | v1.1.1 |
-| <a name="module_s3-installs"></a> [s3-installs](#module\_s3-installs) | git::https://github.com/Coalfire-CF/terraform-aws-s3 | v1.1.1 |
-| <a name="module_s3_config_conformance_pack"></a> [s3\_config\_conformance\_pack](#module\_s3\_config\_conformance\_pack) | git::https://github.com/Coalfire-CF/terraform-aws-s3 | v1.1.1 |
-| <a name="module_s3_kms_key"></a> [s3\_kms\_key](#module\_s3\_kms\_key) | git::https://github.com/Coalfire-CF/terraform-aws-kms | v1.0.1 |
-| <a name="module_security-core"></a> [security-core](#module\_security-core) | git::https://github.com/Coalfire-CF/terraform-aws-securitycore | v0.1.0 |
-| <a name="module_sm_kms_key"></a> [sm\_kms\_key](#module\_sm\_kms\_key) | git::https://github.com/Coalfire-CF/terraform-aws-kms | v1.0.1 |
-| <a name="module_sns_kms_key"></a> [sns\_kms\_key](#module\_sns\_kms\_key) | git::https://github.com/Coalfire-CF/terraform-aws-kms | v1.0.1 |
-| <a name="module_sqs_kms_key"></a> [sqs\_kms\_key](#module\_sqs\_kms\_key) | git::https://github.com/Coalfire-CF/terraform-aws-kms | v1.0.1 |
+| <a name="module_additional_kms_keys"></a> [additional\_kms\_keys](#module\_additional\_kms\_keys) | git::https://github.com/Coalfire-CF/terraform-aws-kms | v1.2.0 |
+| <a name="module_backup_kms_key"></a> [backup\_kms\_key](#module\_backup\_kms\_key) | git::https://github.com/Coalfire-CF/terraform-aws-kms | v1.2.0 |
+| <a name="module_cloudwatch_kms_key"></a> [cloudwatch\_kms\_key](#module\_cloudwatch\_kms\_key) | git::https://github.com/Coalfire-CF/terraform-aws-kms | v1.2.0 |
+| <a name="module_config_kms_key"></a> [config\_kms\_key](#module\_config\_kms\_key) | git::https://github.com/Coalfire-CF/terraform-aws-kms | v1.2.0 |
+| <a name="module_default_kms_key"></a> [default\_kms\_key](#module\_default\_kms\_key) | git::https://github.com/Coalfire-CF/terraform-aws-kms | v1.2.0 |
+| <a name="module_ebs_kms_key"></a> [ebs\_kms\_key](#module\_ebs\_kms\_key) | git::https://github.com/Coalfire-CF/terraform-aws-kms | v1.2.0 |
+| <a name="module_ecr_kms_key"></a> [ecr\_kms\_key](#module\_ecr\_kms\_key) | git::https://github.com/Coalfire-CF/terraform-aws-kms | v1.2.0 |
+| <a name="module_lambda_kms_key"></a> [lambda\_kms\_key](#module\_lambda\_kms\_key) | git::https://github.com/Coalfire-CF/terraform-aws-kms | v1.2.0 |
+| <a name="module_nfw_kms_key"></a> [nfw\_kms\_key](#module\_nfw\_kms\_key) | git::https://github.com/Coalfire-CF/terraform-aws-kms | v1.2.0 |
+| <a name="module_rds_kms_key"></a> [rds\_kms\_key](#module\_rds\_kms\_key) | git::https://github.com/Coalfire-CF/terraform-aws-kms | v1.2.0 |
+| <a name="module_s3-accesslogs"></a> [s3-accesslogs](#module\_s3-accesslogs) | git::https://github.com/Coalfire-CF/terraform-aws-s3 | v1.1.2 |
+| <a name="module_s3-backups"></a> [s3-backups](#module\_s3-backups) | git::https://github.com/Coalfire-CF/terraform-aws-s3 | v1.1.2 |
+| <a name="module_s3-cloudtrail"></a> [s3-cloudtrail](#module\_s3-cloudtrail) | git::https://github.com/Coalfire-CF/terraform-aws-s3 | v1.1.2 |
+| <a name="module_s3-config"></a> [s3-config](#module\_s3-config) | git::https://github.com/Coalfire-CF/terraform-aws-s3 | v1.1.2 |
+| <a name="module_s3-elb-accesslogs"></a> [s3-elb-accesslogs](#module\_s3-elb-accesslogs) | git::https://github.com/Coalfire-CF/terraform-aws-s3 | v1.1.2 |
+| <a name="module_s3-fedrampdoc"></a> [s3-fedrampdoc](#module\_s3-fedrampdoc) | git::https://github.com/Coalfire-CF/terraform-aws-s3 | v1.1.2 |
+| <a name="module_s3-installs"></a> [s3-installs](#module\_s3-installs) | git::https://github.com/Coalfire-CF/terraform-aws-s3 | v1.1.2 |
+| <a name="module_s3_config_conformance_pack"></a> [s3\_config\_conformance\_pack](#module\_s3\_config\_conformance\_pack) | git::https://github.com/Coalfire-CF/terraform-aws-s3 | v1.1.2 |
+| <a name="module_s3_kms_key"></a> [s3\_kms\_key](#module\_s3\_kms\_key) | git::https://github.com/Coalfire-CF/terraform-aws-kms | v1.2.0 |
+| <a name="module_security-core"></a> [security-core](#module\_security-core) | git::https://github.com/Coalfire-CF/terraform-aws-securitycore | v0.1.1 |
+| <a name="module_sm_kms_key"></a> [sm\_kms\_key](#module\_sm\_kms\_key) | git::https://github.com/Coalfire-CF/terraform-aws-kms | v1.2.0 |
+| <a name="module_sns_kms_key"></a> [sns\_kms\_key](#module\_sns\_kms\_key) | git::https://github.com/Coalfire-CF/terraform-aws-kms | v1.2.0 |
+| <a name="module_sqs_kms_key"></a> [sqs\_kms\_key](#module\_sqs\_kms\_key) | git::https://github.com/Coalfire-CF/terraform-aws-kms | v1.2.0 |
 
 ## Resources
 

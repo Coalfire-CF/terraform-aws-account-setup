@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.4](https://github.com/Coalfire-CF/terraform-aws-account-setup/compare/v0.2.3...v0.2.4) (2026-02-25)
+
+
+### Bug Fixes
+
+* provider version resolution ([dd31d4d](https://github.com/Coalfire-CF/terraform-aws-account-setup/commit/dd31d4d720d1158db0c01bebce244f41af6144bf))
+* syntax update for required providers file ([dfe003f](https://github.com/Coalfire-CF/terraform-aws-account-setup/commit/dfe003fe645ea58d7178f1c36804ce25ba270178))
+
+
+### Miscellaneous
+
+* update README tree ([ae2baac](https://github.com/Coalfire-CF/terraform-aws-account-setup/commit/ae2baac9105be8413d3cd9746f78f58d473ad022))
+
 ## [0.2.3](https://github.com/Coalfire-CF/terraform-aws-account-setup/compare/v0.2.2...v0.2.3) (2026-02-24)
 
 

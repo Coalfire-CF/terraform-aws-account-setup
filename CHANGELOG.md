@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.2.5](https://github.com/Coalfire-CF/terraform-aws-account-setup/compare/v0.2.4...v0.2.5) (2026-03-07)
+
+
+### Miscellaneous
+
+* **deps:** bump Coalfire-CF/Actions/.github/workflows/org-checkov.yml ([a66f63b](https://github.com/Coalfire-CF/terraform-aws-account-setup/commit/a66f63b1d6e9ae414a1ab6d89e07c601f8fce140))
+* **deps:** bump Coalfire-CF/Actions/.github/workflows/org-checkov.yml from 0.1.0 to 0.3.1 ([a08f0c6](https://github.com/Coalfire-CF/terraform-aws-account-setup/commit/a08f0c64a2fee24e153051654974b076871e71ce))
+* **deps:** bump Coalfire-CF/Actions/.github/workflows/org-markdown-lint.yml ([0eb71ee](https://github.com/Coalfire-CF/terraform-aws-account-setup/commit/0eb71ee7a579d58921c90cb3edea66d4cce03354))
+* **deps:** bump Coalfire-CF/Actions/.github/workflows/org-markdown-lint.yml from 0.1.0 to 0.3.1 ([01049fb](https://github.com/Coalfire-CF/terraform-aws-account-setup/commit/01049fb9c1e1a841238aebbd032bc203159be1ae))
+* **deps:** bump Coalfire-CF/Actions/.github/workflows/org-terraform-docs.yml ([c2710a3](https://github.com/Coalfire-CF/terraform-aws-account-setup/commit/c2710a3cfe1566934d126f4413daf9a2e525c07c))
+* **deps:** bump Coalfire-CF/Actions/.github/workflows/org-terraform-docs.yml from 0.1.0 to 0.3.1 ([35c374c](https://github.com/Coalfire-CF/terraform-aws-account-setup/commit/35c374ca90f7d3c9afe7e2b101d464fa5bec682f))
+* **deps:** bump Coalfire-CF/Actions/.github/workflows/org-terraform-validate.yml ([1c80058](https://github.com/Coalfire-CF/terraform-aws-account-setup/commit/1c800581fe1328073fa708ae41ef1b5aabf5425d))
+* **deps:** bump Coalfire-CF/Actions/.github/workflows/org-terraform-validate.yml from 0.2.2 to 0.3.1 ([5e3cdd5](https://github.com/Coalfire-CF/terraform-aws-account-setup/commit/5e3cdd53b15df148b2b7676b0dff4a6c5beb8e59))
+* **deps:** bump Coalfire-CF/Actions/.github/workflows/org-tree-readme.yml ([a136ccf](https://github.com/Coalfire-CF/terraform-aws-account-setup/commit/a136ccf44d893a265d353c41b47ccc31a01f83b9))
+* **deps:** bump Coalfire-CF/Actions/.github/workflows/org-tree-readme.yml from 0.1.0 to 0.3.1 ([7b9e059](https://github.com/Coalfire-CF/terraform-aws-account-setup/commit/7b9e059ee5968ade4709b09e25ad503cf85c0d43))
+
 ## [0.2.4](https://github.com/Coalfire-CF/terraform-aws-account-setup/compare/v0.2.3...v0.2.4) (2026-02-25)
 
 

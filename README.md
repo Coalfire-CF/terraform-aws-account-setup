@@ -81,41 +81,54 @@ AWS Backups are based on the presence of a tag and can be applied to S3 buckets.
 "Management plane" account: Terraform state is stored here, Packer AMIs are built here. This is different from the AWS GOV ORG Root account where AWS ORG should have been deployed. 
 ```hcl
 module "account-setup" {
-   source = "github.com/Coalfire-CF/terraform-aws-account-setup?ref=vx.x.x"
+  source = "git::https://github.com/Coalfire-CF/terraform-aws-account-setup.git?ref=vX.X.X"
 
-   aws_region         = var.aws_region
-   default_aws_region = var.default_aws_region
-   account_number     = var.account_number
-   resource_prefix    = var.resource_prefix
+  providers = {
+    aws = aws.mgmt
+  }
 
-   ### Cloudtrail ###
-   create_cloudtrail                      = var.create_cloudtrail # false
-   cloudwatch_log_group_retention_in_days = var.cloudwatch_log_group_retention_in_days # 30
+  aws_region         = var.aws_region
+  default_aws_region = var.default_aws_region
+  account_number     = var.account_number
+  resource_prefix    = var.resource_prefix
 
-   ### Secrets Manager ### (EC2 Keypair) 
-   ssh_key_name        = var.ssh_key_name
-   ssh_key_secret_name = var.ssh_key_secret_name
-   
-   ### KMS ### (Optional)
-   additional_kms_keys = [
-      {
-         name   = "elasticache"
-         policy = "${data.aws_iam_policy_document.elasticache_key_policy.json}"
-      }
-   ]
+  create_autoscale_role = var.create_autoscaling_role
 
-   ### Packer ###
-   create_packer_iam = var.create_packer_iam # true (Packer AMIs will be built and kept on this account and shared with other accounts (share accounts is provided to Packer as a variable at build time)
+  ### Cloudtrail ###
+  create_cloudtrail                      = var.create_cloudtrail
+  cloudwatch_log_group_retention_in_days = var.cloudwatch_log_group_retention_in_days
 
-   ### Terraform ###
-   create_security_core = var.create_security_core # true (Terraform state will be kept on this account)
+  ### Secrets Manager ### (EC2 Keypair) 
+  ssh_key_name        = var.ssh_key_name
+  ssh_key_secret_name = var.ssh_key_secret_name
 
-   ### Sharing ###
-   is_organization = var.is_organization # true (Should be "false" if setting "application_account_numbers")
-   organization_id = var.organization_id
+  ### Packer ###
+  create_packer_iam = var.create_packer_iam # Packer AMIs will be built and kept on this account and shared with other accounts (share accounts is provided to Packer as a variable at build time)
 
-   ### AWS Backup ###
-   s3_backup_policy = "aws-backup-${var.resource_prefix}-default-policy"
+  ### Terraform ###
+  create_security_core = var.create_security_core # Terraform state will be kept on this account
+
+  ### Sharing ###
+  is_organization = var.is_organization # Should be "false" if setting "application_account_numbers"
+  organization_id = var.organization_id
+
+  ### AWS Backup ###
+  s3_backup_policy = "aws-backup-minimum-compliance"
+
+  ## KMS ### 
+  additional_kms_keys = [
+    {
+      name   = "kinesis_firehose" # Typically used with Splunk
+      policy = data.aws_iam_policy_document.default_key_policy.json
+    },
+    {
+      name   = "iam_identity_center" # Remove if not using IAM Identity Center
+      policy = data.aws_iam_policy_document.default_key_policy.json
+    },
+  ]
+
+  config_cross_account_ids = local.share_accounts
+
 }
 ```
 Optional: "AWS ORG Member account". **This code is not intended to be deployed in every account unless there's a clear need for supporting infrastructure**. Does not need Terraform resources (S3 bucket to store state, DynamoDB table for state lock since these will be stored in MGMT account), Packer AMIs will not be built in this account, is not a Management account for AWS Organizations, does not need to share IAM permissions (s3 buckets, KMS keys) to any other account.  The default configuration also creates individually owned Customer KMS Keys.
@@ -203,7 +216,6 @@ module "account-setup" {
 
 }
 ```
-
 
 ## Environment Setup
 
